@@ -1,0 +1,6 @@
+from django.apps import AppConfig
+
+
+class CmsConfig(AppConfig):
+    name = "unfold_extra.contrib.cms"
+    label = "unfold_extra_cms"

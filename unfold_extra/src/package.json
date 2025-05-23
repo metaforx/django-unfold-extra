@@ -1,0 +1,16 @@
+{
+	"name": "django-unfold-extra",
+	"description": "Enhancing Django Unfold to support additional packages",
+	"scripts": {
+		"update:unfold-deps": "curl -s https://raw.githubusercontent.com/unfoldadmin/django-unfold/main/package.json | jq -r '[\"tailwindcss@\" + .dependencies.tailwindcss, \"@tailwindcss/typography@\" + .devDependencies[\"@tailwindcss/typography\"]] | join(\" \")' | xargs npm install --save-dev",
+		"update:unfold-css": "curl -o css/styles.css https://raw.githubusercontent.com/unfoldadmin/django-unfold/main/src/unfold/styles.css",
+		"update:unfold": "npm run update:unfold-deps && npm run update:unfold-config",
+		"tailwind:build": "npx @tailwindcss/cli -i css/unfold_extra.css -o ../static/unfold_extra/css/styles.css --minify",
+		"tailwind:watch": "npx @tailwindcss/cli -i css/unfold_extra.css -o ../static/unfold_extra/css/styles.css --watch --minify"
+	},
+	"devDependencies": {
+		"@tailwindcss/cli": "^4.1.7",
+		"@tailwindcss/typography": "^0.5.16",
+		"tailwindcss": "^4.1.7"
+	}
+}

@@ -1,0 +1,7 @@
+include README.md
+include LICENSE
+recursive-include unfold_extra/static *
+recursive-include unfold_extra/templatetags *
+recursive-include unfold_extra/contrib *
+global-exclude *.py[cod] __pycache__ *.so
+global-exclude unfold_extra/src/node_modules/**

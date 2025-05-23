@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "unfold_extra"
+version = "0.1.0"
+description = "Unofficial extra for Django Unfold Admin. Supports django-parler and django-cms."
+readme = "README.md"
+requires-python = ">=3.6"
+authors = [
+    { name = "Marc Widmer", email = "marc@koga.cx" }
+]
+urls = { "Homepage" = "https://github.com/metaforx/django-unfold-extra" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    "django-cms==5.0.0a1",
+    "django-parler~=2.3",
+    "django-unfold"
+]
+
+[project.scripts]
+# Uncomment and adjust the script below as needed:
+# unfold-cms = "unfold_extra.cli:main"
+
+[tool.hatch.build.hooks.custom]
+path = "build_hook.py"
+
+[tool.hatch.build.targets.sdist]
+type = "sdist"
+
+[tool.hatch.build.targets.wheel]
+type = "wheel"
+
+[tool.hatch.build]
+exclude = [
+  "unfold_extra/src/node_modules",
+  "unfold_extra/src/node_modules/**/*",
+  "unfold_extra/src/*.lock",
+  "unfold_extra/src/package-lock.json",
+  "**/*.map",
+  "**/.DS_Store",
+  "**/__pycache__"
+]
+
+
+

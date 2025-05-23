@@ -1,0 +1,31 @@
+{% extends "admin/cms/page/tree/base.html" %}
+
+{% load i18n static admin_urls cms_static %}
+
+{% block extrahead %}
+    {#    {{ block.super }} #NOTE: avoid super call to prevent loading of original css and js#}
+    <link rel="stylesheet" href="{% static_with_version 'cms/css/cms.base.css' %}">
+    <link rel="stylesheet" href="{% static 'unfold_extra/cms/css/cms.pagetree.css' %}">
+    <script src="{% static_with_version 'cms/js/dist/bundle.admin.base.min.js' %}"></script>
+    <script src="{% static_with_version 'cms/js/dist/bundle.admin.pagetree.min.js' %}"></script>
+{% endblock extrahead %}
+
+{% block breadcrumbs %}
+    {% if not is_popup %}
+        <div class="px-4 lg:px-8">
+            <div class="container mb-6 mx-auto -my-3 lg:mb-12">
+                <ul class="flex flex-wrap">
+                    {% url 'admin:index' as link %}
+                    {% trans 'Home' as name %}
+                    {% include 'unfold/helpers/breadcrumb_item.html' with link=link name=name %}
+
+                    {% url 'admin:app_list' app_label='cms' as link %}
+                    {% include 'unfold/helpers/breadcrumb_item.html' with link=link name=opts.app_config.verbose_name %}
+
+                    {% trans "Pages" as name %}
+                    {% include 'unfold/helpers/breadcrumb_item.html' with link=None name=name %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
