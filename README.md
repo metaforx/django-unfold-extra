@@ -49,11 +49,24 @@ https://github.com/unfoldadmin/django-unfold
 
 ### django-parler Support
 
-- Tabs & Inlinetabs
+- UnfoldTranslatableAdminMixin
+- UnfoldTranslatableStackedAdminMixin
+- UnfoldTranslatableTabularAdminMixin
+- TranslatableStackedInline, TranslatableTabularInline
 
-### Versatile Image Support
+#### Example use:
 
-- Basic support
+```python
+class TranslatableAdmin(UnfoldTranslatableAdminMixin, BaseTranslatableAdmin):
+    """custom translatable admin implementation"""
+
+    # ... your code
+
+class MyInlineAdmin(TranslatableStackedInline):
+    model = MyModel
+    tab = True #Unfold inline settings
+    extra = 0 #django inline settings
+```
 
 ### django-cms Support
 
@@ -63,3 +76,87 @@ https://github.com/unfoldadmin/django-unfold
 - Versioning (partial support)
 - Modal support
 - Not supported: Filer
+
+Support is automatically applied. Currenlty it does not support customization beside compiling your own unfold_extra styles.
+
+#### Custom compilation via npm/pnpm (see src/package.json)
+
+```json
+{
+	"name": "django-unfold-extra",
+	"description": "Enhancing Django Unfold to support additional packages",
+	"scripts": {
+		"update:unfold-deps": "curl -s https://raw.githubusercontent.com/unfoldadmin/django-unfold/main/package.json | jq -r '[\"tailwindcss@\" + .dependencies.tailwindcss, \"@tailwindcss/typography@\" + .devDependencies[\"@tailwindcss/typography\"]] | join(\" \")' | xargs npm install --save-dev",
+		"update:unfold-css": "curl -o css/styles.css https://raw.githubusercontent.com/unfoldadmin/django-unfold/main/src/unfold/styles.css",
+		"update:unfold": "npm run update:unfold-deps && npm run update:unfold-config",
+		"tailwind:build": "npx @tailwindcss/cli -i css/unfold_extra.css -o ../static/unfold_extra/css/styles.css --minify",
+		"tailwind:watch": "npx @tailwindcss/cli -i css/unfold_extra.css -o ../static/unfold_extra/css/styles.css --watch --minify"
+	},
+	"devDependencies": {
+		"@tailwindcss/cli": "^4.1.7",
+		"@tailwindcss/typography": "^0.5.16",
+		"tailwindcss": "^4.1.7"
+	}
+}
+```
+
+#### Change colors for Django CMS
+
+Currently you have to manually update src/css/unfold_extra.css and compile a new styles.css extending unfold styles. 
+
+1. Fetch latest unfold version using `update:unfold-deps` and `update:unfold-css`
+2. Update config `update:unfold`
+3. Add changes `tailwind:watch` and `tailwind:build`
+
+
+```css
+html:root {
+    --dca-light-mode: 1;
+    --dca-dark-mode: 0;
+    --dca-white: theme('colors.white');
+    --dca-black: theme('colors.black');
+    --dca-shadow: theme('colors.base.950');
+    --dca-primary: theme('colors.primary.600');
+    --dca-gray: theme('colors.base.500');
+    --dca-gray-lightest: theme('colors.base.100');
+    --dca-gray-lighter: theme('colors.base.200');
+    --dca-gray-light: theme('colors.base.400');
+    --dca-gray-darker: theme('colors.base.700');
+    --dca-gray-darkest: theme('colors.base.800');
+    --dca-gray-super-lightest: theme('colors.base.50');
+
+    --active-brightness: 0.9;
+    --focus-brightness: 0.95;
+}
+
+
+html.dark {
+    --dca-light-mode: 0;
+    --dca-dark-mode: 1;
+    --dca-white: theme('colors.base.900');
+    --dca-black: theme('colors.white');
+    --dca-primary: theme('colors.primary.500');
+    --dca-gray: theme('colors.base.300') !important;
+    --dca-gray-lightest: theme('colors.base.700');
+    --dca-gray-lighter: theme('colors.base.600');
+    --dca-gray-light: theme('colors.base.400');
+    --dca-gray-darker: theme('colors.base.200');
+    --dca-gray-darkest: theme('colors.base.100');
+    --dca-gray-super-lightest: theme('colors.base.800');
+
+    --active-brightness: 2;
+    --focus-brightness: 1.5;
+}
+
+```
+
+### Versatile Image Support
+
+- Improved unfold integration via CSS only.
+
+
+### Django Auth, Sites
+
+- Add Unfolds standard settings to `django.contrib.auth`,`django.contrib.sites`.
+
+This is for personal use. You likely want to customize this. 
