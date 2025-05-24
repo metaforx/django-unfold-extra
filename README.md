@@ -11,7 +11,7 @@ Django Unfold Extra enhances the beautiful Django Unfold admin interface with ad
 - **django-cms**: Integration with Django CMS 5.0
 
 ![img.png](docs/img/cms-pagetree.png)
-![img.png](docs/parler-tabs.png/img.png)
+![img.png](docs/img/parler-tabs.png)
 
 This package maintains the clean, modern aesthetic of Django Unfold while adding specialized interfaces for these
 popular Django packages.
