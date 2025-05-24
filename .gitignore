@@ -79,3 +79,4 @@ dmypy.json
 
 #n node modules
 /unfold_extra/src/node_modules/
+/.envrc
