@@ -5,3 +5,4 @@ recursive-include unfold_extra/templatetags *
 recursive-include unfold_extra/contrib *
 global-exclude *.py[cod] __pycache__ *.so
 global-exclude unfold_extra/src/node_modules/**
+global-exclude docs/**/*.png

@@ -43,7 +43,8 @@ exclude = [
   "unfold_extra/src/package-lock.json",
   "**/*.map",
   "**/.DS_Store",
-  "**/__pycache__"
+  "**/__pycache__",
+  "docs/**/*"
 ]
 
 
