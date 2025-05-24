@@ -10,6 +10,8 @@ Django Unfold Extra enhances the beautiful Django Unfold admin interface with ad
 - **django-parler**: Multilingual support for your Django models
 - **django-cms**: Integration with Django CMS 5.0
 
+![img.png](docs/img/cms-pagetree.png)
+
 This package maintains the clean, modern aesthetic of Django Unfold while adding specialized interfaces for these
 popular Django packages.
 
