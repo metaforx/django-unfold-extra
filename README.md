@@ -25,7 +25,7 @@ remove some conflicting style definitions.
 
 1. Install the package via pip:
    ```bash
-   pip install django-unfold-extra
+   pip install unfold-extra
    ```
 
 2. Add to your INSTALLED_APPS in settings.py:
