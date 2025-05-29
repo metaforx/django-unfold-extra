@@ -3,18 +3,28 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "unfold_extra"
-version = "0.1.0"
+name = "django-unfold-extra"
+version = "0.1.1"
 description = "Unofficial extra for Django Unfold Admin. Supports django-parler and django-cms."
+license = "MIT"
 readme = "README.md"
-requires-python = ">=3.6"
+requires-python = ">=3.9"
 authors = [
     { name = "Marc Widmer", email = "marc@koga.cx" }
 ]
+keywords = ["django", "django cms","unfold", "admin", "tailwind", "theme",]
 urls = { "Homepage" = "https://github.com/metaforx/django-unfold-extra" }
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "Operating System :: OS Independent"
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "Framework :: Django",
 ]
 dependencies = [
     "django-cms==5.0.0a1",
@@ -31,9 +41,11 @@ path = "build_hook.py"
 
 [tool.hatch.build.targets.sdist]
 type = "sdist"
+packages = ["unfold_extra"]
 
 [tool.hatch.build.targets.wheel]
 type = "wheel"
+packages = ["unfold_extra"]
 
 [tool.hatch.build]
 exclude = [
