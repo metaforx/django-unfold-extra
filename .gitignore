@@ -37,7 +37,6 @@ package-lock.json
 pnpm-lock.yaml
 
 # CSS/JS compiled files
-unfold_extra/static/*/css/styles.css
 unfold_extra/static/*/js/bundle.js
 
 # Environment
