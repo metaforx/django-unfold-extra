@@ -66,7 +66,7 @@ if get_cms_setting('PERMISSION'):
 
 
 @admin.register(PageContent)
-class PageContentAdmin(BasePageContentAdmin, ModelAdmin):
+class PageContentAdmin(ModelAdmin, BasePageContentAdmin):
     form = AddPageForm
     add_form = AddPageForm
     change_form = ChangePageForm
@@ -80,11 +80,11 @@ class PageContentAdmin(BasePageContentAdmin, ModelAdmin):
     def __init__(self, model, admin_site):
         super().__init__(model, admin_site)
         self.change_list_template = "unfold_extra/cms/page/tree/base.html"
-        self.change_form_template = "unfold_extra/cms/page/change_form.html"
+        # self.change_form_template = "unfold_extra/cms/page/change_form.html"
 
 
 @admin.register(Page)
-class PageAdmin(BasePageAdmin, ModelAdmin):
+class PageAdmin(ModelAdmin, BasePageAdmin):
     form = AdvancedSettingsForm
 
     compressed_fields = True
