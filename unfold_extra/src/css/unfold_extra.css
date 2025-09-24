@@ -83,25 +83,36 @@ div.parler-language-tabs span.current {
     @apply border-0;
 }
 
-
-
-
 /*******************************************************
  django-cms
  *******************************************************/
 
 /* Prevent content from being hidden under django cms Topbar  */
-div.cms-sideframe {
+body.cms-admin-sideframe #page {
+    @apply !mt-[46px];
+}
+
+/* Prevent content from being hidden under django cms Topbar  */
+body.cms-admin-sideframe #nav-sidebar-inner {
     @apply mt-[46px];
+}
+
+/* Reposition Django CMS admin navigation controls  */
+div.cms-sideframe  {
+    @apply !w-[calc(100%-64px)]
+}
+
+div.cms-sideframe .cms-sideframe-controls .cms-sideframe-history {
+    @apply hidden;
+}
+
+/* Reposition Django CMS admin navigation controls  */
+div.cms-sideframe .cms-sideframe-controls {
+    @apply top-[58px] ;
 }
 
 body.cms-admin-sideframe:not(.djangocms-admin-style) {
     margin-block-start: 0;
-}
-
-/* Reposition Django CMS admin navigation controls  */
-div.cms.cms-toolbar-debug .cms-sideframe-controls {
-    @apply top-[58px] right-[64px];
 }
 
 /* Fix Modal displaying django parent admin navigation  */
@@ -109,28 +120,41 @@ body.cms-admin-modal #page #main {
     @apply pt-8;
 }
 
+/* Hide django submit row in modal  */
 body.cms-admin-modal #page #main #submit-row {
     @apply hidden;
 }
 
+/* Hide main app side navigation in modal  */
 body.cms-admin-modal #page > div.relative:first-child {
     @apply hidden;
 }
 
-/*TODO: breaks plugin display */
+/* Hide topbar in modal window !*TODO: breaks plugin display *!*/
 body.cms-admin-modal #page #main > div:first-child {
     @apply hidden;
 }
 
-body.cms-admin-modal #page #main  {
-    @apply -mt-10;
-}
+/*body.cms-admin-modal #page #main  {*/
+/*    @apply -mt-10;*/
+/*}*/
 
+/* Hide meta navigation (view on site / version) in modal */
 body.cms-admin-modal #page #main #content > div:not(#content-main) {
     @apply hidden;
 }
 
-.cms-admin-modal #nav-sidebar{
+/*.cms-admin-modal #nav-sidebar{*/
+/*    @apply hidden;*/
+/*}*/
+
+/* Hide language tabs in django cms page content edit */
+body #page #main #page_form_lang_tabs {
+    @apply hidden;
+}
+
+/* Hide submit row in django cms page content edit - use unfold instead */
+body #content-main .submit-row {
     @apply hidden;
 }
 
@@ -245,7 +269,7 @@ html:root {
     --dca-white: theme('colors.white');
     --dca-black: theme('colors.black');
     --dca-shadow: theme('colors.base.950');
-    --dca-primary: theme('colors.primary.600');
+    --dca-primary: theme('colors.primary.600') !important;
     --dca-gray: theme('colors.base.500');
     --dca-gray-lightest: theme('colors.base.100');
     --dca-gray-lighter: theme('colors.base.200');
@@ -320,3 +344,5 @@ html.dark {
         --focus-brightness: 1.5;
     }
 }
+
+
