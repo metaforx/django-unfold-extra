@@ -67,3 +67,14 @@ def unfold_extra_styles(context) -> str:
     theme_style = unfold_theme_colors()
     html = f"{link_tag}\n{theme_style}" if theme_style else link_tag
     return mark_safe(html)
+
+@register.simple_tag(takes_context=True)
+def unfold_extra_theme_receiver(context) -> str:
+    """
+    Load a custom theme receiver script to switch django cm theme from unfolding when encapsulated in an iframe.
+    """
+    if not (context.get("user") and context["user"].is_authenticated):
+        return ""
+
+    src = static("unfold_extra/js/theme-receiver.js")
+    return mark_safe(f'<script src="{src}"></script>')
