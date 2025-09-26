@@ -5,10 +5,12 @@ clean [Django Unfold](https://github.com/unfoldadmin/django-unfold) admin interf
 
 ## Overview
 
-Django Unfold Extra enhances the beautiful Django Unfold admin interface with additional functionality for:
+Django Unfold Extra enhances the beautiful Django Unfold admin interface (v.0.66.0) with additional functionality for:
 
+- **django-cms**: Integration with Django CMS 5.0 - Uses unfold admin colors for django cms
 - **django-parler**: Multilingual support for your Django models
-- **django-cms**: Integration with Django CMS 5.0
+- **versatile-image**: Improved integration with django-versatileimagefield, including preview and ppoi
+- **Unfold auto-update**: Styles can be automatically updaten from official unfold package via npm
 
 ![img.png](docs/img/cms-pagetree.png)
 ![img.png](docs/img/parler-tabs.png)
@@ -16,10 +18,10 @@ Django Unfold Extra enhances the beautiful Django Unfold admin interface with ad
 This package maintains the clean, modern aesthetic of Django Unfold while adding specialized interfaces for these
 popular Django packages.
 
-It uses CSS overrides where possible. As Django CMS uses many '!important' flags, I had to rebuild pagetree.css to
-remove some conflicting style definitions.
+It uses unobtrusive template and CSS-styling overrides where possible. As Django CMS uses many '!important' flags, 
+pagetree.css had to be rebuilt from sources to remove some conflicting style definitions.
 
-> **Note:** Work in progress. Django CMS support is working but not yet fully integrated. Use at your own risk.
+> **Note:** Django CMS support is not fully tested, but all features should work, beside filer. 
 
 ## Installation
 
@@ -77,7 +79,7 @@ class MyInlineAdmin(TranslatableStackedInline):
 - Theme integration in django admin (partial support in frontend)
 - Pagetree
 - PageUser, PageUserGroup, GlobalPagePermission
-- Versioning (partial support)
+- Versioning
 - Modal support
 - Not supported: Filer
 
@@ -86,8 +88,9 @@ styles.
 
 #### Frontend django CMS support
 
-Add `unfold_extra_tags` to your base HTML template to after loading all CSS styles. This adds additional styles to hide
-unfold admin like header in the django cms, for example, for page settings etc.
+Add `unfold_extra_tags` to your base HTML template to after loading all CSS styles. 
+This adds additional styles to integrate django CMS with Unfold Admin and includes `"COLORS"` from unfold settings to 
+the public website for authenticated django-cms admin users.
 
 ```html
 {% load cms_tags sekizai_tags unfold_extra_tags%}
@@ -103,30 +106,30 @@ unfold admin like header in the django cms, for example, for page settings etc.
 
 ```json
 {
-   "name": "django-unfold-extra",
-   "description": "Enhancing Django Unfold to support additional packages",
-   "scripts": {
-      "update:unfold-deps": "curl -s https://raw.githubusercontent.com/unfoldadmin/django-unfold/main/package.json | jq -r '[\"tailwindcss@\" + .dependencies.tailwindcss, \"@tailwindcss/typography@\" + .devDependencies[\"@tailwindcss/typography\"]] | join(\" \")' | xargs npm install --save-dev",
-      "update:unfold-css": "curl -o css/styles.css https://raw.githubusercontent.com/unfoldadmin/django-unfold/main/src/unfold/styles.css",
-      "update:unfold": "npm run update:unfold-deps && npm run update:unfold-config",
-      "tailwind:build": "npx @tailwindcss/cli -i css/unfold_extra.css -o ../static/unfold_extra/css/styles.css --minify",
-      "tailwind:watch": "npx @tailwindcss/cli -i css/unfold_extra.css -o ../static/unfold_extra/css/styles.css --watch --minify"
-   },
-   "devDependencies": {
-      "@tailwindcss/cli": "^4.1.7",
-      "@tailwindcss/typography": "^0.5.16",
-      "tailwindcss": "^4.1.7"
-   }
+	"name": "django-unfold-extra",
+	"description": "Enhancing Django Unfold to support additional packages",
+	"scripts": {
+		"update:unfold-deps": "curl -s https://raw.githubusercontent.com/unfoldadmin/django-unfold/main/package.json | jq -r '[\"tailwindcss@\" + .dependencies.tailwindcss, \"@tailwindcss/typography@\" + .devDependencies[\"@tailwindcss/typography\"]] | join(\" \")' | xargs npm install --save-dev",
+		"update:unfold-css": "curl -o css/styles.css https://raw.githubusercontent.com/unfoldadmin/django-unfold/main/src/unfold/styles.css",
+		"update:unfold": "npm run update:unfold-deps && npm run update:unfold-css",
+		"tailwind:build": "npx @tailwindcss/cli -i css/unfold_extra.css -o ../static/unfold_extra/css/styles.css --minify",
+		"tailwind:watch": "npx @tailwindcss/cli -i css/unfold_extra.css -o ../static/unfold_extra/css/styles.css --watch --minify"
+	},
+	"devDependencies": {
+		"@tailwindcss/cli": "^4.1.7",
+		"@tailwindcss/typography": "^0.5.19",
+		"tailwindcss": "^4.1.13"
+	}
 }
 ```
 
 #### Change colors for Django CMS
 
-Currently, you have to manually update src/css/unfold_extra.css and compile a new styles.css extending unfold styles.
+You can change the colors for django CMS by editing `css/unfold_extra.css` or just update the unfold colors via settings.py.
 
 1. Fetch the latest Unfold version using `update:unfold-deps` and `update:unfold-css`
 2. Update config `update:unfold`
-3. Add changes `tailwind:watch` and `tailwind:build`
+3. Add changes `tailwind:watch` and `tailwind:build
 
 ```css
 html:root {
