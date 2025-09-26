@@ -78,6 +78,7 @@ if get_cms_setting('PERMISSION'):
 class PageContentAdmin(ModelAdmin, BasePageContentAdmin):
     change_form_template = "admin/cms/page/change_form.html"
     add_form_template = "admin/cms/page/change_form.html"
+    change_list_template = "unfold_extra/cms/page/tree/base.html"
 
     form = AddPageForm
     add_form = AddPageForm
