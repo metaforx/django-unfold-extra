@@ -1,7 +1,6 @@
 {% extends "admin/change_form.html" %}
 {% load i18n static cms_admin %}
 
-
 {# Put the submit buttons INSIDE the form (Unfold’s are outside) #}
 {% block after_related_objects %}
   {{ block.super }}
@@ -15,5 +14,8 @@
 {% endif %}
 {% endblock %}
 
-{# 3) Remove Unfold’s footer submit row (it lives outside the form) #}
-{#{% block submit_buttons_bottom %}{% endblock %}#}
+{# Add unfold submit if not pop #}
+{% if not is_popup %}
+{% block submit_buttons_top %}{% page_submit_row %}{% endblock %}
+{% block submit_buttons_bottom %}{% page_submit_row %}{% endblock %}
+{% endif %}

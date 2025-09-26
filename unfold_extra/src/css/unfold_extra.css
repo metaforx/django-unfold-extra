@@ -99,7 +99,7 @@ body.cms-admin-sideframe #nav-sidebar-inner {
 
 /* Reposition Django CMS admin navigation controls  */
 div.cms-sideframe  {
-    @apply !w-[calc(100%-64px)]
+    @apply !w-[calc(95%-64px)]
 }
 
 div.cms-sideframe .cms-sideframe-controls .cms-sideframe-history {
@@ -108,7 +108,7 @@ div.cms-sideframe .cms-sideframe-controls .cms-sideframe-history {
 
 /* Reposition Django CMS admin navigation controls  */
 div.cms-sideframe .cms-sideframe-controls {
-    @apply top-[58px] ;
+    @apply top-[58px] right-[calc(-5%-64px)];
 }
 
 body.cms-admin-sideframe:not(.djangocms-admin-style) {
@@ -156,6 +156,22 @@ body #page #main #page_form_lang_tabs {
 /* Hide submit row in django cms page content edit - use unfold instead */
 body #content-main .submit-row {
     @apply hidden;
+}
+
+/*******************************************************
+ django-cms - pageContentAdmin - Action List
+ //This is a workaround until a solution is found to render {% block object-tools-items %}
+ *******************************************************/
+body #page #main #content > div > ul {
+    @apply flex flex-col font-medium mb-4 ml-auto mt-2 md:flex-row md:mb-0 md:mt-0 max-md:w-full;
+}
+
+body #page #main #content > div > ul li {
+    @apply md:first:rounded-l-default md:-ml-px max-md:last:rounded-b-default max-md:-mt-px border border-base-200 md:last:rounded-r-default dark:border-base-700 hover:text-primary-600 max-md:first:rounded-t-default dark:hover:text-primary-500;
+}
+
+body #page #main #content > div > ul li a {
+    @apply cursor-pointer flex grow items-center gap-2 px-3 py-2 text-left whitespace-nowrap
 }
 
 /*******************************************************
