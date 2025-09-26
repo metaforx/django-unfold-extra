@@ -50,6 +50,42 @@ INSTALLED_APPS = [
 Make sure you've set up Django Unfold according to its documentation.
 https://github.com/unfoldadmin/django-unfold
 
+Add the following to your settings.py:
+
+```python
+from django.templatetags.static import static
+
+UNFOLD = {
+    "STYLES": [
+        lambda request: static("unfold_extra/css/styles.css"), # additional styles for 3rd party packages
+    ],
+    "SCRIPTS": [
+        lambda request: static("unfold_extra/js/theme-sender.js"), # switch django cms theme from "Unfold Admin"
+    ],
+}
+CMS_COLOR_SCHEME_TOGGLE = False # disable django cms theme switch -> use unfold admin theme switch
+```
+
+Add `{% unfold_extra_styles %}` and `{% unfold_extra_theme_receiver %}`  from `unfold_extra_tags` to your base HTML template. 
+- Enables unfold admin colors in django cms
+- theme switch from unfold admin to change theme in djangs cms (light/dark/auto)
+
+```html
+{% load static cms_tags sekizai_tags unfold_extra_tags%}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock title %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% render_block "css" %}
+        {% unfold_extra_styles %}
+        {% unfold_extra_theme_receiver %}
+        ...
+    </head>
+...
+</html>
+```
+
 ## Usage
 
 ### django-parler Support
@@ -169,8 +205,8 @@ html.dark {
    --active-brightness: 2;
    --focus-brightness: 1.5;
 }
-
 ```
+
 
 ### Versatile Image Support
 
