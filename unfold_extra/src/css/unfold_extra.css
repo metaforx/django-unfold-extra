@@ -89,12 +89,12 @@ div.parler-language-tabs span.current {
 
 /* Prevent content from being hidden under django cms Topbar  */
 body.cms-admin-sideframe #page {
-    @apply !mt-[46px];
+    @apply pt-[46px];
 }
 
 /* Prevent content from being hidden under django cms Topbar  */
 body.cms-admin-sideframe #nav-sidebar-inner {
-    @apply mt-[46px];
+    @apply pt-[46px];
 }
 
 /* Reposition Django CMS admin navigation controls  */
@@ -201,12 +201,16 @@ div.cms-pagetree-root {
     @apply !shadow-none;
 }
 
-div.cms-pagetree-header-filter input {
+.cms-pagetree-header-filter input {
     @apply bg-white border border-base-200 dark:border-base-600 rounded font-medium grow min-w-0 h-9 px-3 text-font-default-light text-sm focus:outline-none dark:bg-base-900 dark:text-font-default-dark placeholder-shown:truncate placeholder-base-400;
 }
 
-button.cms-pagetree-header-search-btn {
-    @apply !rounded-full;
+.cms-pagetree-header-search button.cms-pagetree-header-search-btn {
+  @apply cursor-pointer !rounded-full !bg-transparent !text-[var(--color-font-default-light)];
+}
+
+.cms-pagetree-header-search button.cms-pagetree-header-search-btn:hover {
+  @apply !rounded-full !bg-base-100 text-primary-500;
 }
 
 div.cms-pagetree-header a.cms-btn-action {
@@ -272,6 +276,14 @@ textarea.CMS_Editor + div#id_body_editor.fixed .cms-linkfield-wrapper input {
 
 textarea.CMS_Editor + div#id_body_editor.fixed .cms-linkfield-wrapper select {
     @apply border border-base-200 bg-white font-medium min-w-20 placeholder-base-400 rounded-default shadow-xs text-font-default-light text-sm focus:outline-2 focus:-outline-offset-2 focus:outline-primary-600 group-[.errors]:border-red-600 focus:group-[.errors]:outline-red-600 dark:bg-base-900 dark:border-base-700 dark:text-font-default-dark dark:group-[.errors]:border-red-500 dark:focus:group-[.errors]:outline-red-500 dark:scheme-dark group-[.primary]:border-transparent px-3 py-2 w-full pr-8 max-w-2xl appearance-none 
+}
+
+/*******************************************************
+ django-cms - djangocms-versioning
+ *******************************************************/
+
+button.djangocms-versioning.submit {
+    @apply mx-10 m-5 border border-base-200 cursor-pointer font-medium px-3 py-2 rounded-default transition-all w-full hover:bg-base-50 lg:block lg:w-auto dark:border-base-700  dark:hover:text-base-200 dark:hover:bg-base-900;
 }
 
 /*******************************************************
