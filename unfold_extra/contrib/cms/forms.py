@@ -58,7 +58,7 @@ class ChangePageForm(BaseChangePageForm):
             TEXTAREA_CLASSES
         )
 
-        # url options NOTE: django cms uses a input type 'text', we could use a UnfoldAdminURLInputWidget instead...
+        # url option NOTE: django cms uses an input type 'text', we could use an UnfoldAdminURLInputWidget instead...
         self.fields["overwrite_url"].widget.attrs["class"] = " ".join(
             INPUT_CLASSES
         )
