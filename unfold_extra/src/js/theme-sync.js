@@ -2,6 +2,8 @@ import {KEY_CMS, KEY_UNFOLD, applyTheme} from './utils/theme-utils.js';
 
 let mirroring = false;
 
+applyTheme(localStorage.getItem(KEY_UNFOLD))
+
 const normalize = (val) => {
     if (val == null) return null;
     if (val[0] === '"') {
