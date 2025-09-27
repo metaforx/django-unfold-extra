@@ -69,12 +69,12 @@ def unfold_extra_styles(context) -> str:
     return mark_safe(html)
 
 @register.simple_tag(takes_context=True)
-def unfold_extra_theme_receiver(context) -> str:
+def unfold_extra_theme_sync(context) -> str:
     """
     Load a custom theme receiver script to switch django cm theme from unfolding when encapsulated in an iframe.
     """
     if not (context.get("user") and context["user"].is_authenticated):
         return ""
 
-    src = static("unfold_extra/js/theme-receiver.js")
+    src = static("unfold_extra/js/theme-sync.js")
     return mark_safe(f'<script src="{src}"></script>')

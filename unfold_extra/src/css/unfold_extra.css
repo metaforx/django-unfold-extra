@@ -20,7 +20,7 @@ div.parler-language-tabs {
     border-0
     border-b-0
     dark:bg-white/[.04]
-    after:hidden
+    after:hidden;
 }
 
 div.parler-language-tabs span {
@@ -68,7 +68,7 @@ div.parler-language-tabs span.current {
  versatile image
  *******************************************************/
 .sizedimage-mod {
-    @apply flex flex-col
+    @apply flex flex-col;
 }
 
 .sizedimage-mod img {
@@ -98,8 +98,8 @@ body.cms-admin-sideframe #nav-sidebar-inner {
 }
 
 /* Reposition Django CMS admin navigation controls  */
-div.cms-sideframe  {
-    @apply !w-[calc(95%-64px)]
+div.cms-sideframe {
+    @apply !w-[calc(95%-64px)];
 }
 
 div.cms-sideframe .cms-sideframe-controls .cms-sideframe-history {
@@ -135,18 +135,10 @@ body.cms-admin-modal #page #main > div:first-child {
     @apply hidden;
 }
 
-/*body.cms-admin-modal #page #main  {*/
-/*    @apply -mt-10;*/
-/*}*/
-
 /* Hide meta navigation (view on site / version) in modal */
 body.cms-admin-modal #page #main #content > div:not(#content-main) {
     @apply hidden;
 }
-
-/*.cms-admin-modal #nav-sidebar{*/
-/*    @apply hidden;*/
-/*}*/
 
 /* Hide language tabs in django cms page content edit */
 body #page #main #page_form_lang_tabs {
@@ -171,7 +163,28 @@ body #page #main #content > div > ul li {
 }
 
 body #page #main #content > div > ul li a {
-    @apply cursor-pointer flex grow items-center gap-2 px-3 py-2 text-left whitespace-nowrap
+    @apply cursor-pointer flex grow items-center gap-2 px-3 py-2 text-left whitespace-nowrap;
+}
+
+/*******************************************************
+ django-cms - buttons
+ *******************************************************/
+
+div.cms .cms-btn-action {
+    @apply text-white;
+}
+
+div.cms .cms-btn-caution {
+    @apply dark:text-red-500 dark:bg-red-500/20 dark:border-red-500/20;
+}
+
+/*******************************************************
+ django-cms - toolbars
+ *******************************************************/
+
+/* force button text color to white on hover - dark mode */
+html[data-theme=dark] div.cms .cms-toolbar-item-navigation .cms-toolbar-item-navigation-hover > a {
+    @apply text-white!;
 }
 
 /*******************************************************
@@ -206,15 +219,15 @@ div.cms-pagetree-root {
 }
 
 .cms-pagetree-header-search button.cms-pagetree-header-search-btn {
-  @apply cursor-pointer !rounded-full !bg-transparent !text-[var(--color-font-default-light)];
+    @apply cursor-pointer !rounded-full !bg-transparent !text-[var(--color-font-default-light)];
 }
 
 .cms-pagetree-header-search button.cms-pagetree-header-search-btn:hover {
-  @apply !rounded-full !bg-base-100 text-primary-500;
+    @apply !rounded-full !bg-base-100 text-primary-500;
 }
 
 div.cms-pagetree-header a.cms-btn-action {
-    @apply !rounded;
+    @apply !rounded !text-white bg-primary-500;
 }
 
 input#nav-filter {
@@ -271,11 +284,11 @@ textarea.CMS_Editor + div#id_body_editor.fixed .cms-toolbar .dropdown-content {
 }
 
 textarea.CMS_Editor + div#id_body_editor.fixed .cms-linkfield-wrapper input {
-    @apply border border-base-200 bg-white font-medium min-w-20 placeholder-base-400 rounded-default shadow-xs text-font-default-light text-sm focus:outline-2 focus:-outline-offset-2 focus:outline-primary-600 group-[.errors]:border-red-600 focus:group-[.errors]:outline-red-600 dark:bg-base-900 dark:border-base-700 dark:text-font-default-dark dark:group-[.errors]:border-red-500 dark:focus:group-[.errors]:outline-red-500 dark:scheme-dark group-[.primary]:border-transparent px-3 py-2 w-full max-w-2xl
+    @apply border border-base-200 bg-white font-medium min-w-20 placeholder-base-400 rounded-default shadow-xs text-font-default-light text-sm focus:outline-2 focus:-outline-offset-2 focus:outline-primary-600 group-[.errors]:border-red-600 focus:group-[.errors]:outline-red-600 dark:bg-base-900 dark:border-base-700 dark:text-font-default-dark dark:group-[.errors]:border-red-500 dark:focus:group-[.errors]:outline-red-500 dark:scheme-dark group-[.primary]:border-transparent px-3 py-2 w-full max-w-2xl;
 }
 
 textarea.CMS_Editor + div#id_body_editor.fixed .cms-linkfield-wrapper select {
-    @apply border border-base-200 bg-white font-medium min-w-20 placeholder-base-400 rounded-default shadow-xs text-font-default-light text-sm focus:outline-2 focus:-outline-offset-2 focus:outline-primary-600 group-[.errors]:border-red-600 focus:group-[.errors]:outline-red-600 dark:bg-base-900 dark:border-base-700 dark:text-font-default-dark dark:group-[.errors]:border-red-500 dark:focus:group-[.errors]:outline-red-500 dark:scheme-dark group-[.primary]:border-transparent px-3 py-2 w-full pr-8 max-w-2xl appearance-none 
+    @apply border border-base-200 bg-white font-medium min-w-20 placeholder-base-400 rounded-default shadow-xs text-font-default-light text-sm focus:outline-2 focus:-outline-offset-2 focus:outline-primary-600 group-[.errors]:border-red-600 focus:group-[.errors]:outline-red-600 dark:bg-base-900 dark:border-base-700 dark:text-font-default-dark dark:group-[.errors]:border-red-500 dark:focus:group-[.errors]:outline-red-500 dark:scheme-dark group-[.primary]:border-transparent px-3 py-2 w-full pr-8 max-w-2xl appearance-none;
 }
 
 /*******************************************************
@@ -305,18 +318,18 @@ html:root {
     --dca-gray-darker: theme('colors.base.700');
     --dca-gray-darkest: theme('colors.base.800');
     --dca-gray-super-lightest: theme('colors.base.50');
-
     --active-brightness: 0.9;
     --focus-brightness: 0.95;
 }
 
-
-html.dark {
+html.dark,
+html:root[data-theme=dark] {
     --dca-light-mode: 0;
     --dca-dark-mode: 1;
     --dca-white: theme('colors.base.900');
     --dca-black: theme('colors.white');
-    --dca-primary: theme('colors.primary.500');
+    --dca-shadow: theme('colors.white');
+    --dca-primary: theme('colors.primary.600');
     --dca-gray: theme('colors.base.300') !important;
     --dca-gray-lightest: theme('colors.base.700');
     --dca-gray-lighter: theme('colors.base.600');
@@ -324,42 +337,19 @@ html.dark {
     --dca-gray-darker: theme('colors.base.200');
     --dca-gray-darkest: theme('colors.base.100');
     --dca-gray-super-lightest: theme('colors.base.800');
-
     --active-brightness: 2;
     --focus-brightness: 1.5;
 }
 
-/*User prefers dark mode but has set django admin to light mode*/
 @media (prefers-color-scheme: dark) {
-    html:root:not([data-theme]):not(.dark),
-    html:root[data-theme="auto"]:not(.dark) {
-        --dca-light-mode: 1;
-        --dca-dark-mode: 0;
-        --dca-white: theme('colors.white');
-        --dca-black: theme('colors.black');
-        --dca-shadow: theme('colors.base.950');
-        --dca-primary: theme('colors.primary.600');
-        --dca-gray: theme('colors.base.500');
-        --dca-gray-lightest: theme('colors.base.100');
-        --dca-gray-lighter: theme('colors.base.200');
-        --dca-gray-light: theme('colors.base.400');
-        --dca-gray-darker: theme('colors.base.700');
-        --dca-gray-darkest: theme('colors.base.800');
-        --dca-gray-super-lightest: theme('colors.base.50');
-
-        --active-brightness: 0.9;
-        --focus-brightness: 0.95;
-    }
-}
-
-@media (prefers-color-scheme: dark) {
-    html.dark:root:not([data-theme]),
-    html.dark:root[data-theme="auto"] {
+    html:root:not([data-theme]),
+    html:root[data-theme=auto] {
         --dca-light-mode: 0;
         --dca-dark-mode: 1;
         --dca-white: theme('colors.base.900');
         --dca-black: theme('colors.white');
-        --dca-primary: theme('colors.primary.500') !important;
+        --dca-shadow: theme('colors.white');
+        --dca-primary: theme('colors.primary.600') !important;
         --dca-gray: theme('colors.base.300');
         --dca-gray-lightest: theme('colors.base.700');
         --dca-gray-lighter: theme('colors.base.600');
@@ -367,10 +357,7 @@ html.dark {
         --dca-gray-darker: theme('colors.base.200');
         --dca-gray-darkest: theme('colors.base.100');
         --dca-gray-super-lightest: theme('colors.base.800');
-
         --active-brightness: 2;
         --focus-brightness: 1.5;
     }
 }
-
-
