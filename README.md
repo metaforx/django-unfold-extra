@@ -11,6 +11,7 @@ Django Unfold Extra enhances the beautiful Django Unfold admin interface (v.0.66
 - **django-parler**: Multilingual support for your Django models
 - **versatile-image**: Improved integration with django-versatileimagefield, including preview and ppoi
 - **Unfold auto-update**: Styles can be automatically updaten from official unfold package via npm
+- **Theme-Sync**: Use either Unfold or Django CMS switcher to control themes. You can run both at the same time, with or without both controls enabled.
 
 ![img.png](docs/img/cms-pagetree.png)
 ![img.png](docs/img/parler-tabs.png)
@@ -60,10 +61,10 @@ UNFOLD = {
         lambda request: static("unfold_extra/css/styles.css"), # additional styles for 3rd party packages
     ],
     "SCRIPTS": [
-        lambda request: static("unfold_extra/js/theme-sender.js"), # switch django cms theme from "Unfold Admin"
+        lambda request: static("unfold_extra/js/theme-sync.js"), # switch django cms theme from "Unfold Admin"
     ],
 }
-CMS_COLOR_SCHEME_TOGGLE = False # disable django cms theme switch -> use unfold admin theme switch
+CMS_COLOR_SCHEME_TOGGLE = False # disable django cms theme switch -> use Unfold admin theme switch or disable Unfold theme switch via styles, no config option yet.
 ```
 
 Add `{% unfold_extra_styles %}` and `{% unfold_extra_theme_receiver %}`  from `unfold_extra_tags` to your base HTML template. 
@@ -79,7 +80,7 @@ Add `{% unfold_extra_styles %}` and `{% unfold_extra_theme_receiver %}`  from `u
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% render_block "css" %}
         {% unfold_extra_styles %}
-        {% unfold_extra_theme_receiver %}
+        {% unfold_extra_theme_sync %}
         ...
     </head>
 ...
