@@ -33,28 +33,31 @@ from cms.utils.i18n import get_site_language_from_request
 from cms.utils.conf import get_cms_setting
 from cms.admin.pageadmin import get_site
 
-admin.site.unregister(PageUserGroup)
-admin.site.unregister(GlobalPagePermission)
 admin.site.unregister(Page)
 admin.site.unregister(PageContent)
-admin.site.unregister(PageUser)
-
-@admin.register(PageUserGroup)
-class PageUserGroupAdmin(BasePageUserGroupAdmin, ModelAdmin):
-    form = PageUserGroupForm
-    compressed_fields = True
-
-@admin.register(PageUser)
-class PageUserGroupAdmin(PageUserAdmin, ModelAdmin):
-    form = UserChangeForm
-    add_form = UserCreationForm
-    change_password_form = AdminPasswordChangeForm
-    pass
 
 
-@admin.register(GlobalPagePermission)
-class GlobalPagePermissionAdmin(BaseGlobalPagePermissionAdmin, ModelAdmin):
-    compressed_fields = True
+if get_cms_setting('PERMISSION'):
+    admin.site.unregister(PageUserGroup)
+    admin.site.unregister(GlobalPagePermission)
+    admin.site.unregister(PageUser)
+
+    @admin.register(PageUserGroup)
+    class PageUserGroupAdmin(BasePageUserGroupAdmin, ModelAdmin):
+        form = PageUserGroupForm
+        compressed_fields = True
+
+    @admin.register(GlobalPagePermission)
+    class GlobalPagePermissionAdmin(BaseGlobalPagePermissionAdmin, ModelAdmin):
+        compressed_fields = True
+
+    @admin.register(PageUser)
+    class PageUserGroupAdmin(PageUserAdmin, ModelAdmin):
+        form = UserChangeForm
+        add_form = UserCreationForm
+        change_password_form = AdminPasswordChangeForm
+        pass
+
 
 class UnfoldViewRestrictionInlineAdmin(ViewRestrictionInlineAdmin, TabularInline):
     tab = True
