@@ -1,7 +1,14 @@
 {% extends "admin/change_form.html" %}
 {% load i18n static cms_admin %}
 
-{# Put the submit buttons INSIDE the form (Unfold’s are outside) #}
+{% block form_top %}
+  {{ block.super }}
+  {% if request.GET.cms_path %}
+    <input type="hidden" name="cms_path" value="{{ request.GET.cms_path }}">
+    <input type="hidden" name="_cms_modal" value="1">
+  {% endif %}
+{% endblock %}
+
 {% block after_related_objects %}
   {{ block.super }}
 {% if add %}
