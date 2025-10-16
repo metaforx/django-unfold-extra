@@ -136,7 +136,7 @@ body.cms-admin-modal #page #main > div:first-child {
 }
 
 /* Hide meta navigation (view on site / version) in modal */
-body.cms-admin-modal #page #main #content > div:not(#content-main) {
+body.cms-admin-modal #page #main #content > div:not(#content-main) ul li a {
     @apply hidden;
 }
 
