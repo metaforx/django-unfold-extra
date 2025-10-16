@@ -1,5 +1,5 @@
-from typing import Optional, Any
-from django.contrib import admin
+from cms.admin.forms import ChangeListForm, MovePageForm
+from django.contrib import admin, messages
 
 from cms.admin.pageadmin import PageAdmin as BasePageAdmin
 from cms.admin.pageadmin import PageContentAdmin as BasePageContentAdmin
@@ -25,13 +25,23 @@ from .forms import (
     PageUserGroupForm,
 )
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from cms.admin.pageadmin import MODAL_HTML_REDIRECT  # existing constant in django CMS
 from cms.toolbar.utils import get_object_edit_url
 from django.urls import reverse
-from cms.utils.i18n import get_site_language_from_request
 from cms.utils.conf import get_cms_setting
-from cms.admin.pageadmin import get_site
+
+from .utils import (
+    _admin_add_success_message,
+    _admin_change_success_message,
+    _admin_delete_success_message,
+    _html_modal_redirect,
+    _html_sidepanel_redirect,
+    _language_from_request,
+    _request_is_iframe,
+    _request_is_toolbar_modal,
+    _sidepanel_return_url,
+)
 
 admin.site.unregister(Page)
 admin.site.unregister(PageContent)
@@ -87,25 +97,71 @@ class PageContentAdmin(ModelAdmin, BasePageContentAdmin):
     add_form = AddPageForm
     change_form = ChangePageForm
     duplicate_form = DuplicatePageForm
-    # move_form = MovePageForm
-    # changelist_form = ChangeListForm
+    move_form = MovePageForm
+    changelist_form = ChangeListForm
     compressed_fields = True
 
-    def response_change(self, request, obj):
+    def render_change_form(self, request, context, add=False, change=False, form_url="", obj=None):
+        """
+        Disable the "save and add another" button in the admin interface.
+        """
+        context = dict(context or {})
+        context["show_delete"] = False
+        context["show_save_and_add_another"] = False
+        return super().render_change_form(request, context, add, change, form_url, obj)
+
+
+    def _changelist_url(self) -> str:
+        """
+        Generates the URL for the changelist view used to return to the admin after a successful operation.
+        """
+        return reverse(f"admin:{self.opts.app_label}_{self.opts.model_name}_changelist")
+
+    def response_add(self, request, obj, post_url_continue=None) -> HttpResponse:
+        """
+        Handles special redirect behavior when an object is created, depending on the request.
+        """
         if "_continue" in request.POST:
             return super().response_change(request, obj)
 
-        url = get_object_edit_url(obj)
-        return HttpResponse(MODAL_HTML_REDIRECT.format(url=url))
+        if _request_is_iframe(request):
+            self.message_user(request,_admin_add_success_message(obj),messages.SUCCESS)
+            if _request_is_toolbar_modal(request):
+                return _html_modal_redirect(get_object_edit_url(obj))
+            return _html_sidepanel_redirect(_sidepanel_return_url(request, self._changelist_url()))
 
+        self.message_user(request,_admin_add_success_message(obj),messages.SUCCESS)
+        return HttpResponseRedirect(_sidepanel_return_url(request, self._changelist_url()))
 
-    def response_add(self, request, obj, post_url_continue=None):
+    def response_change(self, request, obj) -> HttpResponse:
+        """
+        Handles special redirect behavior when an object is changed, depending on the request.
+        """
         if "_continue" in request.POST:
             return super().response_change(request, obj)
 
-        url = get_object_edit_url(obj)
-        return HttpResponse(MODAL_HTML_REDIRECT.format(url=url))
+        if _request_is_iframe(request):
+            self.message_user(request,_admin_change_success_message(obj),messages.INFO)
+            if _request_is_toolbar_modal(request):
+                return _html_modal_redirect(get_object_edit_url(obj))
+            return _html_sidepanel_redirect(_sidepanel_return_url(request, self._changelist_url()))
 
+        self.message_user(request, _admin_change_success_message(obj), messages.INFO)
+        return HttpResponseRedirect(_sidepanel_return_url(request, self._changelist_url()))
+
+
+    def response_delete(self, request, obj_display, obj_id):
+        """
+        Handles the response after an object has been deleted.
+        """
+        changelist_url = self._changelist_url()
+
+        if _request_is_iframe(request):
+            self.message_user(request, _admin_delete_success_message(obj_display), messages.SUCCESS)
+            return _html_sidepanel_redirect(_sidepanel_return_url(request, changelist_url))
+
+        self.message_user(request, _admin_delete_success_message(obj_display), messages.SUCCESS)
+        return HttpResponseRedirect(_sidepanel_return_url(request, changelist_url))
 
 @admin.register(Page)
 class PageAdmin(ModelAdmin, BasePageAdmin):
@@ -114,15 +170,18 @@ class PageAdmin(ModelAdmin, BasePageAdmin):
     compressed_fields = True
     inlines = UNFOLD_PERMISSION_ADMIN_INLINES
 
+
     @staticmethod
-    def _language_from_request(request) -> str:
-        site = get_site(request)
-        lang = request.GET.get("language") or get_site_language_from_request(request, site_id=site.pk)
-        return lang or get_cms_setting("LANGUAGE_CODE")
+    def _changelist_url() -> str:
+        return reverse(f"admin:cms_pagecontent_changelist")
 
     def _edit_redirect_url(self, request, page) -> str:
-        language = self._language_from_request(request)
-        content: Optional[Any] = getattr(page, "get_admin_content", None)
+        """
+        Constructs the redirect URL for editing a given page's advanced settings or returns the
+        default admin change URL for the page.
+        """
+        language = _language_from_request(request)
+        content = getattr(page, "get_admin_content", None)
         if callable(content):
             page_content = page.get_admin_content(language)
             if page_content:
@@ -132,15 +191,28 @@ class PageAdmin(ModelAdmin, BasePageAdmin):
                     pass
         return reverse(f"admin:{self.opts.app_label}_{self.opts.model_name}_change", args=[page.pk])
 
-    # modal-close on save
+
     def response_change(self, request, obj) -> HttpResponse:
+        """
+        Handles special redirect behavior when an object is changed, depending on the request.
+        """
         if "_continue" in request.POST:
             return super().response_change(request, obj)
-        url = self._edit_redirect_url(request, obj)
-        return HttpResponse(MODAL_HTML_REDIRECT.format(url=url))
 
-    def response_add(self, request, obj, post_url_continue=None) -> HttpResponse:
-        if "_continue" in request.POST:
-            return super().response_add(request, obj, post_url_continue)
-        url = self._edit_redirect_url(request, obj)
-        return HttpResponse(MODAL_HTML_REDIRECT.format(url=url))
+
+        if _request_is_iframe(request):
+            self.message_user(request, _admin_change_success_message(obj), messages.INFO)
+            if _request_is_toolbar_modal(request):
+                url = self._edit_redirect_url(request, obj)
+                return HttpResponse(MODAL_HTML_REDIRECT.format(url=url))
+            return _html_sidepanel_redirect(self._changelist_url())
+
+        self.message_user(request,_admin_change_success_message(obj),messages.INFO)
+        return HttpResponseRedirect(_sidepanel_return_url(request, self._changelist_url()))
+
+
+    # def response_add(self, request, obj, post_url_continue=None) -> HttpResponse:
+    #     if "_continue" in request.POST:
+    #         return super().response_add(request, obj, post_url_continue)
+    #     url = self._edit_redirect_url(request, obj)
+    #     return HttpResponse(MODAL_HTML_REDIRECT.format(url=url))
