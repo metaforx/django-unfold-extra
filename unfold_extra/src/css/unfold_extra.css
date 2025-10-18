@@ -97,6 +97,11 @@ body.cms-admin-sideframe #nav-sidebar-inner {
     @apply pt-[46px];
 }
 
+/* Prevent content from being hidden under django cms Topbar  */
+#nav-sidebar .simplebar-content-wrapper {
+    @apply mt-[46px];
+}
+
 /* Reposition Django CMS admin navigation controls  */
 div.cms-sideframe {
     @apply !w-[calc(95%-64px)];
@@ -149,6 +154,8 @@ body #page #main #page_form_lang_tabs {
 body #content-main .submit-row {
     @apply hidden;
 }
+
+
 
 /*******************************************************
  django-cms - pageContentAdmin - Action List
