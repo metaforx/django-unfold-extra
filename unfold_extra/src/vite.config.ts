@@ -7,7 +7,7 @@ export default defineConfig({
     build: {
         outDir: resolve(__dirname, '../static/unfold_extra/js'),
         emptyOutDir: false,
-        sourcemap: true,
+        sourcemap: false,
         target: 'es2018',
         rollupOptions: {
             input: resolve(__dirname, 'js/theme-sync.js'),
