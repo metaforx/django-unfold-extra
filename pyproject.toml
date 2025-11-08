@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "django-unfold-extra"
-version = "0.1.9"
+version = "0.1.10a"
 description = "Unofficial extra for Django Unfold Admin. Supports django-parler and django-cms."
 license = "MIT"
 readme = "README.md"
