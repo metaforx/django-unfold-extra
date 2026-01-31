@@ -5,7 +5,7 @@ clean [Django Unfold](https://github.com/unfoldadmin/django-unfold) admin interf
 
 ## Overview
 
-Django Unfold Extra enhances the beautiful Django Unfold admin interface (v.0.66.0) with additional functionality for:
+Django Unfold Extra enhances the beautiful Django Unfold admin interface (v0.77.1) with additional functionality for:
 
 - **django-cms**: Integration with Django CMS 5.0 - Uses unfold admin colors for django cms
 - **django-parler**: Multilingual support for your Django models
