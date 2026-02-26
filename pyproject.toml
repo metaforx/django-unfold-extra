@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "django-unfold-extra"
-version = "0.1.11"
+dynamic = ["version"]
 description = "Unofficial extra for Django Unfold Admin. Supports django-parler and django-cms."
 license = "MIT"
 readme = "README.md"
@@ -46,6 +46,9 @@ packages = ["unfold_extra"]
 [tool.hatch.build.targets.wheel]
 type = "wheel"
 packages = ["unfold_extra"]
+
+[tool.hatch.version]
+path = "unfold_extra/__init__.py"
 
 [tool.hatch.build]
 exclude = [
