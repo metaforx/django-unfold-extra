@@ -1,5 +1,5 @@
-from cms.admin.pageadmin import get_site
 from cms.constants import MODAL_HTML_REDIRECT
+from cms.utils.admin import get_site_from_request
 from cms.utils.conf import get_cms_setting
 from cms.utils.i18n import get_site_language_from_request
 from django.http import HttpResponse
@@ -41,7 +41,7 @@ def _language_from_request(request) -> str:
     """
     Determines the language to be used based on the request object.
     """
-    site = get_site(request)
+    site = get_site_from_request(request)
     lang = request.GET.get("language") or get_site_language_from_request(request, site_id=site.pk)
     return lang or get_cms_setting("LANGUAGE_CODE")
 
