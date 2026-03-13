@@ -1,4 +1,5 @@
 # Django Unfold Extra
+[![PyPI - Version](https://img.shields.io/pypi/v/django-unfold-extra.svg?style=for-the-badge)](https://pypi.org/project/django-unfold-extra/) [![Build](https://img.shields.io/github/actions/workflow/status/metaforx/django-unfold-extra/ci.yml?style=for-the-badge&event=pull_request)](https://github.com/metaforx/django-unfold-extra/actions/workflows/ci.yml)
 
 Unofficial extension for Django Unfold Admin. Adds support for django-parler and django-cms to the modern and
 clean [Django Unfold](https://github.com/unfoldadmin/django-unfold) admin interface.
@@ -159,6 +160,17 @@ the public website for authenticated django-cms admin users.
 	}
 }
 ```
+
+#### Sync CMS pagetree CSS after upgrading django-cms
+
+The CMS pagetree CSS is vendored with Unfold compatibility patches (e.g. removing the bare `.hidden` selector
+that conflicts with Tailwind/Unfold sidebar). After upgrading django-cms, re-sync the patched CSS:
+
+```bash
+poetry run python scripts/sync_cms_pagetree.py
+```
+
+The script will warn if any patch targets have changed upstream and need manual review.
 
 #### Change colors for Django CMS
 
