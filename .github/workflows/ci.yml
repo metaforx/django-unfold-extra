@@ -36,7 +36,7 @@ jobs:
           key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
 
       - name: Install dependencies
-        run: poetry lock --no-update && poetry install --no-interaction
+        run: poetry install --no-interaction
 
       - name: Run tests
         run: poetry run pytest -rs
