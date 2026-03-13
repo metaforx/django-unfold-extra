@@ -160,6 +160,17 @@ the public website for authenticated django-cms admin users.
 }
 ```
 
+#### Sync CMS pagetree CSS after upgrading django-cms
+
+The CMS pagetree CSS is vendored with Unfold compatibility patches (e.g. removing the bare `.hidden` selector
+that conflicts with Tailwind/Unfold sidebar). After upgrading django-cms, re-sync the patched CSS:
+
+```bash
+poetry run python scripts/sync_cms_pagetree.py
+```
+
+The script will warn if any patch targets have changed upstream and need manual review.
+
 #### Change colors for Django CMS
 
 You can change the colors for django CMS by editing `css/unfold_extra.css` or just update the unfold colors via settings.py.
