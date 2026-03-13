@@ -27,9 +27,16 @@ classifiers = [
     "Framework :: Django",
 ]
 dependencies = [
-    "django-cms>=5.0.0a1",
+    "django-cms>=5.0,<5.1",
     "django-parler~=2.3",
     "django-unfold"
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0",
+    "pytest-django>=4.5",
+    "pytest-env>=1.0",
 ]
 
 [project.scripts]
@@ -62,5 +69,16 @@ exclude = [
   "docs/**/*"
 ]
 
-
+[tool.pytest.ini_options]
+addopts = """\
+    --strict-config
+    --strict-markers
+    --ds=testapp.settings
+    """
+testpaths = ["tests"]
+pythonpath = ["tests/server"]
+django_find_project = false
+env = [
+    "DJANGO_ALLOW_ASYNC_UNSAFE=true",
+]
 
