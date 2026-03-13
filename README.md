@@ -7,7 +7,7 @@ clean [Django Unfold](https://github.com/unfoldadmin/django-unfold) admin interf
 
 Django Unfold Extra enhances the beautiful Django Unfold admin interface (v0.77.1) with additional functionality for:
 
-- **django-cms**: Integration with Django CMS 5.0 - Uses unfold admin colors for django cms
+- **django-cms**: Integration with Django CMS 5.1 - Uses Unfold admin colors for django CMS
 - **django-parler**: Multilingual support for your Django models
 - **versatile-image**: Improved integration with django-versatileimagefield, including preview and ppoi
 - **Unfold auto-update**: Styles can be automatically updaten from official unfold package via npm
@@ -19,8 +19,9 @@ Django Unfold Extra enhances the beautiful Django Unfold admin interface (v0.77.
 This package maintains the clean, modern aesthetic of Django Unfold while adding specialized interfaces for these
 popular Django packages.
 
-It uses unobtrusive template and CSS-styling overrides where possible. As Django CMS uses many '!important' flags, 
-pagetree.css had to be rebuilt from sources to remove some conflicting style definitions.
+It uses unobtrusive template and CSS-styling overrides where possible. The shipped page tree stylesheet is now
+rebased on django CMS `5.1.0a1`, while keeping the local `unfold_extra/cms/css/cms.pagetree.css` asset path so
+Unfold-specific overrides remain under local control.
 
 > **Note:** Django CMS support is not fully tested, but all features should work, beside filer. 
 

@@ -311,32 +311,49 @@ button.djangocms-versioning.submit {
  *******************************************************/
 
 /* django cms colors for light/dark/system */
-html:root {
+html:root,
+html:root[data-cms-theme="3"],
+html:root[data-cms-theme="4"] {
     --dca-light-mode: 1;
     --dca-dark-mode: 0;
     --dca-white: theme('colors.white');
     --dca-black: theme('colors.black');
     --dca-shadow: theme('colors.base.950');
     --dca-primary: theme('colors.primary.600') !important;
-    --dca-gray: theme('colors.base.500');
+    --dca-secondary: theme('colors.base.50');
+    --dca-action-bg: theme('colors.primary.600');
+    --dca-action-text: theme('colors.white');
+    --dca-green: theme('colors.green.600');
+    --dca-gray: theme('colors.base.400');
     --dca-gray-lightest: theme('colors.base.100');
     --dca-gray-lighter: theme('colors.base.200');
     --dca-gray-light: theme('colors.base.400');
     --dca-gray-darker: theme('colors.base.700');
     --dca-gray-darkest: theme('colors.base.800');
     --dca-gray-super-lightest: theme('colors.base.50');
+    --dca-border-radius: var(--border-radius, 6px);
+    --dca-btn-radius: var(--border-radius, 6px);
+    --dca-default-spacing: 0px;
     --active-brightness: 0.9;
     --focus-brightness: 0.95;
 }
 
 html.dark,
-html:root[data-theme=dark] {
+html.dark[data-cms-theme="3"],
+html.dark[data-cms-theme="4"],
+html:root[data-theme=dark],
+html:root[data-theme=dark][data-cms-theme="3"],
+html:root[data-theme=dark][data-cms-theme="4"] {
     --dca-light-mode: 0;
     --dca-dark-mode: 1;
     --dca-white: theme('colors.base.900');
     --dca-black: theme('colors.white');
     --dca-shadow: theme('colors.white');
     --dca-primary: theme('colors.primary.600');
+    --dca-secondary: theme('colors.base.700');
+    --dca-action-bg: theme('colors.primary.600');
+    --dca-action-text: theme('colors.white');
+    --dca-green: theme('colors.green.500');
     --dca-gray: theme('colors.base.300') !important;
     --dca-gray-lightest: theme('colors.base.700');
     --dca-gray-lighter: theme('colors.base.600');
@@ -344,19 +361,30 @@ html:root[data-theme=dark] {
     --dca-gray-darker: theme('colors.base.200');
     --dca-gray-darkest: theme('colors.base.100');
     --dca-gray-super-lightest: theme('colors.base.800');
+    --dca-border-radius: var(--border-radius, 6px);
+    --dca-btn-radius: var(--border-radius, 6px);
+    --dca-default-spacing: 0px;
     --active-brightness: 2;
     --focus-brightness: 1.5;
 }
 
 @media (prefers-color-scheme: dark) {
     html:root:not([data-theme]),
-    html:root[data-theme=auto] {
+    html:root:not([data-theme])[data-cms-theme="3"],
+    html:root:not([data-theme])[data-cms-theme="4"],
+    html:root[data-theme=auto],
+    html:root[data-theme=auto][data-cms-theme="3"],
+    html:root[data-theme=auto][data-cms-theme="4"] {
         --dca-light-mode: 0;
         --dca-dark-mode: 1;
         --dca-white: theme('colors.base.900');
         --dca-black: theme('colors.white');
         --dca-shadow: theme('colors.white');
         --dca-primary: theme('colors.primary.600') !important;
+        --dca-secondary: theme('colors.base.700');
+        --dca-action-bg: theme('colors.primary.600');
+        --dca-action-text: theme('colors.white');
+        --dca-green: theme('colors.green.500');
         --dca-gray: theme('colors.base.300');
         --dca-gray-lightest: theme('colors.base.700');
         --dca-gray-lighter: theme('colors.base.600');
@@ -364,6 +392,9 @@ html:root[data-theme=dark] {
         --dca-gray-darker: theme('colors.base.200');
         --dca-gray-darkest: theme('colors.base.100');
         --dca-gray-super-lightest: theme('colors.base.800');
+        --dca-border-radius: var(--border-radius, 6px);
+        --dca-btn-radius: var(--border-radius, 6px);
+        --dca-default-spacing: 0px;
         --active-brightness: 2;
         --focus-brightness: 1.5;
     }

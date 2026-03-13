@@ -27,7 +27,7 @@ classifiers = [
     "Framework :: Django",
 ]
 dependencies = [
-    "django-cms>=5.0.0a1",
+    "django-cms>=5.1.0a1",
     "django-parler~=2.3",
     "django-unfold"
 ]
@@ -61,6 +61,3 @@ exclude = [
   "**/__pycache__",
   "docs/**/*"
 ]
-
-
-
