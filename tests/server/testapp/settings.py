@@ -2,6 +2,7 @@ from os import environ
 from pathlib import Path
 
 from django.core.management.utils import get_random_secret_key
+from django.templatetags.static import static
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -122,10 +123,10 @@ PARLER_LANGUAGES = {
 # Unfold settings
 UNFOLD = {
     "STYLES": [
-        lambda request: "unfold_extra/css/styles.css",
+        lambda request: static("unfold_extra/css/styles.css"),
     ],
     "SCRIPTS": [
-        lambda request: "unfold_extra/js/theme-sync.js",
+        lambda request: static("unfold_extra/js/theme-sync.js"),
     ],
 }
 
