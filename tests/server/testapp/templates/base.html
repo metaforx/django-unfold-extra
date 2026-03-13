@@ -1,9 +1,11 @@
-{% load cms_tags sekizai_tags %}
+{% load cms_tags sekizai_tags unfold_extra_tags %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>{% page_attribute "page_title" %}</title>
     {% render_block "css" %}
+    {% unfold_extra_styles %}
+    {% unfold_extra_theme_sync %}
 </head>
 <body>
     {% cms_toolbar %}
