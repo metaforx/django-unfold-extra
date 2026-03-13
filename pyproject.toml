@@ -27,9 +27,16 @@ classifiers = [
     "Framework :: Django",
 ]
 dependencies = [
-    "django-cms>=5.0.0a1",
+    "django-cms>=5.0,<5.1",
     "django-parler~=2.3",
     "django-unfold"
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0",
+    "pytest-django>=4.5",
+    "pytest-env>=1.0",
 ]
 
 [project.scripts]
@@ -62,5 +69,38 @@ exclude = [
   "docs/**/*"
 ]
 
+# Poetry for dependency management (dev/test)
+[tool.poetry]
+name = "django-unfold-extra"
+description = "Unofficial extra for Django Unfold Admin. Supports django-parler and django-cms."
+package-mode = false
 
+[tool.poetry.dependencies]
+python = ">=3.11,<4.0"
+django = ">=5.0"
+django-cms = "5.0.3"
+django-treebeard = "<5.0"
+django-parler = "~2.3"
+django-unfold = ">=0.77.1"
+
+[tool.poetry.group.test.dependencies]
+pytest = ">=8.0"
+pytest-django = ">=4.5"
+pytest-env = ">=1.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = ">=0.4"
+
+[tool.pytest.ini_options]
+addopts = """\
+    --strict-config
+    --strict-markers
+    --ds=testapp.settings
+    """
+testpaths = ["tests"]
+pythonpath = ["tests/server"]
+django_find_project = false
+env = [
+    "DJANGO_ALLOW_ASYNC_UNSAFE=true",
+]
 
