@@ -69,6 +69,28 @@ exclude = [
   "docs/**/*"
 ]
 
+# Poetry for dependency management (dev/test)
+[tool.poetry]
+name = "django-unfold-extra"
+description = "Unofficial extra for Django Unfold Admin. Supports django-parler and django-cms."
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.11,<4.0"
+django = ">=5.0"
+django-cms = "5.0.3"
+django-treebeard = "<5.0"
+django-parler = "~2.3"
+django-unfold = ">=0.77.1"
+
+[tool.poetry.group.test.dependencies]
+pytest = ">=8.0"
+pytest-django = ">=4.5"
+pytest-env = ">=1.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = ">=0.4"
+
 [tool.pytest.ini_options]
 addopts = """\
     --strict-config
