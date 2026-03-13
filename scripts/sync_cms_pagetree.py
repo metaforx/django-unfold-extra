@@ -52,7 +52,7 @@ def find_cms_pagetree_css() -> Path:
 
     cms_static = Path(cms.__file__).parent / "static" / "cms" / "css"
     # CMS versions its static files in subdirs (e.g. 5.0.3/)
-    candidates = sorted(cms_static.glob("*/cms.pagetree.css"))
+    candidates = list(cms_static.glob("*/cms.pagetree.css"))
     if not candidates:
         # fallback: maybe it's directly in css/
         direct = cms_static / "cms.pagetree.css"
@@ -61,8 +61,15 @@ def find_cms_pagetree_css() -> Path:
         print(f"ERROR: cms.pagetree.css not found under {cms_static}", file=sys.stderr)
         sys.exit(1)
 
-    # Use the latest version
-    source = candidates[-1]
+    # Use the latest version by semantic version, not lexicographic order
+    def _version_key(p: Path):
+        parts = p.parent.name.split(".")
+        try:
+            return tuple(int(x) for x in parts)
+        except ValueError:
+            return (0,)
+
+    source = max(candidates, key=_version_key)
     return source
 
 
