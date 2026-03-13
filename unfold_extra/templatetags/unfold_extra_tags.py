@@ -31,9 +31,15 @@ def _to_css_value(v) -> str:
 def unfold_theme_colors() -> str:
     """
     Emit the same custom properties Unfold injects in admin, but for the frontend.
+    Uses Unfold's get_config() to resolve colors (includes defaults).
     Works with OKLCH palettes (preferred) or older rgb triplets.
     """
-    colors = (getattr(settings, "UNFOLD", {}) or {}).get("COLORS") or {}
+    try:
+        from unfold.settings import get_config
+        colors = get_config().get("COLORS") or {}
+    except ImportError:
+        colors = (getattr(settings, "UNFOLD", {}) or {}).get("COLORS") or {}
+
     if not colors:
         return ""
 
