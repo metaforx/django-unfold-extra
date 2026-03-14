@@ -126,7 +126,7 @@ styles.
 #### Frontend django CMS support
 
 Add `unfold_extra_tags` to your base HTML template after loading all CSS styles.
-This adds additional styles to integrate django CMS with Unfold Admin and includes `"COLORS"` from Unfold settings to
+This adds additional styles to integrate django CMS with Unfold Admin and exposes `"COLORS"` from Unfold settings on
 the public website for authenticated django-cms admin users.
 
 ```html
