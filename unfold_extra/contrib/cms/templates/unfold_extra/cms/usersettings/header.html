@@ -1,0 +1,43 @@
+{% extends "unfold/helpers/header.html" %}
+
+{% load i18n unfold %}
+
+{% block welcome-msg %}
+<div class="flex flex-row grow font-semibold items-center min-w-0 mr-3">
+    {% if is_nav_sidebar_enabled and not is_popup %}
+        <span class="cursor-pointer flex flex-row items-center">
+            <span x-on:click="sidebarDesktopOpen = !sidebarDesktopOpen; localStorage.setItem('sidebarDesktopOpen', sidebarDesktopOpen ? '1' : '0');">
+                {% component "unfold/components/icon.html" with class="hidden! xl:block!" %}
+                    dock_to_right
+                {% endcomponent %}
+            </span>
+            <span x-on:click="sidebarMobileOpen = !sidebarMobileOpen">
+                {% component "unfold/components/icon.html" with class="block! xl:hidden!" %}
+                    dock_to_right
+                {% endcomponent %}
+            </span>
+        </span>
+
+        <span class="block bg-base-200 h-5 mx-3 w-px dark:bg-base-700"></span>
+    {% endif %}
+
+    {% url "admin:app_list" app_label=opts.app_label as app_list_url %}
+    {% component "unfold/components/link.html" with href=app_list_url class="block h-[18px] mr-3" %}
+        {% component "unfold/components/icon.html" %}
+            arrow_back
+        {% endcomponent %}
+    {% endcomponent %}
+
+    <h1 class="overflow-hidden leading-5 text-ellipsis text-font-important-light whitespace-nowrap xl:text-base dark:text-font-important-dark">
+        <a href="{{ app_list_url }}" class="align-middle inline-block leading-5 tracking-tight">
+            {{ opts.app_config.verbose_name|capfirst }}
+        </a>
+        {% component "unfold/components/icon.html" with class="inline-block align-middle leading-5 mx-2 text-base-400 dark:text-base-500" %}
+            chevron_right
+        {% endcomponent %}
+        <span class="align-middle inline-block leading-5 tracking-tight">
+            {{ title }}
+        </span>
+    </h1>
+</div>
+{% endblock %}

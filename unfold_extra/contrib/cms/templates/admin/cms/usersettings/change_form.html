@@ -1,0 +1,11 @@
+{% extends "admin/change_form.html" %}{% load i18n cms_tags %}
+
+{% block nav-global %}{% endblock %}
+
+{% block show_back_button %}{% endblock %}
+
+{% block header %}
+{% include "unfold_extra/cms/usersettings/header.html" %}
+{% endblock %}
+
+{# Use Unfold's submit row (from admin/change_form.html) instead of CMS's plain <input> #}
