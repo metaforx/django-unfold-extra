@@ -1,0 +1,21 @@
+{% extends "admin/change_form.html" %}{% load i18n cms_tags %}
+
+{% block extrahead %}
+{{ block.super }}
+<script>
+    window.onload = function () {
+        setTimeout(function () {
+            var CMS = window.parent.CMS;
+            if (location.href.indexOf('reload_window') > -1 && CMS) {
+                CMS.settings.sideframe.url = window.location.href.replace(/[?&]reload_window/, '');
+                CMS.settings = CMS.API.Helpers.setSettings(CMS.settings);
+                CMS.API.Helpers.reloadBrowser();
+            }
+        }, 0);
+    }
+</script>
+{% endblock %}
+
+{% block object-tools %}{% endblock %}
+
+{# Use Unfold's submit row (from admin/change_form.html) instead of CMS's plain <input> #}

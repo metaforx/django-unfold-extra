@@ -12,7 +12,8 @@ from cms.admin.useradmin import (
     PageUserAdmin,
     PageUserGroupAdmin as BasePageUserGroupAdmin,
 )
-from cms.models import GlobalPagePermission, Page, PageContent, PageUser, PageUserGroup
+from cms.admin.settingsadmin import SettingsAdmin as BaseSettingsAdmin
+from cms.models import GlobalPagePermission, Page, PageContent, PageUser, PageUserGroup, UserSettings
 from unfold.admin import ModelAdmin, TabularInline
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
 
@@ -45,6 +46,7 @@ from .utils import (
 
 admin.site.unregister(Page)
 admin.site.unregister(PageContent)
+admin.site.unregister(UserSettings)
 
 
 if get_cms_setting('PERMISSION'):
@@ -85,6 +87,18 @@ if get_cms_setting('PERMISSION'):
         UnfoldViewRestrictionInlineAdmin,
         UnfoldVPagePermissionInlineAdmin,
     ])
+
+
+@admin.register(UserSettings)
+class UserSettingsAdmin(ModelAdmin, BaseSettingsAdmin):
+    compressed_fields = True
+
+    def render_change_form(self, request, context, add=False, change=False, form_url="", obj=None):
+        context = dict(context or {})
+        context["show_save_and_add_another"] = False
+        context["show_save_and_continue"] = False
+        context["show_delete"] = False
+        return super().render_change_form(request, context, add, change, form_url, obj)
 
 
 @admin.register(PageContent)
