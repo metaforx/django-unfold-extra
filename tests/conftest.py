@@ -23,3 +23,17 @@ def admin_user(db):
         email="testadmin@example.com",
         password="testpass",
     )
+
+
+@pytest.fixture(scope="function")
+def authenticated_page(browser, live_server, admin_user):
+    """Playwright page authenticated as admin via the Django login form."""
+    context = browser.new_context()
+    page = context.new_page()
+    page.goto(f"{live_server.url}/admin/login/?next=/admin/")
+    page.fill("#id_username", "testadmin")
+    page.fill("#id_password", "testpass")
+    page.click("[type=submit]")
+    page.wait_for_load_state("networkidle")
+    yield page
+    context.close()
