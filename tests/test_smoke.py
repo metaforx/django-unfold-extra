@@ -2,6 +2,7 @@
 
 import pytest
 from django.contrib.admin.sites import site as admin_site
+from django.test import override_settings
 from django.urls import reverse
 
 
@@ -68,3 +69,21 @@ class TestAdminAccess:
         response = admin_client.get("/de/admin/cms/usersettings/")
         assert response.status_code == 200
         assert reverse("admin:app_list", kwargs={"app_label": "cms"}) in response.content.decode()
+
+
+@pytest.mark.django_db
+class TestPagetreeHeaderAddButton:
+    """Verify UNFOLD_CMS_HEADER_ADD_BUTTON controls add button placement."""
+
+    def test_enabled_by_default(self, admin_client):
+        response = admin_client.get("/admin/cms/pagecontent/")
+        assert response.status_code == 200
+        body = response.content.decode()
+        assert "unfold-header-add" in body
+
+    @override_settings(UNFOLD_CMS_HEADER_ADD_BUTTON=False)
+    def test_disabled(self, admin_client):
+        response = admin_client.get("/admin/cms/pagecontent/")
+        assert response.status_code == 200
+        body = response.content.decode()
+        assert "unfold-header-add" not in body
