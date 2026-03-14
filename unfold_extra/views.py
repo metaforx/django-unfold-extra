@@ -38,7 +38,8 @@ def cms_set_language(request):
             ...
         ]
     """
-    language = request.POST.get("language", request.GET.get("language"))
+    raw_language = request.POST.get("language", request.GET.get("language"))
+    language = raw_language if raw_language and check_for_language(raw_language) else None
 
     # Update (or create) CMS UserSettings before the redirect.
     # ``update_or_create`` ensures this works even for users who have never
