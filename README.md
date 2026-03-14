@@ -8,7 +8,7 @@ clean [Django Unfold](https://github.com/unfoldadmin/django-unfold) admin interf
 
 Django Unfold Extra enhances the Django Unfold admin interface with additional functionality for:
 
-- **django-cms**: Integration with Django CMS 5.0, including Unfold colors in the CMS admin
+- **django-cms**: Integration with Django CMS 5.0, including theme, pagetree, plugins, and versioning support
 - **django-parler**: Multilingual support for your Django models
 - **versatile-image**: Improved integration with django-versatileimagefield, including preview and ppoi
 - **Unfold auto-update**: Styles can be updated from the official Unfold package via npm
@@ -94,6 +94,7 @@ Add `{% unfold_extra_styles %}` and `{% unfold_extra_theme_sync %}` from `unfold
 to your base HTML template.
 - Enables Unfold admin colors in django CMS
 - Syncs the Unfold theme with django CMS (light/dark/auto)
+- Adds Unfold-styled django CMS plugin admin support
 
 ```html
 {% load static cms_tags sekizai_tags unfold_extra_tags %}
@@ -148,6 +149,36 @@ class MyInlineAdmin(TranslatableStackedInline):
 
 Support is automatically applied. Currently, it does not support customization besides compiling your own unfold_extra
 styles.
+
+#### CMS Plugins with Unfold styling
+
+For the general django CMS plugin model, see the official guide:
+https://docs.django-cms.org/en/stable/how_to/09-custom_plugins.html
+
+This package only changes the admin side:
+- use `UnfoldCMSPluginBase` instead of `CMSPluginBase`
+- use `UnfoldStackedInline` or `UnfoldTabularInline` for plugin inlines
+
+
+```python
+# cms_plugins.py
+from unfold_extra.contrib.cms.plugins import UnfoldCMSPluginBase
+from .models import HeroPluginModel
+
+@plugin_pool.register_plugin
+class HeroPlugin(UnfoldCMSPluginBase):
+    model = HeroPluginModel
+    name = _("Hero")
+    render_template = "plugins/hero.html"
+```
+
+Most Unfold/Django admin edit options also work on plugins, including
+`compressed_fields`, `fieldsets`, `readonly_fields`, `autocomplete_fields`,
+`raw_id_fields` lookup popups, `radio_fields`, and `formfield_overrides`.
+
+See Unfold docs:
+- https://unfoldadmin.com/docs/configuration/modeladmin/
+- https://unfoldadmin.com/docs/tabs/fieldsets/
 
 #### Frontend django CMS support
 
