@@ -237,11 +237,13 @@ div.cms-pagetree-header a.cms-btn-action {
     @apply !rounded !text-white bg-primary-500;
 }
 
-.cms-pagetree-header-create {
+/* When the add button is moved to the Unfold header, hide the CMS inline
+   button and remove trailing spacing from the last remaining element. */
+.unfold-header-add .cms-pagetree-header-create {
     @apply !hidden;
 }
 
-.cms-pagetree-sites-list.cms-pagetree-dropdown {
+.unfold-header-add .cms-pagetree-sites-list.cms-pagetree-dropdown {
     @apply mr-0 pr-0;
 }
 
