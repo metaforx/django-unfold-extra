@@ -2,6 +2,7 @@ import pytest
 from playwright.sync_api import expect
 
 
+@pytest.mark.ui
 @pytest.mark.django_db(transaction=True)
 class TestUserSettingsSubmitRow:
     """Verify that the CMS UserSettings admin uses Unfold's styled submit row."""
