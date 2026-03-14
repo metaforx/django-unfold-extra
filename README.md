@@ -64,6 +64,10 @@ UNFOLD = {
     ],
 }
 CMS_COLOR_SCHEME_TOGGLE = False  # optional: let Unfold be the single theme switch
+
+# Move the CMS "New Page" button into Unfold's header (default: True).
+# Set to False to keep the button in the CMS pagetree body.
+UNFOLD_CMS_HEADER_ADD_BUTTON = True
 ```
 
 #### Language sync (Unfold ↔ CMS)
@@ -138,6 +142,7 @@ class MyInlineAdmin(TranslatableStackedInline):
 - PageUser, PageUserGroup, GlobalPagePermission when `CMS_PERMISSION = True`
 - djangocms-versioning admin template and styling support
 - CMS UserSettings singleton admin navigation and submit row
+- "New Page" button in Unfold header position (configurable via `UNFOLD_CMS_HEADER_ADD_BUTTON`)
 - Modal support
 - Not supported: Filer
 

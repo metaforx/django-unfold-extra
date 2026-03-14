@@ -74,6 +74,16 @@ def unfold_extra_styles(context) -> str:
     html = f"{link_tag}\n{theme_style}" if theme_style else link_tag
     return mark_safe(html)
 
+@register.simple_tag
+def unfold_cms_header_add_button() -> bool:
+    """Return the ``UNFOLD_CMS_HEADER_ADD_BUTTON`` setting (default ``True``).
+
+    When *True* the CMS "New Page" button is rendered in Unfold's standard
+    header position instead of inside the pagetree body.
+    """
+    return getattr(settings, "UNFOLD_CMS_HEADER_ADD_BUTTON", True)
+
+
 @register.simple_tag(takes_context=True)
 def unfold_extra_theme_sync(context) -> str:
     """
