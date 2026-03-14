@@ -28,6 +28,24 @@ class TestCmsSetLanguageView:
 
         assert UserSettings.objects.get(user=user).language == "de"
 
+    def test_skips_cms_sync_when_cms_is_not_installed(self, admin_client, monkeypatch):
+        """The view should still switch language when the CMS app is unavailable."""
+        from unfold_extra import views
+
+        is_installed = views.apps.is_installed
+        monkeypatch.setattr(
+            views.apps,
+            "is_installed",
+            lambda app_label: False if app_label == "cms" else is_installed(app_label),
+        )
+
+        response = admin_client.post(
+            reverse("set_language"), {"language": "de", "next": "/admin/"}
+        )
+
+        assert response.status_code == 302
+        assert response.url == "/de/admin/"
+
     def test_redirect_en_to_de(self, admin_client):
         """en→de: /admin/ should redirect to /de/admin/."""
         response = admin_client.post(
