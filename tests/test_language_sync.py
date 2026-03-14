@@ -29,12 +29,12 @@ class TestCmsSetLanguageView:
         assert UserSettings.objects.get(user=user).language == "de"
 
     def test_redirect_en_to_de(self, admin_client):
-        """en→de: /admin/ should redirect to /de/admin/."""
+        """en→de: /admin/ should redirect to /de/admin/?reload_window."""
         response = admin_client.post(
             reverse("set_language"), {"language": "de", "next": "/admin/"}
         )
         assert response.status_code == 302
-        assert response.url == "/de/admin/"
+        assert response.url == "/de/admin/?reload_window"
 
     def test_redirect_de_to_en_with_referer(self, admin_client):
         """de→en via Unfold's empty-next form: should redirect to /admin/.
@@ -55,7 +55,7 @@ class TestCmsSetLanguageView:
             HTTP_REFERER="http://testserver/de/admin/",
         )
         assert response.status_code == 302
-        assert response.url == "http://testserver/admin/"
+        assert response.url == "http://testserver/admin/?reload_window"
 
     def test_cookie_roundtrip(self, admin_client):
         """Cookie is set correctly in both directions."""

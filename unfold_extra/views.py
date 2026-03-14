@@ -70,4 +70,13 @@ def cms_set_language(request):
     if language:
         activate(language)
 
+    # Append ?reload_window to the redirect so that the target page's JS
+    # can trigger a CMS sideframe parent reload (same pattern CMS uses
+    # in its own UserSettings admin).  When not in a sideframe the JS
+    # simply cleans the parameter from the URL via replaceState.
+    if language and response.status_code == 302:
+        url = response.url
+        separator = "&" if "?" in url else "?"
+        response["Location"] = url + separator + "reload_window"
+
     return response
