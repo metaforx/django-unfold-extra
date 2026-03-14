@@ -66,6 +66,26 @@ UNFOLD = {
 CMS_COLOR_SCHEME_TOGGLE = False  # optional: let Unfold be the single theme switch
 ```
 
+#### Language sync (Unfold ↔ CMS)
+
+To keep the Unfold language switcher and the CMS toolbar/admin in sync, register
+`cms_set_language` from `unfold_extra.views` as the `set_language` URL
+**before** Django's i18n URLs:
+
+```python
+from unfold_extra.views import cms_set_language
+
+urlpatterns = [
+    path("i18n/setlang/", cms_set_language, name="set_language"),
+    path("i18n/", include("django.conf.urls.i18n")),
+    # ...
+]
+```
+
+When a user switches language via Unfold's sidebar, `cms_set_language` updates
+the CMS `UserSettings.language` before the redirect so the CMS toolbar renders
+in the same language on the next request.
+
 Add `{% unfold_extra_styles %}` and `{% unfold_extra_theme_sync %}` from `unfold_extra_tags`
 to your base HTML template.
 - Enables Unfold admin colors in django CMS
@@ -117,6 +137,7 @@ class MyInlineAdmin(TranslatableStackedInline):
 - Pagetree
 - PageUser, PageUserGroup, GlobalPagePermission when `CMS_PERMISSION = True`
 - djangocms-versioning admin template and styling support
+- CMS UserSettings singleton admin navigation and submit row
 - Modal support
 - Not supported: Filer
 

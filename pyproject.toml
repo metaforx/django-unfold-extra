@@ -88,6 +88,7 @@ djangocms-versioning = "^2.5.1"
 pytest = ">=8.0"
 pytest-django = ">=4.5"
 pytest-env = ">=1.0"
+pytest-playwright = "^0.7.2"
 
 [tool.poetry.group.dev.dependencies]
 ruff = ">=0.4"
@@ -97,11 +98,15 @@ addopts = """\
     --strict-config
     --strict-markers
     --ds=testapp.settings
+    -m 'not ui'
     """
 testpaths = ["tests"]
 pythonpath = ["tests/server"]
 django_find_project = false
 env = [
     "DJANGO_ALLOW_ASYNC_UNSAFE=true",
+]
+markers = [
+    "ui: Playwright browser tests (deselected by default, run with: pytest -m ui)",
 ]
 

@@ -14,6 +14,11 @@ class TestPackageImport:
 
         assert UnfoldCMSConfig.name == "unfold_extra"
 
+    def test_import_language_view(self):
+        from unfold_extra.views import cms_set_language
+
+        assert cms_set_language is not None
+
     def test_import_template_tags(self):
         from unfold_extra.templatetags import unfold_extra_tags
 
