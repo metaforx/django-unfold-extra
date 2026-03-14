@@ -1,13 +1,24 @@
 from django.apps import apps
 from django.conf import settings
 from django.utils.translation import activate, check_for_language
-from django.views.i18n import set_language
+from django.views.i18n import LANGUAGE_QUERY_PARAMETER, set_language
 
 
 def cms_set_language(request):
     """Set Django's language and keep CMS ``UserSettings.language`` in sync."""
-    raw_language = request.POST.get("language", request.GET.get("language"))
+    param = getattr(settings, "LANGUAGE_QUERY_PARAMETER", LANGUAGE_QUERY_PARAMETER)
+    raw_language = request.POST.get(param, request.GET.get(param))
     language = raw_language if raw_language and check_for_language(raw_language) else None
+
+    if raw_language and param != LANGUAGE_QUERY_PARAMETER:
+        if request.method == "POST" and param in request.POST:
+            post = request.POST.copy()
+            post[LANGUAGE_QUERY_PARAMETER] = raw_language
+            request._post = post
+        elif param in request.GET:
+            query = request.GET.copy()
+            query[LANGUAGE_QUERY_PARAMETER] = raw_language
+            request._get = query
 
     if (
         language
