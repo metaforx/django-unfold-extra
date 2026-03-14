@@ -30,9 +30,4 @@ def cms_set_language(request):
     if language:
         activate(language)
 
-    if language and response.status_code == 302:
-        url = response.url
-        separator = "&" if "?" in url else "?"
-        response["Location"] = url + separator + "reload_window"
-
     return response
