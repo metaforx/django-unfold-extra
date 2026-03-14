@@ -1,0 +1,12 @@
+{% load cms_tags %}
+
+<section class="hero hero--{{ instance.layout }}{% if instance.is_highlighted %} hero--highlighted{% endif %}">
+    <h1>{{ instance.title }}</h1>
+    {% if instance.subtitle %}<p>{{ instance.subtitle }}</p>{% endif %}
+    {% if instance.cta_url %}
+        <a href="{{ instance.cta_url }}">{{ instance.cta_label|default:"Learn more" }}</a>
+    {% endif %}
+    {% for btn in instance.buttons.all %}
+        <a href="{{ btn.url }}" class="btn{% if btn.is_primary %} btn--primary{% endif %}">{{ btn.label }}</a>
+    {% endfor %}
+</section>
