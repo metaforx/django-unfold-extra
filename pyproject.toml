@@ -98,11 +98,15 @@ addopts = """\
     --strict-config
     --strict-markers
     --ds=testapp.settings
+    -m 'not ui'
     """
 testpaths = ["tests"]
 pythonpath = ["tests/server"]
 django_find_project = false
 env = [
     "DJANGO_ALLOW_ASYNC_UNSAFE=true",
+]
+markers = [
+    "ui: Playwright browser tests (deselected by default, run with: pytest -m ui)",
 ]
 
