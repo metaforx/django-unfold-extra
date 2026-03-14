@@ -88,6 +88,20 @@ class TestCmsSetLanguageView:
         )
         assert r2.cookies["django_language"].value == "en"
 
+    def test_get_does_not_update_cms_user_settings(self, admin_client, django_user_model):
+        from cms.models import UserSettings
+
+        user = django_user_model.objects.get(username="admin")
+        UserSettings.objects.get_or_create(user=user, defaults={"language": "en"})
+
+        response = admin_client.get(
+            reverse("set_language"), {"language": "de", "next": "/admin/"}
+        )
+
+        assert response.status_code == 302
+        assert response.url == "/admin/"
+        assert UserSettings.objects.get(user=user).language == "en"
+
     @override_settings(LANGUAGE_QUERY_PARAMETER="lang")
     def test_uses_configured_language_query_parameter(
         self, admin_client, django_user_model
