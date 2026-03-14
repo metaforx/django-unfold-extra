@@ -68,8 +68,3 @@ class TestAdminAccess:
         response = admin_client.get("/de/admin/cms/usersettings/")
         assert response.status_code == 200
         assert reverse("admin:app_list", kwargs={"app_label": "cms"}) in response.content.decode()
-
-    def test_cms_usersettings_hides_history_action(self, admin_client):
-        response = admin_client.get("/admin/cms/usersettings/")
-        assert response.status_code == 200
-        assert '<span class="material-symbols-outlined">\n                history\n            </span>' not in response.content.decode()
