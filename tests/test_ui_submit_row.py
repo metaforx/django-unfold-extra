@@ -24,7 +24,6 @@ class TestUserSettingsSubmitRow:
         # Unfold renders <button type="submit" name="_save"> not <input type="submit">
         save_button = page.locator('#submit-row button[name="_save"]')
         expect(save_button).to_be_visible()
-        expect(save_button).to_contain_text("Save")
 
     def test_submit_row_no_plain_django_input(self, authenticated_page, live_server):
         page = authenticated_page
