@@ -82,6 +82,7 @@ django-cms = "5.0.3"
 django-treebeard = "<5.0"
 django-parler = "~2.3"
 django-unfold = ">=0.77.1"
+djangocms-versioning = "^2.5.1"
 
 [tool.poetry.group.test.dependencies]
 pytest = ">=8.0"
