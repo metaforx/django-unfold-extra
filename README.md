@@ -8,7 +8,7 @@ clean [Django Unfold](https://github.com/unfoldadmin/django-unfold) admin interf
 
 Django Unfold Extra enhances the Django Unfold admin interface with additional functionality for:
 
-- **django-cms**: Integration with Django CMS 5.0, including theme, pagetree, plugins, and versioning support
+- **django-cms**: Integration with Django CMS 5.0, including theme, page tree, plugins, and versioning support
 - **django-parler**: Multilingual support for your Django models
 - **versatile-image**: Improved integration with django-versatileimagefield, including preview and ppoi
 - **Unfold auto-update**: Styles can be updated from the official Unfold package via npm
