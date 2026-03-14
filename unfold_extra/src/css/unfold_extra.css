@@ -237,6 +237,14 @@ div.cms-pagetree-header a.cms-btn-action {
     @apply !rounded !text-white bg-primary-500;
 }
 
+.cms-pagetree-header-create {
+    @apply !hidden;
+}
+
+.cms-pagetree-sites-list.cms-pagetree-dropdown {
+    @apply mr-0 pr-0;
+}
+
 input#nav-filter {
     @apply bg-white dark:bg-base-900;
 }
