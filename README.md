@@ -137,6 +137,7 @@ class MyInlineAdmin(TranslatableStackedInline):
 - Pagetree
 - PageUser, PageUserGroup, GlobalPagePermission when `CMS_PERMISSION = True`
 - djangocms-versioning admin template and styling support
+- CMS UserSettings singleton admin navigation and submit row
 - Modal support
 - Not supported: Filer
 

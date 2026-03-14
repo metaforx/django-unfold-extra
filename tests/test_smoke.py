@@ -2,6 +2,7 @@
 
 import pytest
 from django.contrib.admin.sites import site as admin_site
+from django.urls import reverse
 
 
 @pytest.mark.django_db
@@ -62,3 +63,13 @@ class TestAdminAccess:
     def test_article_add(self, admin_client):
         response = admin_client.get("/admin/testapp/article/add/")
         assert response.status_code == 200
+
+    def test_cms_usersettings_back_link_targets_cms_app_list(self, admin_client):
+        response = admin_client.get("/de/admin/cms/usersettings/")
+        assert response.status_code == 200
+        assert reverse("admin:app_list", kwargs={"app_label": "cms"}) in response.content.decode()
+
+    def test_cms_usersettings_hides_history_action(self, admin_client):
+        response = admin_client.get("/admin/cms/usersettings/")
+        assert response.status_code == 200
+        assert '<span class="material-symbols-outlined">\n                history\n            </span>' not in response.content.decode()
