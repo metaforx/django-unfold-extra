@@ -99,6 +99,25 @@ files = [
 Django = ">=3.2"
 
 [[package]]
+name = "django-fsm-2"
+version = "4.2.2"
+description = "Django friendly finite state machine support."
+optional = false
+python-versions = ">=3.10"
+files = [
+    {file = "django_fsm_2-4.2.2-py3-none-any.whl", hash = "sha256:d5fd0724d82834e3643ef6cae7e06c169533ccfdd5c4098d88e3fd9af0eba4f1"},
+    {file = "django_fsm_2-4.2.2.tar.gz", hash = "sha256:0d03f3916d535867dfe56cbfd505f63e41c026403c27c4969b83605cd08ad863"},
+]
+
+[package.dependencies]
+django = ">=4.2.29"
+django-stubs-ext = "*"
+typing-extensions = {version = "*", markers = "python_version < \"3.12\""}
+
+[package.extras]
+graphviz = ["graphviz"]
+
+[[package]]
 name = "django-parler"
 version = "2.3"
 description = "Simple Django model translations without nasty hacks, featuring nice admin integration."
@@ -126,6 +145,21 @@ files = [
 [package.dependencies]
 django = ">=3.2"
 django-classy-tags = ">=3.0"
+
+[[package]]
+name = "django-stubs-ext"
+version = "5.2.9"
+description = "Monkey-patching and extensions for django-stubs"
+optional = false
+python-versions = ">=3.10"
+files = [
+    {file = "django_stubs_ext-5.2.9-py3-none-any.whl", hash = "sha256:230c51575551b0165be40177f0f6805f1e3ebf799b835c85f5d64c371ca6cf71"},
+    {file = "django_stubs_ext-5.2.9.tar.gz", hash = "sha256:6db4054d1580657b979b7d391474719f1a978773e66c7070a5e246cd445a25a9"},
+]
+
+[package.dependencies]
+django = "*"
+typing-extensions = "*"
 
 [[package]]
 name = "django-treebeard"
@@ -171,6 +205,22 @@ files = [
 
 [package.dependencies]
 Django = "*"
+
+[[package]]
+name = "djangocms-versioning"
+version = "2.5.1"
+description = "Versioning for django CMS"
+optional = false
+python-versions = ">=3.10"
+files = [
+    {file = "djangocms_versioning-2.5.1-py3-none-any.whl", hash = "sha256:f396014400dab3a561227d5395496aec40666f5e36aa8337f99aff8752249581"},
+    {file = "djangocms_versioning-2.5.1.tar.gz", hash = "sha256:8e4d69e583918a8bb6264049a865c68abd2adc8cd14aa150b8ab1ad4d852a226"},
+]
+
+[package.dependencies]
+django-cms = ">=4.1.1"
+django-fsm-2 = "*"
+packaging = "*"
 
 [[package]]
 name = "iniconfig"
@@ -353,6 +403,17 @@ dev = ["build"]
 doc = ["sphinx"]
 
 [[package]]
+name = "typing-extensions"
+version = "4.15.0"
+description = "Backported and Experimental Type Hints for Python 3.9+"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "typing_extensions-4.15.0-py3-none-any.whl", hash = "sha256:f0fa19c6845758ab08074a0cfa8b7aecb71c999ca73d62883bc25cc018c4e548"},
+    {file = "typing_extensions-4.15.0.tar.gz", hash = "sha256:0cea48d173cc12fa28ecabc3b837ea3cf6f38c6d1136f85cbaaf598984861466"},
+]
+
+[[package]]
 name = "tzdata"
 version = "2025.3"
 description = "Provider of IANA time zone data"
@@ -366,4 +427,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<4.0"
-content-hash = "600ec1cd16e5b867a106ff6018482ce5c01ed17dc1fb3e84cf2ae6af2695fd49"
+content-hash = "80f02de525eaef9b6690fa66552bfac8b61887e209c76cae0c0a8edefb2e7f69"
