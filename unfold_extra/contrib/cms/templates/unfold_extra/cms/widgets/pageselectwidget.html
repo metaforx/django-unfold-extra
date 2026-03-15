@@ -1,0 +1,12 @@
+{% spaceless %}
+<div class="flex flex-col gap-2">
+    {% for widget in widget.subwidgets %}
+        {% if forloop.last %}<div hidden>{% endif %}
+        {% include widget.template_name %}
+        {% if forloop.last %}</div>{% endif %}
+    {% endfor %}
+</div>
+{% endspaceless %}
+<div data-cms-widget-pageselect="true" hidden>
+    {{ widget.script_data|json_script }}
+</div>

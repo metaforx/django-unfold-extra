@@ -1,3 +1,4 @@
+from cms.models.fields import PageField
 from cms.models.pluginmodel import CMSPlugin
 from django.db import models
 from parler.models import TranslatableModel, TranslatedFields
@@ -70,6 +71,16 @@ class HeroPluginModel(CMSPlugin):
 
     def __str__(self):
         return self.title
+
+
+class PageLinkPluginModel(CMSPlugin):
+    """Simple plugin using PageField to test UnfoldPageSelectWidget."""
+
+    label = models.CharField(max_length=80, blank=True)
+    page_link = PageField(blank=True, null=True)
+
+    def __str__(self):
+        return self.label or "Page Link"
 
 
 class HeroButton(models.Model):

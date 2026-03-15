@@ -4,7 +4,7 @@ from cms.plugin_pool import plugin_pool
 
 from unfold_extra.contrib.cms.plugins import UnfoldCMSPluginBase, UnfoldStackedInline
 
-from .models import HeroPluginModel, HeroButton
+from .models import HeroPluginModel, HeroButton, PageLinkPluginModel
 
 
 class HeroButtonInline(UnfoldStackedInline):
@@ -40,3 +40,10 @@ class HeroPlugin(UnfoldCMSPluginBase):
     #radio_fields = {"layout": admin.HORIZONTAL}
     readonly_fields = ("created_at",)
     inlines = (HeroButtonInline,)
+
+
+@plugin_pool.register_plugin
+class PageLinkPlugin(UnfoldCMSPluginBase):
+    model = PageLinkPluginModel
+    name = _("Page Link")
+    render_template = "testapp/plugins/page_link.html"

@@ -1,0 +1,3 @@
+{% if instance.page_link %}
+    <a href="{{ instance.page_link.get_absolute_url }}">{{ instance.label|default:instance.page_link.get_title }}</a>
+{% endif %}

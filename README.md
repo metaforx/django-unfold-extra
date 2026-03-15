@@ -176,6 +176,20 @@ Most Unfold/Django admin edit options also work on plugins, including
 `compressed_fields`, `fieldsets`, `readonly_fields`, `autocomplete_fields`,
 `raw_id_fields` lookup popups, `radio_fields`, and `formfield_overrides`.
 
+Use `cms_widget_overrides` when you need to replace plugin form widgets that
+should use Unfold-compatible widgets:
+
+```python
+from unfold_extra.contrib.cms.plugins import UnfoldCMSPluginBase
+
+
+class MyPlugin(UnfoldCMSPluginBase):
+    cms_widget_overrides = {
+        **UnfoldCMSPluginBase.cms_widget_overrides,
+        SomeField: MyCustomWidget,
+    }
+```
+
 See Unfold docs:
 - https://unfoldadmin.com/docs/configuration/modeladmin/
 - https://unfoldadmin.com/docs/tabs/fieldsets/
