@@ -272,6 +272,10 @@ input#nav-filter {
     @apply max-w-full;
 }
 
+.cms-editor-inline-wrapper > div {
+    @apply  border border-base-200 rounded-2xl !p-4 min-h-80 shadow-xs
+}
+
 textarea.CMS_Editor + div#id_body_editor.fixed {
     @apply mt-4;
 }
