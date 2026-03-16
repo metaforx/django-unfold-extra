@@ -3,6 +3,7 @@ from pathlib import Path
 
 from django.core.management.utils import get_random_secret_key
 from django.templatetags.static import static
+from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -13,6 +14,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 USE_TZ = True
+USE_I18N = True
 
 INSTALLED_APPS = [
     # Unfold must come before django.contrib.admin
@@ -36,7 +38,8 @@ INSTALLED_APPS = [
     "menus",
     "treebeard",
     "sekizai",
-    # Django CMS plugins
+    # Django CMS versioning
+    "djangocms_versioning",
     # Parler
     "parler",
     # Test app
@@ -44,15 +47,15 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "cms.middleware.utils.ApphookReloadMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django.middleware.locale.LocaleMiddleware",
-    "cms.middleware.utils.ApphookReloadMiddleware",
     "cms.middleware.user.CurrentUserMiddleware",
     "cms.middleware.page.CurrentPageMiddleware",
     "cms.middleware.toolbar.ToolbarMiddleware",
@@ -72,6 +75,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.i18n",
                 "sekizai.context_processors.sekizai",
                 "cms.context_processors.cms_settings",
             ],
@@ -93,20 +97,37 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Django sites framework
 SITE_ID = 1
 
-# Django CMS settings
-CMS_TEMPLATES = [
-    ("base.html", "Base"),
-]
-
-CMS_CONFIRM_VERSION4 = True
-CMS_PERMISSION = False
-CMS_COLOR_SCHEME_TOGGLE = False
+# --- Language / i18n ---
+LANGUAGE_CODE = "en"
 
 LANGUAGES = [
-    ("en", "English"),
-    ("de", "German"),
+    ("en", _("English")),
+    ("de", _("German")),
 ]
-LANGUAGE_CODE = "en"
+
+# CMS language configuration (keyed by SITE_ID)
+# https://docs.django-cms.org/en/latest/topics/i18n.html
+CMS_LANGUAGES = {
+    SITE_ID: [
+        {
+            "code": "en",
+            "name": _("English"),
+            "public": True,
+        },
+        {
+            "code": "de",
+            "name": _("Deutsch"),
+            "public": True,
+            "hide_untranslated": True,
+        },
+    ],
+    "default": {
+        "fallbacks": ["en"],
+        "redirect_on_fallback": True,
+        "public": True,
+        "hide_untranslated": False,
+    },
+}
 
 # Parler settings
 PARLER_LANGUAGES = {
@@ -120,8 +141,21 @@ PARLER_LANGUAGES = {
     },
 }
 
-# Unfold settings
+# --- Django CMS ---
+CMS_TEMPLATES = [
+    ("base.html", "Base"),
+]
+
+CMS_CONFIRM_VERSION4 = True
+CMS_PERMISSION = False
+CMS_COLOR_SCHEME_TOGGLE = False
+
+# djangocms-versioning: default user for programmatic version creation (tests/fixtures)
+DJANGOCMS_VERSIONING_DEFAULT_USER = 1
+
+# --- Unfold ---
 UNFOLD = {
+    "SHOW_LANGUAGES": True,
     "STYLES": [
         lambda request: static("unfold_extra/css/styles.css"),
     ],

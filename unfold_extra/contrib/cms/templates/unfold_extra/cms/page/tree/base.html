@@ -1,6 +1,8 @@
 {% extends "admin/cms/page/tree/base.html" %}
 
-{% load i18n static admin_urls cms_static %}
+{% load i18n static admin_urls cms_static unfold_extra_tags %}
+
+{% block bodyclass %}{{ block.super }}{% unfold_cms_header_add_button as header_add %}{% if header_add %} unfold-header-add{% endif %}{% endblock %}
 
 {% block extrahead %}
     {#    {{ block.super }} #NOTE: avoid super call to prevent loading of original css and js#}
@@ -9,6 +11,19 @@
     <script src="{% static_with_version 'cms/js/dist/bundle.admin.base.min.js' %}"></script>
     <script src="{% static_with_version 'cms/js/dist/bundle.admin.pagetree.min.js' %}"></script>
 {% endblock extrahead %}
+
+{% block object-tools-items %}
+    {% unfold_cms_header_add_button as header_add %}
+    {% if header_add and has_add_permission %}
+        <div class="flex flex-row items-center">
+            <a href="{% url opts|admin_urlname:'add' %}?language={{ preview_language }}"
+               class="addlink bg-primary-600 flex items-center h-[38px] justify-center -my-1 rounded-full w-[38px]"
+               title="{% trans 'New Page' %}">
+                <span class="material-symbols-outlined text-white">add</span>
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}
 
 {% block breadcrumbs %}
     {% if not is_popup %}
