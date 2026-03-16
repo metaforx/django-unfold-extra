@@ -1,0 +1,6 @@
+# Sourcery configuration
+# https://docs.sourcery.ai/
+
+# Ignore compiled/generated files
+ignore:
+  - unfold_extra/static/unfold_extra/css/styles.css
