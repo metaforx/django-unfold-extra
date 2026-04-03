@@ -50,6 +50,8 @@ INSTALLED_APPS = [
 Make sure you have already configured Django Unfold and any optional upstream packages you use
 such as django CMS and django-parler.
 
+### Configure settings
+
 Add the following to your settings.py:
 
 ```python
@@ -70,7 +72,7 @@ CMS_COLOR_SCHEME_TOGGLE = False  # optional: let Unfold be the single theme swit
 UNFOLD_CMS_HEADER_ADD_BUTTON = True
 ```
 
-#### Language sync (Unfold ↔ CMS)
+### Language sync (Unfold ↔ CMS)
 
 To keep the Unfold language switcher and the CMS toolbar/admin in sync, register
 `cms_set_language` from `unfold_extra.views` as the `set_language` URL
@@ -96,6 +98,8 @@ to your base HTML template.
 - Syncs the Unfold theme with django CMS (light/dark/auto)
 - Adds Unfold-styled django CMS plugin admin support
 
+### Base template integration
+
 ```html
 {% load static cms_tags sekizai_tags unfold_extra_tags %}
 <!DOCTYPE html>
@@ -114,14 +118,16 @@ to your base HTML template.
 
 ## Usage
 
-### django-parler Support
+### Integrations
+
+#### django-parler Support
 
 - UnfoldTranslatableAdminMixin
 - UnfoldTranslatableStackedAdminMixin
 - UnfoldTranslatableTabularAdminMixin
 - TranslatableStackedInline, TranslatableTabularInline
 
-#### Example use:
+##### Example use:
 
 ```python
 class TranslatableAdmin(UnfoldTranslatableAdminMixin, BaseTranslatableAdmin):
@@ -136,7 +142,7 @@ class MyInlineAdmin(TranslatableStackedInline):
    extra = 0  # django inline settings
 ```
 
-### django-cms Support
+#### django-cms Support
 
 - Theme integration in django admin (partial support in frontend)
 - Pagetree
@@ -150,7 +156,7 @@ class MyInlineAdmin(TranslatableStackedInline):
 Support is automatically applied. Currently, it does not support customization besides compiling your own unfold_extra
 styles.
 
-#### CMS Plugins with Unfold styling
+##### CMS Plugins with Unfold styling
 
 For the general django CMS plugin model, see the official guide:
 https://docs.django-cms.org/en/stable/how_to/09-custom_plugins.html
@@ -194,7 +200,7 @@ See Unfold docs:
 - https://unfoldadmin.com/docs/configuration/modeladmin/
 - https://unfoldadmin.com/docs/tabs/fieldsets/
 
-#### Frontend django CMS support
+##### Frontend django CMS support
 
 Add `unfold_extra_tags` to your base HTML template after loading all CSS styles.
 This adds additional styles to integrate django CMS with Unfold Admin and exposes `"COLORS"` from Unfold settings on
@@ -210,7 +216,7 @@ the public website for authenticated django-cms admin users.
 </head>
 ```
 
-#### Custom compilation via npm/pnpm
+##### Custom compilation via npm/pnpm
 
 The current frontend scripts live in `unfold_extra/src/package.json`. Run them from
 `unfold_extra/src`, for example:
@@ -222,7 +228,7 @@ npm run tailwind:watch
 npm run build:js
 ```
 
-#### Sync CMS pagetree CSS after upgrading django-cms
+##### Sync CMS pagetree CSS after upgrading django-cms
 
 The CMS pagetree CSS is vendored with Unfold compatibility patches (e.g. removing the bare `.hidden` selector
 that conflicts with Tailwind/Unfold sidebar). After upgrading django-cms, re-sync the patched CSS:
@@ -233,61 +239,66 @@ poetry run python scripts/sync_cms_pagetree.py
 
 The script will warn if any patch targets have changed upstream and need manual review.
 
-#### Change colors for Django CMS
+##### Change colors for Django CMS
 
-You can change the colors for django CMS by editing `unfold_extra/src/css/unfold_extra.css`
-or by updating the Unfold colors in `settings.py`.
+Configure colors through Unfold in `settings.py` using `UNFOLD["COLORS"]`.
+This is the minimal and recommended way to align the admin theme, including the
+shared base, primary, and font colors used by this package.
 
-1. Change into `unfold_extra/src`
-2. Fetch the latest Unfold version using `npm run update:unfold`
-3. Rebuild styles with `npm run tailwind:build` or use `npm run tailwind:watch` while iterating
-
-```css
-html:root {
-   --dca-light-mode: 1;
-   --dca-dark-mode: 0;
-   --dca-white: theme('colors.white');
-   --dca-black: theme('colors.black');
-   --dca-shadow: theme('colors.base.950');
-   --dca-primary: theme('colors.primary.600');
-   --dca-gray: theme('colors.base.500');
-   --dca-gray-lightest: theme('colors.base.100');
-   --dca-gray-lighter: theme('colors.base.200');
-   --dca-gray-light: theme('colors.base.400');
-   --dca-gray-darker: theme('colors.base.700');
-   --dca-gray-darkest: theme('colors.base.800');
-   --dca-gray-super-lightest: theme('colors.base.50');
-
-   --active-brightness: 0.9;
-   --focus-brightness: 0.95;
-}
-
-
-html.dark {
-   --dca-light-mode: 0;
-   --dca-dark-mode: 1;
-   --dca-white: theme('colors.base.900');
-   --dca-black: theme('colors.white');
-   --dca-primary: theme('colors.primary.500');
-   --dca-gray: theme('colors.base.300') !important;
-   --dca-gray-lightest: theme('colors.base.700');
-   --dca-gray-lighter: theme('colors.base.600');
-   --dca-gray-light: theme('colors.base.400');
-   --dca-gray-darker: theme('colors.base.200');
-   --dca-gray-darkest: theme('colors.base.100');
-   --dca-gray-super-lightest: theme('colors.base.800');
-
-   --active-brightness: 2;
-   --focus-brightness: 1.5;
+```python
+UNFOLD = {
+    "COLORS": {
+        "base": {
+            "50": "oklch(98.5% 0.002 247.839)",
+            "100": "oklch(96.7% 0.003 264.542)",
+            "200": "oklch(92.8% 0.006 264.531)",
+            "300": "oklch(87.2% 0.009 258.338)",
+            "400": "oklch(71.4% 0.019 261.325)",
+            "500": "oklch(55.1% 0.023 264.364)",
+            "600": "oklch(44.6% 0.026 256.802)",
+            "700": "oklch(37.3% 0.031 259.733)",
+            "800": "oklch(27.8% 0.030 256.848)",
+            "900": "oklch(21.0% 0.032 264.665)",
+            "950": "oklch(13.0% 0.027 261.692)",
+        },
+        "primary": {
+            "50": "oklch(97.7% 0.014 308.299)",
+            "100": "oklch(94.6% 0.033 307.174)",
+            "200": "oklch(90.2% 0.060 306.703)",
+            "300": "oklch(82.7% 0.108 306.383)",
+            "400": "oklch(72.2% 0.177 305.504)",
+            "500": "oklch(62.7% 0.233 303.900)",
+            "600": "oklch(55.8% 0.252 302.321)",
+            "700": "oklch(49.6% 0.237 301.924)",
+            "800": "oklch(43.8% 0.198 303.724)",
+            "900": "oklch(38.1% 0.166 304.987)",
+            "950": "oklch(29.1% 0.143 302.717)",
+        },
+        "font": {
+            "subtle-light": "var(--color-base-500)",
+            "subtle-dark": "var(--color-base-400)",
+            "default-light": "var(--color-base-600)",
+            "default-dark": "var(--color-base-300)",
+            "important-light": "var(--color-base-900)",
+            "important-dark": "var(--color-base-100)",
+        },
+    },
 }
 ```
 
+For CMS-specific theme adjustments beyond the shared Unfold palette, update the
+frontend assets in `unfold_extra/src`.
 
-### Versatile Image Support
+See the official Unfold docs:
+- Settings options: https://unfoldadmin.com/docs/configuration/settings/
+- Customizing Tailwind stylesheet: https://unfoldadmin.com/docs/styles-scripts/customizing-tailwind/
+
+
+#### Versatile Image Support
 
 - Improved unfold integration via CSS only.
 
-### Django Auth, Sites
+#### Django Auth, Sites
 
 - Adds Unfold-based admin registrations for `django.contrib.auth` and `django.contrib.sites`.
 
