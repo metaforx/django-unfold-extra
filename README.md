@@ -1,8 +1,11 @@
 # Django Unfold Extra
 [![PyPI - Version](https://img.shields.io/pypi/v/django-unfold-extra.svg?style=for-the-badge)](https://pypi.org/project/django-unfold-extra/) [![Build](https://img.shields.io/github/actions/workflow/status/metaforx/django-unfold-extra/ci.yml?style=for-the-badge&event=pull_request)](https://github.com/metaforx/django-unfold-extra/actions/workflows/ci.yml)
 
-Unofficial extension for Django Unfold Admin. Adds support for django-parler and django-cms to the modern and
+Unofficial extension for Django Unfold Admin. Adds support for django-cms and other common django packages to support the modern and
 clean [Django Unfold](https://github.com/unfoldadmin/django-unfold) admin interface.
+
+This package can be combined with the additional non-mandatory unfold-modal package to provide a unified admin experience.
+See the [unfold-modal](https://github.com/metaforx/django-unfold-modal) package for more details.
 
 ## Overview
 
