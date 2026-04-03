@@ -4,8 +4,8 @@
 Unofficial extension for Django Unfold Admin. Adds support for django-cms and other common django packages to support the modern and
 clean [Django Unfold](https://github.com/unfoldadmin/django-unfold) admin interface.
 
-This package can be combined with the additional non-mandatory unfold-modal package to provide a unified admin experience.
-See the [unfold-modal](https://github.com/metaforx/django-unfold-modal) package for more details.
+This package can be combined with the additional non-mandatory `Unfold Modal` package to provide a unified admin experience.
+See the [django-unfold-modal](https://github.com/metaforx/django-unfold-modal) package for more details.
 
 ## Overview
 
