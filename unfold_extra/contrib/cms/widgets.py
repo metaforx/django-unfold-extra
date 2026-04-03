@@ -4,6 +4,10 @@ from unfold.widgets import UnfoldAdminSelectWidget
 
 
 class UnfoldPageSelectWidget(PageSelectWidget):
+    """PageSelectWidget with Unfold-styled selects in a stacked layout."""
+
+    template_name = "unfold_extra/cms/widgets/pageselectwidget.html"
+
     def _build_widgets(self):
         site_choices = get_site_choices()
         page_choices = get_page_choices()
@@ -12,7 +16,5 @@ class UnfoldPageSelectWidget(PageSelectWidget):
         self.widgets = (
             UnfoldAdminSelectWidget(choices=site_choices),
             UnfoldAdminSelectWidget(choices=[("", "----")]),
-            UnfoldAdminSelectWidget(
-                choices=self.choices, attrs={"style": "display:none;"}
-            ),
+            UnfoldAdminSelectWidget(choices=self.choices),
         )
