@@ -53,9 +53,9 @@ INSTALLED_APPS = [
 Make sure you have already configured Django Unfold and any optional upstream packages you use
 such as django CMS and django-parler.
 
-### Configure settings
+### Basic configuration
 
-Add the following to your settings.py:
+Add the shared styles integration to your `settings.py`:
 
 ```python
 from django.templatetags.static import static
@@ -64,59 +64,7 @@ UNFOLD = {
     "STYLES": [
         lambda request: static("unfold_extra/css/styles.css"),  # additional styles for supported integrations
     ],
-    "SCRIPTS": [
-        lambda request: static("unfold_extra/js/theme-sync.js"),  # keep django CMS theme in sync with Unfold
-    ],
 }
-CMS_COLOR_SCHEME_TOGGLE = False  # optional: let Unfold be the single theme switch
-
-# Move the CMS "New Page" button into Unfold's header (default: True).
-# Set to False to keep the button in the CMS pagetree body.
-UNFOLD_CMS_HEADER_ADD_BUTTON = True
-```
-
-### Language sync (Unfold ↔ CMS)
-
-To keep the Unfold language switcher and the CMS toolbar/admin in sync, register
-`cms_set_language` from `unfold_extra.views` as the `set_language` URL
-**before** Django's i18n URLs:
-
-```python
-from unfold_extra.views import cms_set_language
-
-urlpatterns = [
-    path("i18n/setlang/", cms_set_language, name="set_language"),
-    path("i18n/", include("django.conf.urls.i18n")),
-    # ...
-]
-```
-
-When a user switches language via Unfold's sidebar, `cms_set_language` updates
-the CMS `UserSettings.language` before the redirect so the CMS toolbar renders
-in the same language on the next request.
-
-Add `{% unfold_extra_styles %}` and `{% unfold_extra_theme_sync %}` from `unfold_extra_tags`
-to your base HTML template.
-- Enables Unfold admin colors in django CMS
-- Syncs the Unfold theme with django CMS (light/dark/auto)
-- Adds Unfold-styled django CMS plugin admin support
-
-### Base template integration
-
-```html
-{% load static cms_tags sekizai_tags unfold_extra_tags %}
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>{% block title %}{% endblock title %}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        {% render_block "css" %}
-        {% unfold_extra_styles %}
-        {% unfold_extra_theme_sync %}
-        ...
-    </head>
-...
-</html>
 ```
 
 ## Usage
@@ -145,21 +93,106 @@ class MyInlineAdmin(TranslatableStackedInline):
    extra = 0  # django inline settings
 ```
 
-#### django-cms Support
+#### Versatile Image Support
 
-- Theme integration in django admin (partial support in frontend)
-- Pagetree
-- PageUser, PageUserGroup, GlobalPagePermission when `CMS_PERMISSION = True`
-- djangocms-versioning admin template and styling support
-- CMS UserSettings singleton admin navigation and submit row
-- "New Page" button in Unfold header position (configurable via `UNFOLD_CMS_HEADER_ADD_BUTTON`)
+- Improved unfold integration via CSS only.
+
+#### Django Auth, Sites
+
+- Adds Unfold-based admin registrations for `django.contrib.auth` and `django.contrib.sites`.
+
+## CMS Integration
+
+### Features
+
+Unfold support for all common Django CMS admin pages and plugins including:
+- Pagetree (with add button and language switcher)
+- PageUser, PageUserGroup, GlobalPagePermission
+- CMS Versioning admin and page inline
+- CMS User Settings
 - Modal support
-- Not supported: Filer
 
-Support is automatically applied. Currently, it does not support customization besides compiling your own unfold_extra
-styles.
+Untested and likely not supported:
+- Django Filer
 
-##### CMS Plugins with Unfold styling
+Customization is possible compiling your own unfold_extra styles.
+
+### Configuration
+
+Add the django CMS-specific settings to your `settings.py`:
+
+```python
+from django.templatetags.static import static
+
+UNFOLD = {
+    "STYLES": [
+        lambda request: static("unfold_extra/css/styles.css"),  # additional styles for supported integrations
+    ],
+    "SCRIPTS": [
+        lambda request: static("unfold_extra/js/theme-sync.js"),  # keep django CMS theme in sync with Unfold
+    ],
+}
+```
+
+Optional: let Unfold be the single theme switch and hide theme toggle of Django CMS in toolbar.
+
+```python
+CMS_COLOR_SCHEME_TOGGLE = False #default option
+```
+
+Optional: move the CMS "New Page" button into Unfold's header. Set this to
+`False` to keep the button in the CMS pagetree body. Default of Django CMS.
+
+```python
+UNFOLD_CMS_HEADER_ADD_BUTTON = True #default option
+```
+
+### Base Template Integration
+
+Add `{% unfold_extra_styles %}` and `{% unfold_extra_theme_sync %}` from `unfold_extra_tags`
+to your base HTML template.
+
+- Enables Unfold admin colors in django CMS
+- Syncs the Unfold theme with django CMS (light/dark/auto)
+- Adds Unfold-styled django CMS plugin admin support
+
+```html
+{% load static cms_tags sekizai_tags unfold_extra_tags %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock title %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% render_block "css" %}
+        {% unfold_extra_styles %}
+        {% unfold_extra_theme_sync %}
+        ...
+    </head>
+...
+</html>
+```
+
+### Language Sync (Unfold ↔ CMS)
+
+To keep the Unfold language switcher and the CMS toolbar/admin in sync, register
+`cms_set_language` from `unfold_extra.views` as the `set_language` URL
+**before** Django's i18n URLs:
+
+```python
+from unfold_extra.views import cms_set_language
+
+urlpatterns = [
+    path("i18n/setlang/", cms_set_language, name="set_language"),
+    path("i18n/", include("django.conf.urls.i18n")),
+    # ...
+]
+```
+
+When a user switches language via Unfold's sidebar, `cms_set_language` updates
+the CMS `UserSettings.language` before the redirect so the CMS toolbar renders
+in the same language on the next request.
+
+### CMS Plugins With Unfold Styling
 
 For the general django CMS plugin model, see the official guide:
 https://docs.django-cms.org/en/stable/how_to/09-custom_plugins.html
@@ -203,7 +236,7 @@ See Unfold docs:
 - https://unfoldadmin.com/docs/configuration/modeladmin/
 - https://unfoldadmin.com/docs/tabs/fieldsets/
 
-##### Frontend django CMS support
+### Frontend django CMS Support
 
 Add `unfold_extra_tags` to your base HTML template after loading all CSS styles.
 This adds additional styles to integrate django CMS with Unfold Admin and exposes `"COLORS"` from Unfold settings on
@@ -219,7 +252,7 @@ the public website for authenticated django-cms admin users.
 </head>
 ```
 
-##### Custom compilation via npm/pnpm
+### Custom Compilation via npm/pnpm
 
 The current frontend scripts live in `unfold_extra/src/package.json`. Run them from
 `unfold_extra/src`, for example:
@@ -231,7 +264,7 @@ npm run tailwind:watch
 npm run build:js
 ```
 
-##### Sync CMS pagetree CSS after upgrading django-cms
+### Sync CMS Pagetree CSS After Upgrading django-cms
 
 The CMS pagetree CSS is vendored with Unfold compatibility patches (e.g. removing the bare `.hidden` selector
 that conflicts with Tailwind/Unfold sidebar). After upgrading django-cms, re-sync the patched CSS:
@@ -242,7 +275,7 @@ poetry run python scripts/sync_cms_pagetree.py
 
 The script will warn if any patch targets have changed upstream and need manual review.
 
-##### Change colors for Django CMS
+### Change Colors for Django CMS
 
 Configure colors through Unfold in `settings.py` using `UNFOLD["COLORS"]`.
 This is the minimal and recommended way to align the admin theme, including the
@@ -295,14 +328,5 @@ frontend assets in `unfold_extra/src`.
 See the official Unfold docs:
 - Settings options: https://unfoldadmin.com/docs/configuration/settings/
 - Customizing Tailwind stylesheet: https://unfoldadmin.com/docs/styles-scripts/customizing-tailwind/
-
-
-#### Versatile Image Support
-
-- Improved unfold integration via CSS only.
-
-#### Django Auth, Sites
-
-- Adds Unfold-based admin registrations for `django.contrib.auth` and `django.contrib.sites`.
 
 This is for personal use. You likely want to customize this. 
