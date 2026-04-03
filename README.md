@@ -26,7 +26,7 @@ popular Django packages.
 It uses unobtrusive template and CSS-styling overrides where possible. As Django CMS uses many '!important' flags, 
 pagetree.css had to be rebuilt from sources to remove some conflicting style definitions.
 
-> **Note:** Django CMS support is not fully tested yet. Filer integration is not supported.
+> **Note:** This package is already used in production but expect additional implementation work. I suggest using it if most of your cms plugins are custom-built.
 
 ## Installation
 
