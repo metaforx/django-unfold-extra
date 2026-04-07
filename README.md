@@ -123,7 +123,7 @@ Add the django CMS-specific settings to your `settings.py`:
 
 ```python
    # ...
-    "unfold_extra.contrib.cms",  # template loading order for patching required
+    "unfold_extra.contrib.cms",  # required to patch template loading order
     "unfold",
    # ...
 ```
