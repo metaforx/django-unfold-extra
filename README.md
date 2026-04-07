@@ -115,11 +115,18 @@ Unfold support for all common Django CMS admin pages and plugins including:
 Untested and likely not supported:
 - Django Filer
 
-Customization is possible compiling your own unfold_extra styles.
+Customization is possible by compiling your own unfold_extra styles.
 
 ### Configuration
 
 Add the django CMS-specific settings to your `settings.py`:
+
+```python
+   # ...
+    "unfold_extra.contrib.cms",  # required to patch template loading order
+    "unfold",
+   # ...
+```
 
 ```python
 from django.templatetags.static import static
