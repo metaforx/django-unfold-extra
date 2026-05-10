@@ -155,7 +155,19 @@ body #content-main .submit-row {
     @apply hidden;
 }
 
+/*******************************************************
+ django-cms - change form / page settings (tabbed fieldsets)
+ *******************************************************/
 
+/* Modal: any CMS-modal change form (forms in modal don't get the parent's flex gap).
+   Sideframe: only PageContent change form (page settings) — other sideframe pages
+   use Unfold's normal flex gap on the parent. */
+body.cms-admin-modal fieldset.module:not(.collapse),
+body.cms-admin-modal fieldset.module > details[open],
+body.cms-admin-sideframe.app-cms.model-pagecontent.change-form fieldset.module:not(.collapse),
+body.cms-admin-sideframe.app-cms.model-pagecontent.change-form fieldset.module > details[open] {
+    @apply mb-4;
+}
 
 /*******************************************************
  django-cms - pageContentAdmin - Action List
