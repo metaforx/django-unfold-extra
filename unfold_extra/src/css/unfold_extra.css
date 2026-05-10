@@ -194,6 +194,11 @@ html[data-theme=dark] div.cms .cms-toolbar-item-navigation .cms-toolbar-item-nav
     @apply text-white!;
 }
 
+/* prevent CMS topbar from overlapping changelist filter (46px topbar) */
+body.cms-admin-sideframe #changelist-filter {
+    @apply pt-[46px];
+}
+
 /*******************************************************
  django-cms - pagetree
  *******************************************************/
