@@ -203,7 +203,7 @@ div.cms .cms-btn-caution {
 
 /* force button text color to white on hover - dark mode */
 html[data-theme=dark] div.cms .cms-toolbar-item-navigation .cms-toolbar-item-navigation-hover > a {
-    @apply text-white!;
+    @apply !text-white;
 }
 
 /* prevent CMS topbar from overlapping changelist filter (46px topbar) */
@@ -346,6 +346,48 @@ textarea.CMS_Editor + div#id_body_editor.fixed .cms-linkfield-wrapper select {
 
 button.djangocms-versioning.submit {
     @apply mx-10 m-5 border border-base-200 cursor-pointer font-medium px-3 py-2 rounded-default transition-all w-full hover:bg-base-50 lg:block lg:w-auto dark:border-base-700  dark:hover:text-base-200 dark:hover:bg-base-900;
+}
+
+/* Confirmation pages (revert/archive/discard/unpublish): opts.app_label is empty
+   on these views, so we scope via `:has(form .confirm-link)` instead of `app-...`. */
+
+body.delete-confirmation:has(form .confirm-link) #content > h1 {
+    @apply !font-semibold !mb-4 !mx-0 !text-font-important-light !text-xl dark:!text-font-important-dark;
+}
+
+body.delete-confirmation:has(form .confirm-link) #content > p {
+    @apply leading-relaxed mb-6 text-sm;
+}
+
+body.delete-confirmation:has(form .confirm-link) #content > h3 {
+    @apply bg-base-50 border border-base-200 !font-semibold !mb-0 !mt-0 !mx-0 px-4 pt-4 pb-2 rounded-t-default !text-base !text-font-important-light dark:bg-white/[.02] dark:border-base-700 dark:!text-font-important-dark;
+}
+
+body.delete-confirmation:has(form .confirm-link) #content > h4 {
+    @apply bg-base-50 border border-base-200 border-t-0 !font-normal !mb-6 !mt-0 !mx-0 pt-2 pb-4 px-4 rounded-b-default !text-base-500 !text-sm dark:bg-white/[.02] dark:border-base-700 dark:!text-base-400;
+}
+
+body.delete-confirmation:has(form .confirm-link) #content form > div {
+    @apply !flex flex-col gap-3 items-stretch mt-6 lg:flex-row lg:items-center !text-left;
+}
+
+/* Archive/Unpublish wrap cancel in <a><input type="button"> — collapse the anchor
+   so the inner <input> participates directly in the flex row. */
+body.delete-confirmation:has(form .confirm-link) #content form > div > a:has(> input[type="button"]) {
+    @apply contents;
+}
+
+body.delete-confirmation:has(form .confirm-link) #content form a.cancel-link,
+body.delete-confirmation:has(form .confirm-link) #content form input[type="button"] {
+    @apply !bg-white !border !border-base-200 cursor-pointer flex font-medium h-[38px] items-center justify-center px-4 !rounded-default !text-font-default-light no-underline hover:!bg-base-50 lg:mr-auto lg:w-auto dark:!bg-base-900 dark:!border-base-700 dark:!text-font-default-dark dark:hover:!bg-base-800;
+}
+
+body.delete-confirmation:has(form .confirm-link) #content form input[type="submit"].confirm-link {
+    @apply !bg-primary-600 !border-0 cursor-pointer font-medium h-[38px] px-4 !rounded-default !text-white hover:!bg-primary-700 lg:w-auto;
+}
+
+body.delete-confirmation:has(form .confirm-link) #content form input[type="submit"][name="discard"] {
+    @apply !bg-red-600 hover:!bg-red-700 dark:!bg-red-500/20 dark:!text-red-500;
 }
 
 /*******************************************************
