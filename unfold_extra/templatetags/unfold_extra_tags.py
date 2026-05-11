@@ -85,6 +85,20 @@ def unfold_cms_header_add_button() -> bool:
 
 
 @register.simple_tag(takes_context=True)
+def unfold_action_classes(context) -> str:
+    """CSS classes for a default-variant Unfold action ``<li>``.
+
+    Thin wrapper over Unfold's ``action_item_classes`` for the case where we
+    don't have an ``UnfoldAction`` instance (e.g. upstream templates that emit
+    bare ``<li>`` items into the nav-actions list). The underlying tag needs
+    a dict-like ``action`` argument and Django template syntax can't express a
+    literal empty dict, so calling from Python sidesteps that.
+    """
+    from unfold.templatetags.unfold import action_item_classes
+    return action_item_classes(context, {})
+
+
+@register.simple_tag(takes_context=True)
 def unfold_extra_theme_sync(context) -> str:
     """
     Load a custom theme receiver script to switch django cm theme from unfolding when encapsulated in an iframe.
