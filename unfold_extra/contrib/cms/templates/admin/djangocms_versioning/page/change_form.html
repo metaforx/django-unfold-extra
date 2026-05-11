@@ -1,0 +1,32 @@
+{% extends "admin/cms/page/change_form.html" %}
+{% load static admin_urls admin_modify djangocms_versioning i18n cms_admin unfold_extra_tags %}
+
+{% block extrahead %}
+    {{ block.super }}cha
+    <script src="{% static "djangocms_versioning/js/object-tools.js" %}"></script>
+{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "djangocms_versioning/css/object-tools.css" %}">
+{% endblock %}
+
+{% block content_title %}
+    {% if title %}<h1>{{ title }}{% if original %} - {{ original.versions.first.short_name }}{% endif %}</h1>{% endif %}
+    {% block object-tools %}
+        {% if not is_popup and not add %}
+            <ul class="object-tools hide-in-modal">
+                {% block object-tools-items %}
+                    {% include "admin/djangocms_versioning/versioning_buttons.html" %}
+                    {% get_preview_url original as admin_url %}
+                    <li class="{% unfold_action_classes %}">
+                        <a href="{{ admin_url }}"
+                           onclick="window.parent.CMS.API.Sideframe.close()"
+                           target="_parent"
+                           class="cursor-pointer flex grow items-center gap-2 px-3 py-2 text-left whitespace-nowrap">{% trans "Preview" %}</a>
+                    </li>
+                {% endblock %}
+            </ul>
+        {% endif %}
+    {% endblock %}
+{% endblock %}
