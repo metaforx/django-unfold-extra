@@ -212,6 +212,13 @@ body.cms-admin-sideframe #changelist-filter {
 }
 
 /*******************************************************
+ django-cms - modal breadcrumbs
+ *******************************************************/
+div.cms .cms-modal-breadcrumb {
+    @apply py-4
+}
+
+/*******************************************************
  django-cms - pagetree
  *******************************************************/
 .cms-pagetree-root {
@@ -290,11 +297,19 @@ input#nav-filter {
 }
 
 .cms-editor-inline-wrapper > div {
-    @apply  border border-base-200 rounded-2xl !p-4 min-h-80 shadow-xs
+    @apply  border border-base-200 rounded-2xl shadow-xs min-h-auto
 }
 
-textarea.CMS_Editor + div#id_body_editor.fixed {
+.cms-editor-inline-wrapper > div + div {
     @apply mt-4;
+}
+
+.cms-editor-inline-wrapper {
+    @apply mt-0;
+}
+
+.cms-editor-inline-wrapper > .tiptap {
+    @apply !p-4 !overflow-y-visible;
 }
 
 textarea.CMS_Editor + div#id_body_editor.fixed .cms-toolbar[role=menubar] {
@@ -303,10 +318,6 @@ textarea.CMS_Editor + div#id_body_editor.fixed .cms-toolbar[role=menubar] {
 
 textarea.CMS_Editor + div#id_body_editor.fixed .cms-toolbar[role=menubar] > * {
     @apply bg-transparent space-x-4 p-2 mx-1 my-2 rounded-lg;
-}
-
-textarea.CMS_Editor + div#id_body_editor.fixed .tiptap.ProseMirror {
-    @apply !overflow-y-visible;
 }
 
 textarea.CMS_Editor + div#id_body_editor.fixed .tiptap.ProseMirror a[href] {
