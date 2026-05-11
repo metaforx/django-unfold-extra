@@ -1,0 +1,37 @@
+{% load djangocms_versioning i18n unfold_extra_tags %}
+
+{% with url=original|url_publish_version:request.user %}
+    {% if url %}
+        <li class="{% unfold_action_classes %}">
+            <a href="{{ url }}?next={{ request.path }}"
+               class="accent cms-form-post-method cursor-pointer flex grow items-center gap-2 px-3 py-2 text-left whitespace-nowrap">{% trans "Publish" %}</a>
+        </li>
+    {% endif %}
+{% endwith %}
+
+{% with url=original|url_new_draft:request.user %}
+    {% if url %}
+        <li class="{% unfold_action_classes %}">
+            <a href="{{ url }}?force_admin=1"
+               class="accent cms-form-post-method cursor-pointer flex grow items-center gap-2 px-3 py-2 text-left whitespace-nowrap">{% trans "New Draft" %}</a>
+        </li>
+    {% endif %}
+{% endwith %}
+
+{% with url=original|url_revert_version:request.user %}
+    {% if url %}
+        <li class="{% unfold_action_classes %}">
+            <a href="{{ url }}?next={{ request.path }}"
+               class="cursor-pointer flex grow items-center gap-2 px-3 py-2 text-left whitespace-nowrap">{% trans "Revert" %}</a>
+        </li>
+    {% endif %}
+{% endwith %}
+
+{% with url=original|url_version_list %}
+    {% if url %}
+        <li class="{% unfold_action_classes %}">
+            <a href="{{ url }}"
+               class="cursor-pointer flex grow items-center gap-2 px-3 py-2 text-left whitespace-nowrap">{% trans "Versions" %}</a>
+        </li>
+    {% endif %}
+{% endwith %}
