@@ -243,6 +243,28 @@ See Unfold docs:
 - https://unfoldadmin.com/docs/configuration/modeladmin/
 - https://unfoldadmin.com/docs/tabs/fieldsets/
 
+### Page Select Widget
+
+Unfold-styled replacements for django CMS's `PageSelectWidget`:
+
+- `UnfoldPageSelectWidget` — use in regular admin forms and CMS plugin forms.
+- `UnfoldPageSelectInlineWidget` — use in Django admin inlines. Django admin's
+  inline cloning leaves `__prefix__` inside the widget's JSON config; this
+  variant ships a small JS patch so the site/page change handler binds to
+  dynamically added rows.
+
+```python
+from cms.forms.fields import PageSelectFormField
+from unfold_extra.contrib.cms.widgets import (
+    UnfoldPageSelectInlineWidget,
+    UnfoldPageSelectWidget,
+)
+
+
+class MyInlineForm(forms.ModelForm):
+    page = PageSelectFormField(widget=UnfoldPageSelectInlineWidget())
+```
+
 ### Frontend django CMS Support
 
 Add `unfold_extra_tags` to your base HTML template after loading all CSS styles.
