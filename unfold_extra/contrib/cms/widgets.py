@@ -18,3 +18,10 @@ class UnfoldPageSelectWidget(PageSelectWidget):
             UnfoldAdminSelectWidget(choices=[("", "----")]),
             UnfoldAdminSelectWidget(choices=self.choices),
         )
+
+
+class UnfoldPageSelectInlineWidget(UnfoldPageSelectWidget):
+    """Inline-safe variant: patches the ``__prefix__`` bug in cloned rows."""
+
+    class Media:
+        js = ("unfold_extra/cms/js/pageselect_inline.js",)
