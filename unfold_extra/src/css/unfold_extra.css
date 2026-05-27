@@ -212,13 +212,6 @@ body.cms-admin-sideframe #changelist-filter {
 }
 
 /*******************************************************
- django-cms - modal breadcrumbs
- *******************************************************/
-div.cms .cms-modal-breadcrumb {
-    @apply py-4
-}
-
-/*******************************************************
  django-cms - pagetree
  *******************************************************/
 .cms-pagetree-root {
