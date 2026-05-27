@@ -120,6 +120,11 @@ body.cms-admin-sideframe:not(.djangocms-admin-style) {
     margin-block-start: 0;
 }
 
+/* No border or shadow for fieldsets in cms plugin modal */
+body.cms-admin-modal fieldset > .form-rows {
+    @apply border-0 shadow-none;
+}
+
 /* Fix Modal displaying django parent admin navigation  */
 body.cms-admin-modal #page #main {
     @apply pt-8;
@@ -296,10 +301,6 @@ input#nav-filter {
     @apply max-w-full;
 }
 
-.cms-editor-inline-wrapper > div {
-    @apply  border border-base-200 rounded-2xl shadow-xs min-h-auto
-}
-
 .cms-editor-inline-wrapper > div + div {
     @apply mt-4;
 }
@@ -313,7 +314,7 @@ input#nav-filter {
 }
 
 textarea.CMS_Editor + div#id_body_editor.fixed .cms-toolbar[role=menubar] {
-    @apply bg-base-50 dark:bg-base-800 p-4 rounded-2xl border-0 mb-16 mt-16;
+    @apply bg-base-50 dark:bg-base-800 p-4 border-0 mb-16 mt-16;
 }
 
 textarea.CMS_Editor + div#id_body_editor.fixed .cms-toolbar[role=menubar] > * {
