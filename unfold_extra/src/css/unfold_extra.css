@@ -120,11 +120,6 @@ body.cms-admin-sideframe:not(.djangocms-admin-style) {
     margin-block-start: 0;
 }
 
-/* No border or shadow for fieldsets in cms plugin modal */
-body.cms-admin-modal fieldset > .form-rows {
-    @apply border-0 shadow-none;
-}
-
 /* Fix Modal displaying django parent admin navigation  */
 body.cms-admin-modal #page #main {
     @apply pt-8;
