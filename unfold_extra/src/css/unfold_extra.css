@@ -311,7 +311,7 @@ input#nav-filter {
 }
 
 textarea.CMS_Editor + div#id_body_editor.fixed .cms-toolbar[role=menubar] {
-    @apply bg-base-50 dark:bg-base-800 p-4 rounded-2xl border-0 mb-16 mt-16;
+    @apply bg-base-50 dark:bg-base-800 p-4 border-0 mb-16 mt-16;
 }
 
 textarea.CMS_Editor + div#id_body_editor.fixed .cms-toolbar[role=menubar] > * {
