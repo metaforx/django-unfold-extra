@@ -140,6 +140,11 @@ body.cms-admin-modal #page #main > div:first-child {
     @apply hidden;
 }
 
+/* Fix Modal width */
+body.cms-admin-modal #page #main #content {
+    @apply max-w-full;
+}
+
 /* Hide meta navigation (view on site / version) in modal */
 body.cms-admin-modal #page #main #content > div:not(#content-main) ul li a {
     @apply hidden;
