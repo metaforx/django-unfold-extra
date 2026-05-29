@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     "unfold_extra",
     # Optional integrations
     "unfold_extra.contrib.cms",
+    "unfold_extra.contrib.djangocms_link",
+    "unfold_extra.contrib.versatileimage",
     "unfold_extra.contrib.parler",
     "unfold_extra.contrib.auth",  # you will likely want a custom auth admin
     "unfold_extra.contrib.sites",
@@ -124,6 +126,7 @@ Add the django CMS-specific settings to your `settings.py`:
 ```python
    # ...
     "unfold_extra.contrib.cms",  # required to patch template loading order
+    "unfold_extra.contrib.djangocms_link",  # optional, but you likely want this if you use the Link plugin
     "unfold",
    # ...
 ```
