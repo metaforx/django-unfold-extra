@@ -2,15 +2,28 @@ import copy
 
 from cms.models.fields import PageField
 from cms.plugin_base import CMSPluginBase
-from unfold.mixins.base_model_admin import BaseModelAdminMixin
 from unfold.admin import StackedInline as UnfoldStackedInline
 from unfold.admin import TabularInline as UnfoldTabularInline
+from unfold.mixins import (
+    ActionModelAdminMixin,
+    DatasetModelAdminMixin,
+    FormFieldModelAdminMixin,
+    NestedInlinesModelAdminMixin,
+)
 from unfold.overrides import FORMFIELD_OVERRIDES
 
 from unfold_extra.contrib.cms.widgets import UnfoldPageSelectWidget
 
 
-class UnfoldCMSPluginBase(BaseModelAdminMixin, CMSPluginBase):
+# unfold >=0.92 split BaseModelAdminMixin into these four mixins; keep
+# ModelAdmin's order, with CMSPluginBase in place of Django's BaseModelAdmin.
+class UnfoldCMSPluginBase(
+    FormFieldModelAdminMixin,
+    ActionModelAdminMixin,
+    DatasetModelAdminMixin,
+    NestedInlinesModelAdminMixin,
+    CMSPluginBase,
+):
     """django CMS plugin base with Unfold admin form behavior and widget overrides."""
 
     formfield_overrides = {}
