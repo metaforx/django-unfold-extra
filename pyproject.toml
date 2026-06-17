@@ -1,24 +1,20 @@
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
 [project]
 name = "django-unfold-extra"
-dynamic = ["version"]
 description = "Unofficial extra for Django Unfold Admin. Supports django-parler and django-cms."
-license = "MIT"
+authors = [{ name = "Marc Widmer", email = "marc@koga.cx" }]
+requires-python = ">=3.12"
 readme = "README.md"
-requires-python = ">=3.9"
-authors = [
-    { name = "Marc Widmer", email = "marc@koga.cx" }
+license = "MIT"
+keywords = [
+    "django",
+    "django cms",
+    "unfold",
+    "admin",
+    "tailwind",
+    "theme",
 ]
-keywords = ["django", "django cms","unfold", "admin", "tailwind", "theme",]
-urls = { "Homepage" = "https://github.com/metaforx/django-unfold-extra" }
 classifiers = [
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Operating System :: OS Independent",
@@ -29,8 +25,9 @@ classifiers = [
 dependencies = [
     "django-cms>=5.0,<5.1",
     "django-parler~=2.3",
-    "django-unfold"
+    "django-unfold",
 ]
+dynamic = ["version"]
 
 [project.optional-dependencies]
 test = [
@@ -39,7 +36,28 @@ test = [
     "pytest-env>=1.0",
 ]
 
+[project.urls]
+Homepage = "https://github.com/metaforx/django-unfold-extra"
+
 [project.scripts]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+test = [
+    "pytest>=8.0",
+    "pytest-django>=4.5",
+    "pytest-env>=1.0",
+    "pytest-playwright>=0.7.2,<0.8",
+    "djangocms-versioning>=2.5.1",
+]
+dev = ["ruff>=0.4"]
+
+[tool.uv]
+package = false
+default-groups = "all"
 # Uncomment and adjust the script below as needed:
 # unfold-cms = "unfold_extra.cli:main"
 
@@ -59,39 +77,16 @@ path = "unfold_extra/__init__.py"
 
 [tool.hatch.build]
 exclude = [
-  "unfold_extra/src/node_modules",
-  "unfold_extra/src/node_modules/**/*",
-  "unfold_extra/src/*.lock",
-  "unfold_extra/src/package-lock.json",
-  "**/*.map",
-  "**/.DS_Store",
-  "**/__pycache__",
-  "docs/**/*"
+    "unfold_extra/src/node_modules",
+    "unfold_extra/src/node_modules/**/*",
+    "unfold_extra/src/*.lock",
+    "unfold_extra/src/package-lock.json",
+    "**/*.map",
+    "**/.DS_Store",
+    "**/__pycache__",
+    "docs/**/*"
+,
 ]
-
-# Poetry for dependency management (dev/test)
-[tool.poetry]
-name = "django-unfold-extra"
-description = "Unofficial extra for Django Unfold Admin. Supports django-parler and django-cms."
-package-mode = false
-
-[tool.poetry.dependencies]
-python = ">=3.11,<4.0"
-django = ">=5.0"
-django-cms = "~5.0"
-django-treebeard = "<5.0"
-django-parler = "~2.3"
-django-unfold = ">=0.77.1"
-djangocms-versioning = "^2.5.1"
-
-[tool.poetry.group.test.dependencies]
-pytest = ">=8.0"
-pytest-django = ">=4.5"
-pytest-env = ">=1.0"
-pytest-playwright = "^0.7.2"
-
-[tool.poetry.group.dev.dependencies]
-ruff = ">=0.4"
 
 [tool.pytest.ini_options]
 addopts = """\
