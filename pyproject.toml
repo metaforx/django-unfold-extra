@@ -25,7 +25,7 @@ classifiers = [
 dependencies = [
     "django-cms>=5.0,<5.1",
     "django-parler~=2.3",
-    "django-unfold",
+    "django-unfold>=0.92",
 ]
 dynamic = ["version"]
 
