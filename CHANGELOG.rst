@@ -6,6 +6,23 @@ All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
 
+0.3.0a0 (2026-06-17)
+====================
+
+Breaking Changes:
+-----------------
+
+* Require Python >=3.12; drop support for 3.9 / 3.10 / 3.11 (required by django-unfold >=0.92)
+* Require django-unfold >=0.92 for the reworked ``unfold.mixins`` API; ``UnfoldCMSPluginBase`` now composes ``FormFieldModelAdminMixin``, ``ActionModelAdminMixin``, ``DatasetModelAdminMixin`` and ``NestedInlinesModelAdminMixin`` (previously the removed ``BaseModelAdminMixin``)
+
+Other:
+------
+
+* Migrate dependency management from Poetry to uv
+* Restore djangocms-versioning to the test dependency group
+* Update CI to run on uv with a Python 3.12 / 3.13 matrix
+
+
 0.2.9 (2026-06-17)
 ==================
 
