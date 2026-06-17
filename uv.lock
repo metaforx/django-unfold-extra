@@ -266,7 +266,7 @@ test = [
 requires-dist = [
     { name = "django-cms", specifier = ">=5.0,<5.1" },
     { name = "django-parler", specifier = "~=2.3" },
-    { name = "django-unfold" },
+    { name = "django-unfold", specifier = ">=0.92" },
     { name = "pytest", marker = "extra == 'test'", specifier = ">=8.0" },
     { name = "pytest-django", marker = "extra == 'test'", specifier = ">=4.5" },
     { name = "pytest-env", marker = "extra == 'test'", specifier = ">=1.0" },
