@@ -45,6 +45,9 @@ class ChangePageForm(BaseChangePageForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        # NOTE: django-cms >=5.0.7 pops "slug" and "overwrite_url" from
+        # self.fields when the URL is locked (versioned page sharing its URL
+        # with a published version).
         for key in [
             "title",
             "slug",
@@ -52,16 +55,18 @@ class ChangePageForm(BaseChangePageForm):
             "page_title",
             "menu_title",
         ]:
-            self.fields[key].widget.attrs["class"] = " ".join(INPUT_CLASSES)
+            if key in self.fields:
+                self.fields[key].widget.attrs["class"] = " ".join(INPUT_CLASSES)
 
         self.fields["meta_description"].widget.attrs["class"] = " ".join(
             TEXTAREA_CLASSES
         )
 
         # url option NOTE: django cms uses an input type 'text', we could use an UnfoldAdminURLInputWidget instead...
-        self.fields["overwrite_url"].widget.attrs["class"] = " ".join(
-            INPUT_CLASSES
-        )
+        if "overwrite_url" in self.fields:
+            self.fields["overwrite_url"].widget.attrs["class"] = " ".join(
+                INPUT_CLASSES
+            )
         self.fields["redirect"].widget.attrs["class"] = " ".join(
             SELECT_CLASSES
         )
