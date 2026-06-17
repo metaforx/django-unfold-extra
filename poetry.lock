@@ -194,13 +194,13 @@ django = ">=3.2"
 
 [[package]]
 name = "django-cms"
-version = "5.0.3"
+version = "5.0.8"
 description = "Lean enterprise content management powered by Django."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "django_cms-5.0.3-py2.py3-none-any.whl", hash = "sha256:e8adee6b70ed7e53be7175a70ce93d95365d7819f22c435f2e87160df9e34526"},
-    {file = "django_cms-5.0.3.tar.gz", hash = "sha256:9174a98fe6e8f1ae1a47ca17d49813f817f4b67aa9c51da1137011b121203457"},
+    {file = "django_cms-5.0.8-py2.py3-none-any.whl", hash = "sha256:9a3af14cde4d2d94331b93177d611bac682a9d39f47c906c14e5ede3f2892ded"},
+    {file = "django_cms-5.0.8.tar.gz", hash = "sha256:ad3c640cfd784d93f0fb33fd3ba8ecfbd024c2e65b01a86a14379a0a5a895283"},
 ]
 
 [package.dependencies]
@@ -779,4 +779,4 @@ zstd = ["backports-zstd (>=1.0.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<4.0"
-content-hash = "c0a8580da346ef6bfbfe93f0a8a15055e73b3f1f945833bfdd890a5601f434d6"
+content-hash = "a440805c8d07c16a5d01da53af4ad76839697c5bc5bea45e254f8ae7393f6e51"
