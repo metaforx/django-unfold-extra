@@ -27,6 +27,8 @@ from .forms import (
 )
 
 from django.http import HttpResponse, HttpResponseRedirect
+from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
 from cms.admin.pageadmin import MODAL_HTML_REDIRECT  # existing constant in django CMS
 from cms.toolbar.utils import get_object_edit_url
 from django.urls import reverse
@@ -124,6 +126,46 @@ class PageContentAdmin(ModelAdmin, BasePageContentAdmin):
         context["show_save_and_add_another"] = False
         return super().render_change_form(request, context, add, change, form_url, obj)
 
+    # ------------------------------------------------------------------
+    # Read-only "URL is locked" display methods
+    #
+    # django-cms >=5.0.7 ships ``PageContentAdmin.slug`` / ``overwrite_url``
+    # with the help text baked into the field *label* via ``format_html_lazy``
+    # (cms/admin/pageadmin.py:875-901). Django admin's
+    # ``AdminReadonlyField.label_tag`` then runs the label through
+    # ``django.utils.text.capfirst`` -- which slices the string and drops the
+    # SafeString marker -- before passing it to ``format_html``. The result is
+    # that the ``<small class="help">...</small>`` tag gets HTML-escaped and
+    # users see the literal markup instead of small text.
+    #
+    # We override both methods so the label is plain text (capfirst can't hurt
+    # it) and move the hint into the *value*, where ``AdminReadonlyField.contents``
+    # preserves SafeString verbatim.
+    # ------------------------------------------------------------------
+    _URL_LOCKED_HINT = _(
+        "To change it, first unpublish the currently published version of this page."
+    )
+
+    @admin.display(description=_("Slug"))
+    def slug(self, obj):
+        if not hasattr(obj, "_url_obj"):
+            obj._url_obj = obj.page.get_url(obj.language)
+        return format_html(
+            '{}<div class="leading-relaxed mt-2 text-xs">{}</div>',
+            obj._url_obj.slug,
+            self._URL_LOCKED_HINT,
+        )
+
+    @admin.display(description=_("Overwrite URL"))
+    def overwrite_url(self, obj):
+        if not hasattr(obj, "_url_obj"):
+            obj._url_obj = obj.page.get_url(obj.language)
+        value = "" if obj._url_obj.managed else obj._url_obj.path
+        return format_html(
+            '{}<div class="leading-relaxed mt-2 text-xs">{}</div>',
+            value,
+            self._URL_LOCKED_HINT,
+        )
 
     def _changelist_url(self) -> str:
         """
