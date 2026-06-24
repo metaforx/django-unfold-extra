@@ -285,8 +285,12 @@ Install unfold extra with link support:
 pip install "django-unfold-extra[link]"
 ```
 
-> The `file_link` option of djangocms-link requires `django-filer`; install it
-> separately if you use file links.
+> The `[link]` extra pulls in `django-filer` because djangocms-link's migrations
+> import it (even if you never use `file_link`). Add `filer` to your
+> `INSTALLED_APPS` so the migrations can run.
+>
+> Advanced: drop filer by shadowing those migrations via `MIGRATION_MODULES` —
+> won't work on databases already migrated with filer.
 
 ### Frontend django CMS Support
 
