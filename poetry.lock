@@ -282,6 +282,62 @@ files = [
 Django = ">=3.2"
 
 [[package]]
+name = "django-fsm-2"
+version = "4.2.4"
+description = "Django friendly finite state machine support."
+optional = false
+python-versions = ">=3.10"
+groups = ["test"]
+files = [
+    {file = "django_fsm_2-4.2.4-py3-none-any.whl", hash = "sha256:0072be359520075eee4baead3873e5eb8f1700b4f91e41208058cbea0ceae9b9"},
+    {file = "django_fsm_2-4.2.4.tar.gz", hash = "sha256:0e395afd03ff504afd476e8568ca213aafc3324bd4e5427e5b3287f7b1e7d979"},
+]
+
+[package.dependencies]
+django = ">=4.2.29"
+django-stubs-ext = "*"
+typing-extensions = {version = "*", markers = "python_version < \"3.12\""}
+
+[package.extras]
+graphviz = ["graphviz"]
+
+[[package]]
+name = "django-js-asset"
+version = "4.0.1"
+description = "script tag with additional attributes for django.forms.Media"
+optional = false
+python-versions = ">=3.10"
+groups = ["test"]
+files = [
+    {file = "django_js_asset-4.0.1-py3-none-any.whl", hash = "sha256:967ac7d95ce094d9f65f358278bcd494201e2f9bbee936430150de83eac9f656"},
+    {file = "django_js_asset-4.0.1.tar.gz", hash = "sha256:51ad1060115bf741bef88dc1287ca7f70e1d6ea7cf935f52a34f39eca9bd9db1"},
+]
+
+[package.dependencies]
+django = ">=4.2"
+
+[package.extras]
+tests = ["coverage"]
+
+[[package]]
+name = "django-mptt"
+version = "0.18.0"
+description = "Utilities for implementing Modified Preorder Tree Traversal with your Django Models and working with trees of Model instances."
+optional = false
+python-versions = ">=3.9"
+groups = ["test"]
+files = [
+    {file = "django_mptt-0.18.0-py3-none-any.whl", hash = "sha256:bfa3f01627e3966a1df901aeca74570a3e933e66809ebf58d9df673e63627afb"},
+    {file = "django_mptt-0.18.0.tar.gz", hash = "sha256:cf5661357ff22bc64e20d3341c26e538aa54583aea0763cfe6aaec0ab8e3a8ee"},
+]
+
+[package.dependencies]
+django-js-asset = "*"
+
+[package.extras]
+tests = ["coverage[toml]", "mock-django"]
+
+[[package]]
 name = "django-parler"
 version = "2.3"
 description = "Simple Django model translations without nasty hacks, featuring nice admin integration."
@@ -327,6 +383,22 @@ files = [
 [package.dependencies]
 django = ">=3.2"
 django-classy-tags = ">=3.0"
+
+[[package]]
+name = "django-stubs-ext"
+version = "6.0.6"
+description = "Monkey-patching and extensions for django-stubs"
+optional = false
+python-versions = ">=3.10"
+groups = ["test"]
+files = [
+    {file = "django_stubs_ext-6.0.6-py3-none-any.whl", hash = "sha256:5470c970f61a3ccf5aae7633feef1a097f944f417b955da200c9ac26ecd9134b"},
+    {file = "django_stubs_ext-6.0.6.tar.gz", hash = "sha256:e6f09884e48d7c5b250a373dfa22aa3e83bb91b8babbd8d05187f6b92247f232"},
+]
+
+[package.dependencies]
+django = "*"
+typing-extensions = "*"
 
 [[package]]
 name = "django-treebeard"
@@ -406,6 +478,23 @@ files = [
 [package.dependencies]
 django-cms = ">=3.7,<4.1 || >4.1,<4.1.1 || >4.1.1,<4.1.2 || >4.1.2"
 djangocms-attributes-field = ">=1"
+
+[[package]]
+name = "djangocms-versioning"
+version = "2.5.1"
+description = "Versioning for django CMS"
+optional = false
+python-versions = ">=3.10"
+groups = ["test"]
+files = [
+    {file = "djangocms_versioning-2.5.1-py3-none-any.whl", hash = "sha256:f396014400dab3a561227d5395496aec40666f5e36aa8337f99aff8752249581"},
+    {file = "djangocms_versioning-2.5.1.tar.gz", hash = "sha256:8e4d69e583918a8bb6264049a865c68abd2adc8cd14aa150b8ab1ad4d852a226"},
+]
+
+[package.dependencies]
+django-cms = ">=4.1.1"
+django-fsm-2 = "*"
+packaging = "*"
 
 [[package]]
 name = "easy-thumbnails"
@@ -1209,4 +1298,4 @@ test = ["django-filer", "djangocms-link", "pytest", "pytest-django", "pytest-env
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<4.0"
-content-hash = "e0644dde03978610e3ac52e5f20985e804655d38b76d38ca2d32fbf8a947bdbf"
+content-hash = "355b2aa2453dfa309389645673a1db9888a5ba1005e8bd2e093466466831a3e6"
