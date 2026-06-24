@@ -265,6 +265,29 @@ class MyInlineForm(forms.ModelForm):
     page = PageSelectFormField(widget=UnfoldPageSelectInlineWidget())
 ```
 
+### djangocms-link Plugin Support
+
+[`djangocms-link`](https://github.com/django-cms/djangocms-link)
+To use DjangoCMS Link Plugin with the Unfold theme for Django CMS, it must be registered with customized widgets that support Unfold styling. 
+All functions remain intact.
+
+```python
+INSTALLED_APPS = [
+    # ...
+    "djangocms_link",
+    "unfold_extra.contrib.djangocms_link",  # after djangocms_link
+]
+```
+
+Install unfold extra with link support:
+
+```bash
+pip install "django-unfold-extra[link]"
+```
+
+> The `file_link` option of djangocms-link requires `django-filer`; install it
+> separately if you use file links.
+
 ### Frontend django CMS Support
 
 Add `unfold_extra_tags` to your base HTML template after loading all CSS styles.

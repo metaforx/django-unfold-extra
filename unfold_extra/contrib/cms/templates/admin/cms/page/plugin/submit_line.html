@@ -1,0 +1,13 @@
+{% load i18n unfold %}
+{# Unfold-styled plugin submit row. #}
+{# Overrides cms/templates/admin/cms/page/plugin/submit_line.html: replaces the #}
+{# plain <input type="submit"> with an Unfold button, and drops the redundant #}
+{# Delete/Save-as-new buttons — the django CMS plugin modal already provides #}
+{# native save/cancel/delete controls, so repeating them inside the form is noise. #}
+<div class="submit-row flex flex-col-reverse gap-3 lg:flex-row-reverse">
+    {% if show_save %}
+        {% component "unfold/components/button.html" with submit=1 name="_save" class="w-full lg:w-auto" %}
+            {% trans "Save" %}
+        {% endcomponent %}
+    {% endif %}
+</div>
