@@ -6,6 +6,19 @@ All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
 
+Unreleased
+==========
+
+Features:
+---------
+
+* Add optional ``unfold_extra.contrib.djangocms_link`` integration: swaps the
+  djangocms-link ``LinkPlugin`` for an Unfold-styled drop-in (keeps the
+  ``LinkPlugin`` plugin_type), styles the link MultiWidget and attributes field
+  via ``cms_widget_overrides``, and drops the redundant Delete button from the plugin
+  submit row (the CMS modal already provides it). Install with the ``[link]`` extra.
+
+
 0.2.9 (2026-06-17)
 ==================
 
