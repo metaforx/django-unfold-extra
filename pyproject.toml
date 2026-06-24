@@ -35,6 +35,9 @@ dependencies = [
 [project.optional-dependencies]
 link = [
     "djangocms-link>=5.0",
+    # djangocms-link's 0014 migration hard-imports filer, so it is required to
+    # migrate even when file_link is unused.
+    "django-filer>=3.0",
 ]
 test = [
     "pytest>=8.0",
