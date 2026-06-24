@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     "unfold_extra.contrib.parler",
     "unfold_extra.contrib.auth",
     "unfold_extra.contrib.sites",
+    "unfold_extra.contrib.djangocms_link",
     # Django core
     "django.contrib.admin",
     "django.contrib.auth",
@@ -40,6 +41,12 @@ INSTALLED_APPS = [
     "sekizai",
     # Django CMS versioning
     "djangocms_versioning",
+    # Django CMS link plugin (styled by unfold_extra.contrib.djangocms_link)
+    # djangocms_link migrations depend on filer (file_link field).
+    "filer",
+    "easy_thumbnails",
+    "mptt",
+    "djangocms_link",
     # Parler
     "parler",
     # Test app
