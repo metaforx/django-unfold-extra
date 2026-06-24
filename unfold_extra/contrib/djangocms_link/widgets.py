@@ -9,7 +9,7 @@ class UnfoldLinkWidget(LinkWidget):
     """djangocms-link's ``MultiWidget`` with Unfold classes on each sub-widget."""
 
     def __init__(self, site_selector=None):
-        super().__init__(site_selector)
+        super().__init__(site_selector=site_selector)
         input_cls = " ".join(INPUT_CLASSES)
         select_cls = " ".join(SELECT_CLASSES)
         # Style each sub-widget by type, leaving the autocomplete sub-widget on
