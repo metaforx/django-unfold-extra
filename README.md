@@ -308,7 +308,7 @@ the public website for authenticated django-cms admin users.
 </head>
 ```
 
-### Custom Compilation via npm/pnpm
+### Custom Compilation via npm
 
 The current frontend scripts live in `unfold_extra/src/package.json`. Run them from
 `unfold_extra/src`, for example:
