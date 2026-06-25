@@ -6,29 +6,44 @@ All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
 
-0.4.0 (2026-07-27)
-==================
+Unreleased
+==========
 
 Features:
 ---------
 
-* Add optional ``unfold_extra.contrib.djangocms_alias`` integration: Unfold-styled
-  ``Alias``, ``AliasContent`` and ``Category`` admin, an Unfold-styled Alias plugin
-  form and "Create Alias" popup, and the alias usage / delete listings rendered
-  through Unfold's table component
-* ``UnfoldCMSPluginBase`` now also restyles widgets on fields declared directly on a
-  plugin form (``render_change_form``), covering views that build their own form
+* Add ``unfold_extra.contrib.filer`` integration: re-registers django-filer's
+  ``Folder``, ``File``, ``Clipboard``, ``Image``, ``FolderPermission`` and
+  ``ThumbnailOption`` admins with Unfold styling. ``django-filer`` is an optional
+  dependency — install with ``pip install django-unfold-extra[filer]``.
+* Ship a Unfold-patched copy of filer's ``admin_filer.css`` (vendored by
+  ``scripts/sync_filer_css.py``) that removes the bare ``.hidden`` rule colliding
+  with the Unfold sidebar, drops a global ``height:100% !important`` rule, and
+  re-scopes ``.filebrowser h2{display:none}`` to ``#content`` so the folder
+  directory-listing view no longer hides the Unfold sidebar navigation titles
+  (which left the sidebar looking empty). It shadows filer's own
+  ``filer/css/admin_filer.css`` static path so every filer admin template (folder
+  listing, change forms, delete and move/copy dialogs) loads the patched CSS
+  without per-template overrides.
+* Fix ``KeyError: 'add'`` when adding a folder: filer's "make folder" popup is
+  served by a custom view without the standard admin context, while Unfold's
+  ``change_form.html`` renders ``{% submit_row %}`` in the footer (outside the
+  content block). The contrib.filer override of ``new_folder_form.html`` blanks
+  that block and renders its own Unfold-styled Save button.
+* Restore the filer file/image change-form UI under Unfold:
 
-Bug Fixes:
-----------
+  - Render filer's native image preview + focal-point (subject location) picker,
+    which lived in ``{% block object-tools %}`` — a block Unfold's change_form does
+    not output — by relocating filer's ``detail_info`` panel into a rendered block.
+  - Apply Unfold's styled file widget to filer's ``file`` field (filer hard-codes a
+    bare ``FileInput``).
+  - Re-target Unfold's header breadcrumb to filer's folder navigation
+    (Filer -> root folder -> ancestor folders -> object) instead of the flat
+    app/model/object trail, keeping Unfold's native header styling and back button.
+  - Render the read-only canonical URL as a visible Unfold-styled link.
 
-* Stop ``UnfoldCMSPluginBase`` shadowing a plugin's ``name`` and ``form``: the django CMS
-  metaclass stamps both onto every subclass, including the base
-* Load django CMS' own ``cms.pagetree.css`` again and layer a small override on top,
-  replacing the vendored copy and its sync script
 
-
-0.3.0 (2026-07-27)
+0.4.0 (2026-07-27)
 ==================
 
 Breaking Changes:

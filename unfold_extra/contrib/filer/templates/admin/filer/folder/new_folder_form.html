@@ -1,0 +1,55 @@
+{% extends "admin/change_form.html" %}
+{% load i18n filer_admin_tags unfold %}
+
+{# Overrides filer's admin/filer/folder/new_folder_form.html (contrib.filer is #}
+{# before filer in INSTALLED_APPS, so this wins). filer's "make folder" popup is #}
+{# served by a custom view (filer.admin.views.make_folder) whose context lacks the #}
+{# standard admin keys (`add`, `change`, ...). Unfold's change_form.html renders #}
+{# `{% block submit_buttons_bottom %}{% submit_row %}{% endblock %}` in the footer, #}
+{# OUTSIDE the content block, so it fires here and `submit_row` raises #}
+{# `KeyError: 'add'`. We blank that block and render the Save button ourselves with #}
+{# Unfold styling. #}
+
+{% block title %}{% translate "Add new" %} {% translate "folder" %} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block content %}
+    <h1>{% translate "Add new" %} {% translate "folder" %}</h1>
+    <div id="content-main">
+        <form id="folder_form" method="post" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="flex flex-col gap-6">
+                {% filer_admin_context_hidden_formfields %}
+
+                {% if new_folder_form.errors %}
+                    {% include "unfold/helpers/messages/errornote.html" with errors=new_folder_form.errors %}
+                    {% include "unfold/helpers/messages/error.html" with errors=new_folder_form.non_field_errors %}
+                {% endif %}
+
+                <fieldset class="module aligned">
+                    <div class="form-row {% if new_folder_form.errors.name %}errors {% endif %}name">
+                        {{ new_folder_form.errors.name.as_ul }}
+                        <div class="flex flex-col gap-2">
+                        {% for field in new_folder_form %}
+                            <label class="font-semibold mb-2 required text-font-important-light text-sm dark:text-font-important-dark" for="id_{{ field.name }}">{{ field.label }}:</label>{{ field }}
+                        {% endfor %}
+                        </div>
+                    </div>
+                </fieldset>
+
+                {# NB: avoid the `submit-row` class — Unfold hides it (it renders its #}
+                {# own row by #id and suppresses Django's stock class-based one). #}
+                <div class="flex">
+                    {% component "unfold/components/button.html" with submit=1 form="folder_form" name="_save" %}
+                        {% trans "Save" %}
+                    {% endcomponent %}
+                </div>
+
+                <script type="text/javascript">
+                    document.getElementById('id_name').focus();
+                </script>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block submit_buttons_bottom %}{% endblock %}

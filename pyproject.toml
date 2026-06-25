@@ -44,6 +44,10 @@ test = [
     # djangocms-link migrations depend on filer (file_link field).
     "django-filer>=3.0",
 ]
+# Optional contrib integration: install with `pip install django-unfold-extra[filer]`
+filer = [
+    "django-filer>=3.0",
+]
 
 [project.urls]
 Homepage = "https://github.com/metaforx/django-unfold-extra"
