@@ -465,3 +465,32 @@ html:root[data-theme=dark] {
         --focus-brightness: 1.5;
     }
 }
+
+/*******************************************************
+ Django admin compat vars (consumed by django-filer CSS)
+ *******************************************************/
+
+/* django-filer's admin_filer.css consumes the stock Django admin CSS variables
+   (--primary, --body-fg, --*-button-*, …) that Django's own admin defines but
+   Unfold does not. Several filer rules reference them with no fallback — e.g.
+   `background-color:var(--primary)` / `var(--default-button-bg)` on the
+   navigator buttons ("New Folder"/"Upload Files") — so under Unfold those
+   buttons render with no background. Define them here, mapped onto the --dca-*
+   vars above (which already flip between light/dark) and Unfold's
+   --radius-default, so a single declaration covers both themes via var()
+   indirection. */
+html:root {
+    --primary: var(--dca-primary);
+    --body-fg: var(--dca-black);
+    --body-bg: var(--dca-white);
+    --body-quiet-color: var(--dca-gray-light);
+    --border-color: var(--dca-gray-lighter);
+    --darkened-bg: var(--dca-gray-super-lightest);
+    --button-bg: var(--dca-primary);
+    --button-fg: theme('colors.white');
+    --default-button-bg: var(--dca-primary);
+    --default-button-fg: theme('colors.white');
+    --button-radius: var(--radius-default);
+    --dca-btn-radius: var(--radius-default);
+    --dca-border-radius: var(--radius-default);
+}
