@@ -1,0 +1,28 @@
+/*
+ * Unfold compatibility overrides for django-cms' `cms/css/cms.pagetree.css`.
+ *
+ * cms.pagetree.css ships a bare `.hidden { display: none !important }`. Unfold
+ * hides responsive chrome with Tailwind's `hidden <bp>:block` pattern, whose
+ * `display` is *not* `!important` — so CMS wins at every breakpoint and the
+ * nav sidebar collapses for good. Re-assert the two responsive utilities Unfold
+ * actually pairs with `hidden`.
+ *
+ * Raw CSS on purpose (not part of the Tailwind build): the compiled
+ * `unfold/css/styles.css` is emitted in `unfold/layouts/skeleton.html` well
+ * before `{% block extrahead %}`, where cms.pagetree.css is linked. Losing the
+ * cascade to an equally-specific `!important` rule is the whole problem, so
+ * this file has to be linked *after* it — see
+ * `unfold_extra/cms/includes/pagetree_css.html`.
+ */
+
+@media (min-width: 64rem) {
+    .lg\:flex {
+        display: flex !important;
+    }
+}
+
+@media (min-width: 80rem) {
+    .xl\:block {
+        display: block !important;
+    }
+}

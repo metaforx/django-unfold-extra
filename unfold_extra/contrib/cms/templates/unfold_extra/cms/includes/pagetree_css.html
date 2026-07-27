@@ -1,0 +1,5 @@
+{% load static cms_static %}
+{# django-cms' pagetree stylesheet plus the Unfold compatibility overrides it #}
+{# needs. Always include both, in this order — see pagetree-overrides.css. #}
+<link rel="stylesheet" href="{% static_with_version 'cms/css/cms.pagetree.css' %}">
+<link rel="stylesheet" href="{% static 'unfold_extra/cms/css/pagetree-overrides.css' %}">

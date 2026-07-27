@@ -29,8 +29,8 @@ Django Unfold Extra enhances the Django Unfold admin interface with additional f
 This package maintains the clean, modern aesthetic of Django Unfold while adding specialized interfaces for these
 popular Django packages.
 
-It uses unobtrusive template and CSS-styling overrides where possible. As Django CMS uses many '!important' flags, 
-pagetree.css had to be rebuilt from sources to remove some conflicting style definitions.
+It uses unobtrusive template and CSS-styling overrides where possible. As Django CMS uses many '!important' flags,
+a small override stylesheet is loaded after the CMS pagetree CSS to win back the conflicting declarations.
 
 > **Note:** This package is already used in production but expect additional implementation work. I suggest using it if most of your cms plugins are custom-built.
 
@@ -325,17 +325,6 @@ npm run tailwind:build
 npm run tailwind:watch
 npm run build:js
 ```
-
-### Sync CMS Pagetree CSS After Upgrading django-cms
-
-The CMS pagetree CSS is vendored with Unfold compatibility patches (e.g. removing the bare `.hidden` selector
-that conflicts with Tailwind/Unfold sidebar). After upgrading django-cms, re-sync the patched CSS:
-
-```bash
-poetry run python scripts/sync_cms_pagetree.py
-```
-
-The script will warn if any patch targets have changed upstream and need manual review.
 
 ### Change Colors for Django CMS
 
