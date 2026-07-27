@@ -65,9 +65,9 @@ def test_widget_overrides_registered():
 
 
 def test_standard_fields_styled_without_a_form():
-    """name/target/template get Unfold widgets from the override alone."""
+    """name/link_target/template get Unfold widgets from the override alone."""
     assert "Unfold" in type(_formfield("name").widget).__name__
-    for key in ("target", "template"):
+    for key in ("link_target", "template"):
         assert "Unfold" in type(_formfield(key).widget).__name__
 
 
