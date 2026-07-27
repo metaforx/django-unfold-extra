@@ -15,12 +15,10 @@ Django Unfold Extra enhances the Django Unfold admin interface with additional f
   - **Page tree**: Unfold-styled pagetree, with an optional "New Page" button in the Unfold header and a language switcher
   - **Page & PageContent admin**: change forms with tabbed fieldsets, plus modal, sideframe, and popup contexts
   - **Permissions**: `PageUser`, `PageUserGroup` and `GlobalPagePermission` admin, with page-permission and view-restriction inlines
-  - **User settings**: CMS `UserSettings` admin and toolbar header
   - **djangocms-versioning**: versioning admin, grouper form, version action buttons, and the versioned page change form
   - **Custom plugins**: `UnfoldCMSPluginBase` with `UnfoldStackedInline` / `UnfoldTabularInline` and `cms_widget_overrides`
-  - **Page select widget**: `PageField` rendered through `UnfoldPageSelectWidget`, including the inline variant
   - **djangocms-link**: drop-in Unfold-styled `LinkPlugin` covering the link MultiWidget and the attributes field (`[link]` extra)
-  - **Theme & language sync**: the CMS toolbar follows Unfold's light/dark/auto theme, and `cms_set_language` keeps both language switchers aligned
+  - **djangocms-alias**: Unfold-styled alias, category and alias content admin, the Alias plugin form and "Create Alias" popup, plus the usage and delete listings
 - **django-parler**: Multilingual support for your Django models
 - **versatile-image**: Improved integration with django-versatileimagefield, including preview and ppoi
 - **Unfold auto-update**: Styles can be updated from the official Unfold package via npm
