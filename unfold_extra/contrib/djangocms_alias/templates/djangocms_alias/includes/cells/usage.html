@@ -1,0 +1,5 @@
+{% load i18n djangocms_alias_tags %}
+{% if item|model_name == 'alias' %}
+    <a class="text-primary-600 hover:text-primary-700 dark:text-primary-500"
+       href="{% get_alias_usage_view_url alias=item back=1 %}">{% trans 'View usage' %}</a>
+{% endif %}

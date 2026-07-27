@@ -1,0 +1,26 @@
+{% extends "admin/change_list.html" %}{% load i18n %}
+{# Unfold-styled grouper language selector. The `language-selector` and #}
+{# `js-language-selector` classes are bound by cms' language-selector.js. #}
+
+{% block extrahead %}{{ block.super }}
+<style>
+  /* language-selector.js moves .language-selector into #toolbar and floats
+     #changelist-search right, stacking them. Lay both out on one row. */
+  #toolbar { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  #toolbar #changelist-search { float: none !important; margin-left: auto; }
+</style>
+{% endblock %}
+
+{% block search %}
+  <div class="language-selector flex items-center gap-2">
+    <label class="font-medium text-font-important-light text-sm dark:text-font-important-dark">{% trans "Language" %}:</label>
+    <div class="relative w-fit">
+      <select class="js-language-selector appearance-none border border-base-200 bg-white font-medium rounded-default shadow-xs text-font-default-light text-sm px-3 py-2 pr-8! min-w-[180px] focus:outline-2 focus:-outline-offset-2 focus:outline-primary-600 dark:bg-base-900 dark:border-base-700 dark:text-font-default-dark dark:scheme-dark">
+        {% for code, lang in cl.model_admin.get_language_tuple %}
+          <option value="{{ code }}"{% if cl.model_admin.language == code %} selected{% endif %}>{{ lang }}</option>
+        {% endfor %}
+      </select>
+      <span class="material-symbols-outlined absolute pointer-events-none right-0 mr-[12px] top-1/2 -translate-y-1/2 text-base-400 dark:text-base-500">expand_more</span>
+    </div>
+  </div>{{ block.super }}
+{% endblock %}
