@@ -1,5 +1,6 @@
 from django.template.loader import render_to_string
 from django.urls import NoReverseMatch
+from django.utils.functional import Promise
 
 
 def patch_unfold_header_title() -> None:
@@ -15,6 +16,12 @@ def patch_unfold_header_title() -> None:
     original_header_title = unfold_tags.header_title
 
     def safe_header_title(context):
+        # A lazy translation as ``original`` is neither a ``str`` nor a model, so
+        # Unfold's ``original._meta`` lookup blows up. Coerce it to a real string.
+        original = context.get("original")
+        if isinstance(original, Promise):
+            with context.push(original=str(original)):
+                return safe_header_title(context)
         try:
             return original_header_title(context)
         except NoReverseMatch:

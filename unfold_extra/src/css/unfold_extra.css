@@ -389,6 +389,21 @@ body.delete-confirmation:has(form .confirm-link) #content form input[type="submi
 }
 
 /*******************************************************
+ select2 - single select
+ *******************************************************/
+
+/* select2.css leaves the selection box display:block and only positions the arrow
+   under its own --default theme, so on Unfold's --admin-autocomplete theme the
+   chevron wraps below the label. Three classes to outrank select2.css. */
+.select2-container.select2-container--admin-autocomplete .select2-selection--single {
+    @apply flex items-center justify-between;
+}
+
+.select2-container.select2-container--admin-autocomplete .select2-selection--single .select2-selection__rendered {
+    @apply min-w-0;
+}
+
+/*******************************************************
  django-cms - theme
  *******************************************************/
 

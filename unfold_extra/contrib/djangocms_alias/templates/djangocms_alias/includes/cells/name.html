@@ -1,0 +1,23 @@
+{% load djangocms_alias_tags %}
+{% with contents=item|using_contents url=item|admin_view_url %}
+{% if contents|length > 1 %}
+    <details>
+        <summary class="cursor-pointer">{{ item }}</summary>
+        <ul class="mt-2 ml-4 list-disc">
+            {% for content in contents %}
+                <li>
+                    <a target="_top"
+                       class="js-close-sideframe text-primary-600 hover:text-primary-700 dark:text-primary-500"
+                       href="{{ content|admin_view_url }}">{{ content }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </details>
+{% elif url %}
+    <a target="_top"
+       class="js-close-sideframe text-primary-600 hover:text-primary-700 dark:text-primary-500"
+       href="{{ url }}">{{ item }}</a>
+{% else %}
+    {{ item }}
+{% endif %}
+{% endwith %}

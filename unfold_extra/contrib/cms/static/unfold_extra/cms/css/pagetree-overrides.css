@@ -1,0 +1,17 @@
+/*
+ * cms.pagetree.css ships a bare `.hidden {display:none!important}` that outranks
+ * Tailwind's responsive `display` utilities and collapses Unfold's nav sidebar.
+ * Must load after it — hence raw CSS, not the Tailwind build. See pagetree_css.html.
+ */
+
+@media (min-width: 64rem) {
+    .lg\:flex {
+        display: flex !important;
+    }
+}
+
+@media (min-width: 80rem) {
+    .xl\:block {
+        display: block !important;
+    }
+}

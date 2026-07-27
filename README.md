@@ -18,6 +18,7 @@ Django Unfold Extra enhances the Django Unfold admin interface with additional f
   - **djangocms-versioning**: versioning admin, grouper form, version action buttons, and the versioned page change form
   - **Custom plugins**: `UnfoldCMSPluginBase` with `UnfoldStackedInline` / `UnfoldTabularInline` and `cms_widget_overrides`
   - **djangocms-link**: drop-in Unfold-styled `LinkPlugin` covering the link MultiWidget and the attributes field (`[link]` extra)
+  - **djangocms-alias**: Unfold-styled alias, category and alias content admin, the Alias plugin form and "Create Alias" popup, plus the usage and delete listings
 - **django-parler**: Multilingual support for your Django models
 - **versatile-image**: Improved integration with django-versatileimagefield, including preview and ppoi
 - **Unfold auto-update**: Styles can be updated from the official Unfold package via npm
@@ -29,8 +30,8 @@ Django Unfold Extra enhances the Django Unfold admin interface with additional f
 This package maintains the clean, modern aesthetic of Django Unfold while adding specialized interfaces for these
 popular Django packages.
 
-It uses unobtrusive template and CSS-styling overrides where possible. As Django CMS uses many '!important' flags, 
-pagetree.css had to be rebuilt from sources to remove some conflicting style definitions.
+It uses unobtrusive template and CSS-styling overrides where possible. As Django CMS uses many '!important' flags,
+a small override stylesheet is loaded after the CMS pagetree CSS to win back the conflicting declarations.
 
 > **Note:** This package is already used in production but expect additional implementation work. I suggest using it if most of your cms plugins are custom-built.
 
@@ -325,17 +326,6 @@ npm run tailwind:build
 npm run tailwind:watch
 npm run build:js
 ```
-
-### Sync CMS Pagetree CSS After Upgrading django-cms
-
-The CMS pagetree CSS is vendored with Unfold compatibility patches (e.g. removing the bare `.hidden` selector
-that conflicts with Tailwind/Unfold sidebar). After upgrading django-cms, re-sync the patched CSS:
-
-```bash
-poetry run python scripts/sync_cms_pagetree.py
-```
-
-The script will warn if any patch targets have changed upstream and need manual review.
 
 ### Change Colors for Django CMS
 

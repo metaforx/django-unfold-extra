@@ -6,6 +6,28 @@ All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
 
+0.4.0 (2026-07-27)
+==================
+
+Features:
+---------
+
+* Add optional ``unfold_extra.contrib.djangocms_alias`` integration: Unfold-styled
+  ``Alias``, ``AliasContent`` and ``Category`` admin, an Unfold-styled Alias plugin
+  form and "Create Alias" popup, and the alias usage / delete listings rendered
+  through Unfold's table component
+* ``UnfoldCMSPluginBase`` now also restyles widgets on fields declared directly on a
+  plugin form (``render_change_form``), covering views that build their own form
+
+Bug Fixes:
+----------
+
+* Stop ``UnfoldCMSPluginBase`` shadowing a plugin's ``name`` and ``form``: the django CMS
+  metaclass stamps both onto every subclass, including the base
+* Load django CMS' own ``cms.pagetree.css`` again and layer a small override on top,
+  replacing the vendored copy and its sync script
+
+
 0.3.0 (2026-07-27)
 ==================
 
