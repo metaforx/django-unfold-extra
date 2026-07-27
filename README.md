@@ -18,6 +18,7 @@ Django Unfold Extra enhances the Django Unfold admin interface with additional f
   - **djangocms-versioning**: versioning admin, grouper form, version action buttons, and the versioned page change form
   - **Custom plugins**: `UnfoldCMSPluginBase` with `UnfoldStackedInline` / `UnfoldTabularInline` and `cms_widget_overrides`
   - **djangocms-link**: drop-in Unfold-styled `LinkPlugin` covering the link MultiWidget and the attributes field (`[link]` extra)
+  - **djangocms-alias**: Unfold-styled alias, category and alias content admin, the Alias plugin form and "Create Alias" popup, plus the usage and delete listings
 - **django-parler**: Multilingual support for your Django models
 - **versatile-image**: Improved integration with django-versatileimagefield, including preview and ppoi
 - **Unfold auto-update**: Styles can be updated from the official Unfold package via npm
