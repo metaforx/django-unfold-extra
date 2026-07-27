@@ -61,6 +61,10 @@ test = [
     "pytest-env>=1.0",
     "pytest-playwright>=0.7.2,<0.8",
     "djangocms-versioning>=2.5.1",
+    # Required by the test settings' INSTALLED_APPS; not transitive deps of cms.
+    "djangocms-link>=5.0",
+    "django-filer>=3.0",
+    "django-mptt>=0.18",
 ]
 dev = ["ruff>=0.4"]
 
