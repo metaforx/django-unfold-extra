@@ -1,14 +1,7 @@
 {% extends "admin/change_form.html" %}
 {% load i18n filer_admin_tags unfold %}
 
-{# Overrides filer's admin/filer/folder/new_folder_form.html (contrib.filer is #}
-{# before filer in INSTALLED_APPS, so this wins). filer's "make folder" popup is #}
-{# served by a custom view (filer.admin.views.make_folder) whose context lacks the #}
-{# standard admin keys (`add`, `change`, ...). Unfold's change_form.html renders #}
-{# `{% block submit_buttons_bottom %}{% submit_row %}{% endblock %}` in the footer, #}
-{# OUTSIDE the content block, so it fires here and `submit_row` raises #}
-{# `KeyError: 'add'`. We blank that block and render the Save button ourselves with #}
-{# Unfold styling. #}
+{# Unfold's footer submit_row crashes on this popup; render our own Save button. #}
 
 {% block title %}{% translate "Add new" %} {% translate "folder" %} | {{ site_title|default:_('Django site admin') }}{% endblock %}
 
@@ -36,8 +29,7 @@
                     </div>
                 </fieldset>
 
-                {# NB: avoid the `submit-row` class — Unfold hides it (it renders its #}
-                {# own row by #id and suppresses Django's stock class-based one). #}
+                {# NB: no `submit-row` class here — Unfold hides it. #}
                 <div class="flex">
                     {% component "unfold/components/button.html" with submit=1 form="folder_form" name="_save" %}
                         {% trans "Save" %}

@@ -1,0 +1,22 @@
+{% extends "unfold/helpers/header.html" %}
+
+{# Unfold's header with only the <h1> swapped for filer's folder trail. #}
+
+{% block welcome-msg %}
+    <div class="flex flex-row grow font-semibold items-center min-w-0 mr-3">
+        {% if is_nav_sidebar_enabled and not is_popup %}
+            <span class="cursor-pointer flex flex-row items-center">
+                <span class="material-symbols-outlined hidden! xl:block!" x-on:click="sidebarDesktopOpen = !sidebarDesktopOpen; localStorage.setItem('sidebarDesktopOpen', sidebarDesktopOpen ? '1' : '0');">dock_to_right</span>
+                <span class="material-symbols-outlined block! xl:hidden!" x-on:click="sidebarMobileOpen = !sidebarMobileOpen">dock_to_right</span>
+            </span>
+
+            <span class="block bg-base-200 h-5 mx-3 w-px dark:bg-base-700"></span>
+        {% endif %}
+
+        {% include "unfold/helpers/header_back_button.html" %}
+
+        <h1 class="overflow-hidden leading-5 text-important flex items-center whitespace-nowrap xl:text-base">
+            {% include "unfold_extra/filer/helpers/breadcrumbs.html" %}
+        </h1>
+    </div>
+{% endblock %}

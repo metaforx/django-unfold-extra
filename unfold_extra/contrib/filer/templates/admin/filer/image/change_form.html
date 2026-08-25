@@ -1,11 +1,13 @@
 {% extends "admin/filer/change_form.html" %}
 {% load i18n filer_admin_tags static %}
 
-{# Overrides filer's admin/filer/image/change_form.html. filer renders the image #}
-{# preview + focal-point (subject location) picker inside `{% block object-tools %}`, #}
-{# a block Unfold's change_form.html does not output (Unfold uses object-tools-items). #}
-{# We instead render filer's native detail_info panel at the top of the form body, #}
-{# inside a block Unfold does render, reusing filer's focal-point JS + CSS. #}
+{# Restores filer's image preview / focal-point picker and the folder breadcrumb. #}
+
+{% block header %}
+    {% with filer_breadcrumb_object=original %}
+        {% include "unfold_extra/filer/helpers/header.html" %}
+    {% endwith %}
+{% endblock %}
 
 {% block extrahead %}{{ block.super }}
     <script src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>

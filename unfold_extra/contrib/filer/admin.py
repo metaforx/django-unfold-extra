@@ -79,7 +79,17 @@ for model in (Folder, File, Clipboard, Image, FolderPermission, ThumbnailOption)
 # which is declared as ``class PageContentAdmin(ModelAdmin, BasePageContentAdmin)``).
 @admin.register(Folder)
 class FolderAdmin(ModelAdmin, FilerFolderAdmin):
-    pass
+    # The directory listing is not a model changelist, so Unfold's header ends up
+    # without a breadcrumb. Point filer at our subclassed template, which swaps in
+    # an Unfold-styled header. It cannot live at filer's own template path the way
+    # admin_filer.css shadows filer's static path — it *extends* filer's template,
+    # so shadowing would make it extend itself. filer ships two listings that
+    # differ only in block names, so mirror whichever one it picked.
+    directory_listing_template = (
+        "unfold_extra/filer/folder/legacy_listing.html"
+        if FilerFolderAdmin.directory_listing_template.endswith("legacy_listing.html")
+        else "unfold_extra/filer/folder/directory_listing.html"
+    )
 
 
 @admin.register(File)

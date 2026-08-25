@@ -1,62 +1,12 @@
 {% extends "admin/change_form.html" %}
-{% load i18n static unfold filer_admin_tags %}
+{% load i18n static filer_admin_tags %}
 
-{# Overrides filer's admin/filer/change_form.html (shared base for the file, image #}
-{# and folder change forms). We keep filer's own concerns (admin_filer.css, hidden #}
-{# context fields, the duplicates sidebar) and replace Unfold's header breadcrumb #}
-{# trail so it points at filer's folder navigation (app -> root folder -> ancestor #}
-{# folders -> object) instead of the flat app/model/object trail. The markup mirrors #}
-{# unfold/helpers/welcomemsg.html + header_title.html so it stays visually identical #}
-{# to every other Unfold page (back-arrow button, no "Home" item). #}
+{# Shared base for every model in the `filer` app label — nothing folder-specific. #}
 
 {% block extrastyle %}
     {{ block.super }}
     <link rel="stylesheet" type="text/css" href="{% static 'filer/css/admin_filer.css' %}">
     {% icon_css_library %}
-{% endblock %}
-
-{% block header %}
-    <div class="bg-white border-b border-base-200 mb-6 px-4 z-40 dark:bg-base-900 dark:border-base-800 dark:text-font-default-dark {% element_classes 'header' %}">
-        <div class="{% if not cl.model_admin.list_fullwidth and is_fullwidth != "1" %}container{% endif %} flex items-center h-16 mx-auto py-4 {% element_classes 'header_inner' %}">
-            <div id="header-inner" class="flex items-center relative w-full">
-                <div class="flex items-center w-full">
-                    <div class="flex flex-row grow font-semibold items-center min-w-0 mr-3">
-                        {% if is_nav_sidebar_enabled and not is_popup %}
-                            <span class="cursor-pointer flex flex-row items-center">
-                                <span class="material-symbols-outlined hidden! xl:block!" x-on:click="sidebarDesktopOpen = !sidebarDesktopOpen; localStorage.setItem('sidebarDesktopOpen', sidebarDesktopOpen ? '1' : '0');">dock_to_right</span>
-                                <span class="material-symbols-outlined block! xl:hidden!" x-on:click="sidebarMobileOpen = !sidebarMobileOpen">dock_to_right</span>
-                            </span>
-
-                            <span class="block bg-base-200 h-5 mx-3 w-px dark:bg-base-700"></span>
-                        {% endif %}
-
-                        {% include "unfold/helpers/header_back_button.html" %}
-
-                        <h1 class="overflow-hidden leading-5 text-important flex items-center whitespace-nowrap xl:text-base">
-                            {% spaceless %}
-                                {% with original as instance %}
-                                    <a href="{% url 'admin:app_list' app_label='filer' %}" class="align-middle inline-block leading-5 min-w-0 truncate tracking-tight">{% trans "Filer" %}</a>
-                                    <span class="material-symbols-outlined inline-block align-middle leading-5 mx-2 text-base-400 dark:text-base-500">chevron_right</span>
-
-                                    <a href="{% url 'admin:filer-directory_listing-root' %}" class="align-middle inline-block leading-5 min-w-0 truncate tracking-tight">{% trans "Folder" %}</a>
-
-                                    {% for ancestor_folder in instance.logical_path %}
-                                        <span class="material-symbols-outlined inline-block align-middle leading-5 mx-2 text-base-400 dark:text-base-500">chevron_right</span>
-                                        <a href="{{ ancestor_folder.get_admin_directory_listing_url_path }}" class="align-middle inline-block leading-5 min-w-0 truncate tracking-tight">{{ ancestor_folder.label|default:ancestor_folder.name }}</a>
-                                    {% endfor %}
-
-                                    <span class="material-symbols-outlined inline-block align-middle leading-5 mx-2 text-base-400 dark:text-base-500">chevron_right</span>
-                                    <span class="align-middle inline-block leading-5 min-w-0 truncate tracking-tight">{{ instance.label|default:instance.name }}</span>
-                                {% endwith %}
-                            {% endspaceless %}
-                        </h1>
-                    </div>
-
-                    {% include "unfold/helpers/userlinks.html" %}
-                </div>
-            </div>
-        </div>
-    </div>
 {% endblock %}
 
 {% block after_field_sets %}

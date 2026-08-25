@@ -42,8 +42,71 @@ Features:
     app/model/object trail, keeping Unfold's native header styling and back button.
   - Render the read-only canonical URL as a visible Unfold-styled link.
 
+* Give filer's folder directory-listing views a proper Unfold header. The listing
+  is a folder tree rather than a model changelist, so its context has no ``opts``
+  or ``cl`` and Unfold's ``{% header_title %}`` fell back to ``content_title`` —
+  which filer sets to a literal ``<h2>&nbsp;</h2>`` spacer, leaving an empty
+  heading with no navigation. ``FolderAdmin.directory_listing_template`` now points
+  at an override that renders Unfold's header with filer's folder trail
+  (Filer -> Folder -> ancestor folders -> current folder), preserving filer's popup
+  URL parameters. The change-form breadcrumb was refactored onto the same shared
+  header/breadcrumb includes.
+* Style filer's navigator search box to match the CMS pagetree search — filer
+  rendered it as a bare, borderless 12px field next to a solid primary button.
+  Both are now driven by one shared rule so they cannot drift apart.
+* Replace filer's blue folder icons with Material Symbols glyphs (outlined, 24dp
+  — the same family Unfold uses): ``folder``, ``folder_special`` for the root
+  crumb, ``folder_open`` for unfiled uploads and ``file_open`` for the navigator
+  dropdown. Each is tinted with the project's ``--color-primary-600`` token
+  rather than a baked hex, and shadows filer's own static path so every filer
+  template picks it up without overrides. filer's ``file-*`` type icons are
+  unchanged — they are multi-tone illustrations, not glyphs.
+* Fix selection and bulk actions on filer's directory listing. Unfold ships an
+  ``admin/js/actions.js`` that shadows Django's and binds only to Unfold's own
+  changelist markup, so on filer's stock markup nothing bound: the "N of M
+  selected" counter never moved, table rows never got the ``selected`` class, and
+  filer's toolbar copy/move/delete buttons — which are inert without it — did
+  nothing in table view. contrib.filer now ships a small script that restores the
+  wiring for both list types, updates every counter on the page (filer renders
+  two) and cascades the select-all toggles, including the thumbnail view's
+  per-section "all folders" / "all files" toggles.
+* Frame filer's directory listing as a bordered card so the list view matches
+  Unfold's detail views. filer renders its toolbar and table as two flush,
+  unframed siblings; the border, radius and shadow go on their shared
+  ``#content`` parent, scoped by the ``filebrowser`` body class. Unlike Unfold's
+  fieldset module it mimics, the frame omits ``overflow: hidden`` — filer's
+  toolbar dropdowns overflow a short listing by design and would be clipped.
+* Keep the folder breadcrumb off filer's non-file models. Django resolves
+  ``admin/filer/change_form.html`` for every model in the ``filer`` app label, so
+  the folder trail placed there also hit ``Clipboard``, ``FolderPermission`` and
+  ``ThumbnailOption`` — a thumbnail option rendered as "Filer -> Folder -> big".
+  The trail now lives in the file/image change-form templates, and those models
+  keep Unfold's default app/model/object trail.
+
 
 0.4.0 (2026-07-27)
+==================
+
+Features:
+---------
+
+* Add optional ``unfold_extra.contrib.djangocms_alias`` integration: Unfold-styled
+  ``Alias``, ``AliasContent`` and ``Category`` admin, an Unfold-styled Alias plugin
+  form and "Create Alias" popup, and the alias usage / delete listings rendered
+  through Unfold's table component
+* ``UnfoldCMSPluginBase`` now also restyles widgets on fields declared directly on a
+  plugin form (``render_change_form``), covering views that build their own form
+
+Bug Fixes:
+----------
+
+* Stop ``UnfoldCMSPluginBase`` shadowing a plugin's ``name`` and ``form``: the django CMS
+  metaclass stamps both onto every subclass, including the base
+* Load django CMS' own ``cms.pagetree.css`` again and layer a small override on top,
+  replacing the vendored copy and its sync script
+
+
+0.3.0 (2026-07-27)
 ==================
 
 Breaking Changes:

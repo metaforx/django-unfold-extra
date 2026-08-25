@@ -1,10 +1,13 @@
 {% extends "admin/filer/change_form.html" %}
 {% load i18n filer_admin_tags static %}
 
-{# Overrides filer's admin/filer/file/change_form.html. Like the image change #}
-{# form, filer renders its detail_info panel (icon / download / metadata) inside #}
-{# `{% block object-tools %}`, which Unfold's change_form does not output. We #}
-{# render it into a block Unfold does render instead. #}
+{# Restores filer's detail_info panel and the folder breadcrumb. #}
+
+{% block header %}
+    {% with filer_breadcrumb_object=original %}
+        {% include "unfold_extra/filer/helpers/header.html" %}
+    {% endwith %}
+{% endblock %}
 
 {% block extrahead %}{{ block.super }}
     <script src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>

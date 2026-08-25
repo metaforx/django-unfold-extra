@@ -309,6 +309,9 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+filer = [
+    { name = "django-filer" },
+]
 link = [
     { name = "django-filer" },
     { name = "djangocms-link" },
@@ -339,6 +342,7 @@ test = [
 [package.metadata]
 requires-dist = [
     { name = "django-cms", specifier = ">=5.0,<5.1" },
+    { name = "django-filer", marker = "extra == 'filer'", specifier = ">=3.0" },
     { name = "django-filer", marker = "extra == 'link'", specifier = ">=3.0" },
     { name = "django-filer", marker = "extra == 'test'", specifier = ">=3.0" },
     { name = "django-parler", specifier = "~=2.3" },
@@ -349,7 +353,7 @@ requires-dist = [
     { name = "pytest-django", marker = "extra == 'test'", specifier = ">=4.5" },
     { name = "pytest-env", marker = "extra == 'test'", specifier = ">=1.0" },
 ]
-provides-extras = ["link", "test"]
+provides-extras = ["filer", "link", "test"]
 
 [package.metadata.requires-dev]
 dev = [{ name = "ruff", specifier = ">=0.4" }]
