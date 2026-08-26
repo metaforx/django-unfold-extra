@@ -1,14 +1,6 @@
 {% extends "admin/filer/base_site.html" %}
 {% load static %}
 
-{% comment %}
-    filer answers a completed popup with `opener.dismissPopupAndReload(window)`:
-    reload the page that opened the popup, then close the popup. Inside an Unfold
-    modal (django-unfold-modal) `opener` is null, so that line throws and the
-    modal is left sitting on this blank page with the listing behind it stale.
-    Reloading the host page does both jobs there — the modal goes with it.
-{% endcomment %}
-
 {% block extrahead %}
     {{ block.super }}
 
