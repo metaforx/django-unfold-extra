@@ -23,6 +23,9 @@ Re-registers their admin with Unfold-styled admin classes, forms and widgets, so
 - django-parler 2.3+
 - django-filer 3.0+ and djangocms-link 5.0+ for the optional `[filer]` / `[link]` extras
 
+> **Note:** This package is already used in production but expect additional implementation work for your own apps and plugins. 
+> Best used when your project does not rely on external cms plugins and 3rd party packages with their own admin.
+
 ## Screenshots
 
 | django CMS edit mode                                | django CMS page permissions in the sideframe                                    |
@@ -36,8 +39,6 @@ Re-registers their admin with Unfold-styled admin classes, forms and widgets, so
 | django-filer image change form                                          | django-filer delete confirmation                                          |
 |--------------------------------------------------------------------------|----------------------------------------------------------------------------|
 | ![django-filer image change form](docs/img/filer-image-change-form.png) | ![django-filer delete confirmation](docs/img/filer-delete-confirmation.png) |
-
-> **Note:** This package is already used in production but expect additional implementation work. I suggest using it if most of your cms plugins are custom-built.
 
 ## Installation
 
