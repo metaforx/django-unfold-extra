@@ -1,0 +1,18 @@
+{% extends "admin/filer/folder/directory_listing.html" %}
+{% load static %}
+
+{# Unfold header, breadcrumb and action wiring; set via directory_listing_template. #}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script src="{% static 'unfold_extra/filer/js/actions.js' %}" defer></script>
+{% endblock %}
+
+{% block header %}
+    {% with filer_breadcrumb_object=folder %}
+        {% include "unfold_extra/filer/helpers/header.html" %}
+    {% endwith %}
+{% endblock %}
+
+{# filer's `<h2>&nbsp;</h2>` spacer would otherwise leak into Unfold's <h1>. #}
+{% block content_title %}{% endblock %}

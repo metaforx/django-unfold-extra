@@ -2,8 +2,8 @@ from cms.plugin_pool import plugin_pool
 from djangocms_attributes_field.fields import AttributesField
 from djangocms_link.cms_plugins import LinkPlugin as StockLinkPlugin
 from djangocms_link.fields import LinkField
-from unfold_extra.contrib.cms.plugins import UnfoldCMSPluginBase
 
+from unfold_extra.contrib.cms.plugins import UnfoldCMSPluginBase
 from unfold_extra.contrib.djangocms_link.widgets import (
     UnfoldAttributesWidget,
     UnfoldLinkWidget,

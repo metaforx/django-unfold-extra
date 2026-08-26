@@ -1,21 +1,14 @@
 import djangocms_alias.admin  # noqa: F401  -- ensure stock alias admins register before our unregister/re-register
-
 from cms.admin.utils import CONTENT_PREFIX
 from django.contrib import admin
 from django.core.exceptions import FieldDoesNotExist
 from django.forms.widgets import HiddenInput
-
 from djangocms_alias.admin import (
     AliasAdmin as BaseAliasAdmin,
-)
-from djangocms_alias.admin import (
     AliasContentAdmin as BaseAliasContentAdmin,
-)
-from djangocms_alias.admin import (
     CategoryAdmin as BaseCategoryAdmin,
 )
 from djangocms_alias.models import Alias, AliasContent, Category
-
 from unfold.admin import ModelAdmin
 
 from unfold_extra.contrib.parler.admin import UnfoldTranslatableAdminMixin

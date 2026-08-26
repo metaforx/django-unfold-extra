@@ -1,0 +1,18 @@
+{% load i18n unfold %}
+
+{% comment %}
+    Dead-end branch of a filer action ("no permission", "nothing to copy", ...):
+    Unfold's confirmation card with just the message and a way back.
+{% endcomment %}
+
+<div class="border border-base-200 rounded-default shadow-xs dark:border-base-800">
+    <p class="font-semibold p-4 text-font-important-light dark:text-font-important-dark">
+        {{ message }}
+    </p>
+
+    <div class="border-t border-base-200 px-4 py-3 dark:border-base-800">
+        {% component "unfold/components/button.html" with href="#" variant="default" class=link_class|default:"cancel-link" %}
+            {% translate "Take me back" %}
+        {% endcomponent %}
+    </div>
+</div>

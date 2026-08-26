@@ -23,7 +23,8 @@ classifiers = [
     "Framework :: Django",
 ]
 dependencies = [
-    "django-cms>=5.0,<5.1",
+    # 5.0.9 pads .cms-sideframe-frame itself; unfold_extra no longer does.
+    "django-cms>=5.0.9,<5.1",
     "django-parler~=2.3",
     "django-unfold>=0.92",
 ]
@@ -42,6 +43,10 @@ test = [
     "pytest-env>=1.0",
     "djangocms-link>=5.0",
     # djangocms-link migrations depend on filer (file_link field).
+    "django-filer>=3.0",
+]
+# Optional contrib integration: install with `pip install django-unfold-extra[filer]`
+filer = [
     "django-filer>=3.0",
 ]
 

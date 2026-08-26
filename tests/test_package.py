@@ -32,7 +32,7 @@ class TestPackageImport:
         assert UnfoldTranslatableAdminMixin is not None
 
     def test_import_cms_admin(self):
-        from unfold_extra.contrib.cms.admin import PageContentAdmin, PageAdmin
+        from unfold_extra.contrib.cms.admin import PageAdmin, PageContentAdmin
 
         assert PageContentAdmin is not None
         assert PageAdmin is not None

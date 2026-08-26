@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "unfold_extra.contrib.auth",
     "unfold_extra.contrib.sites",
     "unfold_extra.contrib.djangocms_link",
+    "unfold_extra.contrib.filer",
     # Django core
     "django.contrib.admin",
     "django.contrib.auth",

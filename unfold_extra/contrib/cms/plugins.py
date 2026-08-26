@@ -9,8 +9,7 @@ from django.contrib.admin.widgets import (
     RelatedFieldWidgetWrapper,
 )
 from unfold import widgets as unfold_widgets
-from unfold.admin import StackedInline as UnfoldStackedInline
-from unfold.admin import TabularInline as UnfoldTabularInline
+from unfold.admin import StackedInline as UnfoldStackedInline, TabularInline as UnfoldTabularInline
 from unfold.mixins import (
     ActionModelAdminMixin,
     DatasetModelAdminMixin,
@@ -34,6 +33,14 @@ class UnfoldCMSPluginBase(
     """django CMS plugin base with Unfold admin form behavior and widget overrides."""
 
     formfield_overrides = {}
+
+    # DatasetModelAdminMixin.changeform_view() calls get_changeform_datasets(),
+    # which Unfold's own ModelAdmin provides directly (not via the mixin itself).
+    # Since CMSPluginBase stands in for Unfold's BaseModelAdmin here, replicate it.
+    change_form_datasets = ()
+
+    def get_changeform_datasets(self, request):
+        return self.change_form_datasets
 
     #: Maps model-field classes → widget classes.  Applied post-construction
     #: in ``formfield_for_dbfield`` to work around fields that ignore the

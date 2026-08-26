@@ -1,0 +1,17 @@
+{% extends "admin/filer/folder/legacy_listing.html" %}
+{% load static %}
+
+{# Django < 5.2 variant of directory_listing.html. #}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script src="{% static 'unfold_extra/filer/js/actions.js' %}" defer></script>
+{% endblock %}
+
+{% block header %}
+    {% with filer_breadcrumb_object=folder %}
+        {% include "unfold_extra/filer/helpers/header.html" %}
+    {% endwith %}
+{% endblock %}
+
+{% block content_title %}{% endblock %}

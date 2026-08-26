@@ -1,6 +1,8 @@
 from cms.models.fields import PageField
 from cms.models.pluginmodel import CMSPlugin
 from django.db import models
+from filer.fields.file import FilerFileField
+from filer.fields.image import FilerImageField
 from parler.models import TranslatableModel, TranslatedFields
 
 
@@ -99,3 +101,18 @@ class HeroButton(models.Model):
 
     def __str__(self):
         return self.label
+
+
+class Document(models.Model):
+    """Model with filer fields, for testing filer's widgets on an Unfold change form."""
+
+    title = models.CharField(max_length=200)
+    file = FilerFileField(
+        on_delete=models.PROTECT, related_name="documents", blank=True, null=True
+    )
+    cover = FilerImageField(
+        on_delete=models.SET_NULL, related_name="covers", blank=True, null=True
+    )
+
+    def __str__(self):
+        return self.title

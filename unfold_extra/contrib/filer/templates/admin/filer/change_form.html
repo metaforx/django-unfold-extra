@@ -1,0 +1,31 @@
+{% extends "admin/change_form.html" %}
+{% load i18n static filer_admin_tags %}
+
+{# Shared base for every model in the `filer` app label — nothing folder-specific. #}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'filer/css/admin_filer.css' %}">
+    {% icon_css_library %}
+{% endblock %}
+
+{% block after_field_sets %}
+    {% filer_admin_context_hidden_formfields %}
+{% endblock %}
+
+{% block sidebar %}
+    {% block file_sidebar %}
+        {% with original.duplicates as duplicates %}
+            {% if duplicates %}
+                <div class="file-duplicates">
+                    <h3>{% translate "Duplicates" %}</h3>
+                    <ul>
+                        {% for duplicate in duplicates %}
+                            <li><a href="{{ duplicate.get_admin_change_url }}">{{ duplicate }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+    {% endblock %}
+{% endblock %}

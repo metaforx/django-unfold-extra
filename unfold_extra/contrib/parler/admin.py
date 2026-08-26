@@ -1,7 +1,5 @@
 from parler.admin import (
     TranslatableStackedInline as BaseTranslatableStackedInline,
-)
-from parler.admin import (
     TranslatableTabularInline as BaseTranslatableTabularInline,
 )
 from unfold.admin import ModelAdmin, StackedInline, TabularInline

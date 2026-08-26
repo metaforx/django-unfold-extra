@@ -6,6 +6,99 @@ All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
 
+0.5.0 (2026-08-26)
+==================
+
+Features:
+---------
+
+* Add ``unfold_extra.contrib.filer`` integration: re-registers django-filer's
+  ``Folder``, ``File``, ``Clipboard``, ``Image``, ``FolderPermission`` and
+  ``ThumbnailOption`` admins with Unfold styling. ``django-filer`` is an optional
+  dependency — install with ``pip install django-unfold-extra[filer]``.
+* Ship a Unfold-patched copy of filer's ``admin_filer.css`` (vendored by
+  ``scripts/sync_filer_css.py``) that removes the bare ``.hidden`` rule colliding
+  with the Unfold sidebar, drops a global ``height:100% !important`` rule, and
+  re-scopes ``.filebrowser h2{display:none}`` to ``#content`` so the folder
+  directory-listing view no longer hides the Unfold sidebar navigation titles
+  (which left the sidebar looking empty). It shadows filer's own
+  ``filer/css/admin_filer.css`` static path so every filer admin template (folder
+  listing, change forms, delete and move/copy dialogs) loads the patched CSS
+  without per-template overrides.
+* Fix ``KeyError: 'add'`` when adding a folder: filer's "make folder" popup is
+  served by a custom view without the standard admin context, while Unfold's
+  ``change_form.html`` renders ``{% submit_row %}`` in the footer (outside the
+  content block). The contrib.filer override of ``new_folder_form.html`` blanks
+  that block and renders its own Unfold-styled Save button.
+* Restore the filer file/image change-form UI under Unfold:
+
+  - Render filer's native image preview + focal-point (subject location) picker,
+    which lived in ``{% block object-tools %}`` — a block Unfold's change_form does
+    not output — by relocating filer's ``detail_info`` panel into a rendered block.
+  - Apply Unfold's styled file widget to filer's ``file`` field (filer hard-codes a
+    bare ``FileInput``).
+  - Re-target Unfold's header breadcrumb to filer's folder navigation
+    (Filer -> root folder -> ancestor folders -> object) instead of the flat
+    app/model/object trail, keeping Unfold's native header styling and back button.
+  - Render the read-only canonical URL as a visible Unfold-styled link.
+
+* Give filer's folder directory-listing views a proper Unfold header. The listing
+  is a folder tree rather than a model changelist, so its context has no ``opts``
+  or ``cl`` and Unfold's ``{% header_title %}`` fell back to ``content_title`` —
+  which filer sets to a literal ``<h2>&nbsp;</h2>`` spacer, leaving an empty
+  heading with no navigation. ``FolderAdmin.directory_listing_template`` now points
+  at an override that renders Unfold's header with filer's folder trail
+  (Filer -> Folder -> ancestor folders -> current folder), preserving filer's popup
+  URL parameters. The change-form breadcrumb was refactored onto the same shared
+  header/breadcrumb includes.
+* Style filer's navigator search box to match the CMS pagetree search — filer
+  rendered it as a bare, borderless 12px field next to a solid primary button.
+  Both are now driven by one shared rule so they cannot drift apart.
+* Replace filer's blue folder icons with Material Symbols glyphs (outlined, 24dp
+  — the same family Unfold uses): ``folder``, ``folder_special`` for the root
+  crumb, ``folder_open`` for unfiled uploads and ``file_open`` for the navigator
+  dropdown. Each is tinted with the project's ``--color-primary-600`` token
+  rather than a baked hex, and shadows filer's own static path so every filer
+  template picks it up without overrides. filer's ``file-*`` type icons are
+  unchanged — they are multi-tone illustrations, not glyphs.
+* Fix selection and bulk actions on filer's directory listing. Unfold ships an
+  ``admin/js/actions.js`` that shadows Django's and binds only to Unfold's own
+  changelist markup, so on filer's stock markup nothing bound: the "N of M
+  selected" counter never moved, table rows never got the ``selected`` class, and
+  filer's toolbar copy/move/delete buttons — which are inert without it — did
+  nothing in table view. contrib.filer now ships a small script that restores the
+  wiring for both list types, updates every counter on the page (filer renders
+  two) and cascades the select-all toggles, including the thumbnail view's
+  per-section "all folders" / "all files" toggles.
+* Frame filer's directory listing as a bordered card so the list view matches
+  Unfold's detail views. filer renders its toolbar and table as two flush,
+  unframed siblings; the border, radius and shadow go on their shared
+  ``#content`` parent, scoped by the ``filebrowser`` body class. Unlike Unfold's
+  fieldset module it mimics, the frame omits ``overflow: hidden`` — filer's
+  toolbar dropdowns overflow a short listing by design and would be clipped.
+* Keep the folder breadcrumb off filer's non-file models. Django resolves
+  ``admin/filer/change_form.html`` for every model in the ``filer`` app label, so
+  the folder trail placed there also hit ``Clipboard``, ``FolderPermission`` and
+  ``ThumbnailOption`` — a thumbnail option rendered as "Filer -> Folder -> big".
+  The trail now lives in the file/image change-form templates, and those models
+  keep Unfold's default app/model/object trail.
+* Lay filer's file/image picker widget out in flow. Its stylesheet positions the
+  widget's contents absolutely inside a fixed-height box under a scope Unfold also
+  renders (``form .form-row``), so the file name, buttons and drop preview spilled
+  over the next field and swallowed its clicks. Unfold's related-widget menu is
+  hidden alongside: its links only work on ``<select>`` widgets, and filer ships
+  its own choose/edit/clear controls.
+* Render filer's copy, move, rename, resize and delete-selected confirmation pages
+  as Unfold cards, with Unfold widgets on the forms behind them.
+
+Changed:
+--------
+
+* Require ``django-cms>=5.0.9``: it pads ``.cms-sideframe-frame`` by the toolbar
+  height itself, so unfold_extra's own offset was dropped (it doubled the gap,
+  and the sidebar rule was never scoped to the sideframe).
+
+
 0.4.0 (2026-07-27)
 ==================
 

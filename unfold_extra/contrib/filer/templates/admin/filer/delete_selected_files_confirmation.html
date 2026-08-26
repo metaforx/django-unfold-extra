@@ -1,0 +1,62 @@
+{% extends "unfold_extra/filer/action_page.html" %}
+{% load i18n %}
+
+{% block bodyclass %}{{ block.super }} delete-confirmation delete-selected-confirmation{% endblock %}
+
+{% block content %}
+    {% if perms_lacking or protected %}
+        <div class="border border-base-200 rounded-default shadow-xs dark:border-base-800">
+            {% if perms_lacking %}
+                <p class="font-semibold p-4 text-font-important-light dark:text-font-important-dark">
+                    {% blocktranslate %}Deleting the selected files and/or folders would result in deleting related objects, but your account doesn't have permission to delete the following types of objects:{% endblocktranslate %}
+                </p>
+
+                <div class="border-t border-base-200 p-4 dark:border-base-800">
+                    <ul class="leading-relaxed">
+                        {% for obj in perms_lacking %}<li>{{ obj }}</li>{% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            {% if protected %}
+                <p class="font-semibold p-4 text-font-important-light dark:text-font-important-dark">
+                    {% blocktranslate %}Deleting the selected files and/or folders would require deleting the following protected related objects:{% endblocktranslate %}
+                </p>
+
+                <div class="border-t border-base-200 p-4 dark:border-base-800">
+                    <ul class="leading-relaxed">
+                        {% for obj in protected %}<li>{{ obj }}</li>{% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    {% else %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block heading %}{% blocktranslate %}Are you sure you want to delete the selected files and/or folders? All of the following objects and their related items will be deleted:{% endblocktranslate %}{% endblock %}
+
+{% block objects %}
+    <h2 class="font-semibold mb-2 text-font-important-light dark:text-font-important-dark">
+        {% translate "Objects" %}
+    </h2>
+
+    {% for deletable_object in deletable_objects %}
+        <ul class="leading-relaxed">{{ deletable_object|unordered_list }}</ul>
+    {% endfor %}
+{% endblock %}
+
+{% block action %}delete_files_or_folders{% endblock %}
+
+{% block extra_hidden %}
+    {% if is_popup %}
+        <input type="hidden" name="_popup" value="1">
+        {% if select_folder %}<input type="hidden" name="select_folder" value="1">{% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block submit_row %}
+    {% translate "Yes, I’m sure" as label %}
+    {% include "unfold_extra/filer/helpers/action_submit_row.html" with label=label variant="danger" icon="delete" submit_class="w-full lg:w-auto" %}
+{% endblock %}

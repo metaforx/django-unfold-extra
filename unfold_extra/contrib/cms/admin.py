@@ -1,22 +1,29 @@
 from cms.admin.forms import ChangeListForm, MovePageForm
-from django.contrib import admin, messages
-
-from cms.admin.pageadmin import PageAdmin as BasePageAdmin
-from cms.admin.pageadmin import PageContentAdmin as BasePageContentAdmin
+from cms.admin.pageadmin import (
+    MODAL_HTML_REDIRECT,  # existing constant in django CMS
+    PageAdmin as BasePageAdmin,
+    PageContentAdmin as BasePageContentAdmin,
+)
 from cms.admin.permissionadmin import (
     GlobalPagePermissionAdmin as BaseGlobalPagePermissionAdmin,
-    ViewRestrictionInlineAdmin,
     PagePermissionInlineAdmin,
+    ViewRestrictionInlineAdmin,
 )
+from cms.admin.settingsadmin import SettingsAdmin as BaseSettingsAdmin
 from cms.admin.useradmin import (
     PageUserAdmin,
     PageUserGroupAdmin as BasePageUserGroupAdmin,
 )
-from cms.admin.settingsadmin import SettingsAdmin as BaseSettingsAdmin
 from cms.models import GlobalPagePermission, Page, PageContent, PageUser, PageUserGroup, UserSettings
+from cms.toolbar.utils import get_object_edit_url
+from cms.utils.conf import get_cms_setting
+from django.contrib import admin, messages
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
+from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
 from unfold.admin import ModelAdmin, TabularInline
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
-
 
 from .forms import (
     AddPageForm,
@@ -25,15 +32,6 @@ from .forms import (
     DuplicatePageForm,
     PageUserGroupForm,
 )
-
-from django.http import HttpResponse, HttpResponseRedirect
-from django.utils.html import format_html
-from django.utils.translation import gettext_lazy as _
-from cms.admin.pageadmin import MODAL_HTML_REDIRECT  # existing constant in django CMS
-from cms.toolbar.utils import get_object_edit_url
-from django.urls import reverse
-from cms.utils.conf import get_cms_setting
-
 from .utils import (
     _admin_add_success_message,
     _admin_change_success_message,
@@ -70,7 +68,6 @@ if get_cms_setting('PERMISSION'):
         form = UserChangeForm
         add_form = UserCreationForm
         change_password_form = AdminPasswordChangeForm
-        pass
 
 
 class UnfoldViewRestrictionInlineAdmin(ViewRestrictionInlineAdmin, TabularInline):
@@ -229,7 +226,7 @@ class PageAdmin(ModelAdmin, BasePageAdmin):
 
     @staticmethod
     def _changelist_url() -> str:
-        return reverse(f"admin:cms_pagecontent_changelist")
+        return reverse("admin:cms_pagecontent_changelist")
 
     def _edit_redirect_url(self, request, page) -> str:
         """
@@ -265,10 +262,3 @@ class PageAdmin(ModelAdmin, BasePageAdmin):
 
         self.message_user(request,_admin_change_success_message(obj),messages.INFO)
         return HttpResponseRedirect(_sidepanel_return_url(request, self._changelist_url()))
-
-
-    # def response_add(self, request, obj, post_url_continue=None) -> HttpResponse:
-    #     if "_continue" in request.POST:
-    #         return super().response_add(request, obj, post_url_continue)
-    #     url = self._edit_redirect_url(request, obj)
-    #     return HttpResponse(MODAL_HTML_REDIRECT.format(url=url))
