@@ -16,11 +16,11 @@ from filer.utils.loader import load_model
 from unfold.admin import ModelAdmin
 from unfold.widgets import UnfoldAdminImageFieldWidget
 
-from .forms import patch_filer_action_forms
+from .forms import patch_filer_forms
 
 Image = load_model(FILER_IMAGE_MODEL)
 
-patch_filer_action_forms()
+patch_filer_forms()
 
 
 class _UnfoldFilerFileWidgetMixin:

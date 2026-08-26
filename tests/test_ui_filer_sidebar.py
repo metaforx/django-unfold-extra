@@ -171,6 +171,44 @@ class TestFilerAddFolder:
         save_button = page.locator('#folder_form button[name="_save"], #folder_form input[name="_save"]')
         expect(save_button.first).to_be_visible()
 
+    def test_new_folder_link_uses_the_admin_popup_convention(self, authenticated_page, live_server):
+        """popup_links.js restates filer's inline-onclick link as a popup link.
+
+        Only then does Django fire ``django:show-related`` for it — the event a
+        modal replacement such as django-unfold-modal opens its modal from.
+        """
+        page = authenticated_page
+        page.goto(f"{live_server.url}/admin/filer/folder/")
+        page.wait_for_load_state("networkidle")
+
+        link = page.locator("a.navigator-button", has_text="New Folder").first
+
+        expect(link).to_have_class(re.compile(r"related-widget-wrapper-link"))
+        expect(link).to_have_attribute("data-popup", "yes")
+        expect(link).to_have_id("add_folder")
+        assert link.evaluate("el => el.getAttribute('onclick')") is None
+
+    def test_new_folder_still_opens_a_popup_window(self, authenticated_page, live_server):
+        """With nothing listening for the event, Django's fallback still runs."""
+        page = authenticated_page
+        page.goto(f"{live_server.url}/admin/filer/folder/")
+        page.wait_for_load_state("networkidle")
+
+        with page.expect_popup() as popup_info:
+            page.locator("a.navigator-button", has_text="New Folder").first.click()
+        popup = popup_info.value
+        popup.wait_for_load_state("networkidle")
+
+        assert "make_folder" in popup.url
+        popup.fill("#id_name", "popped")
+        popup.click('#folder_form button[type="submit"]')
+        page.wait_for_timeout(1000)
+
+        from filer.models import Folder
+
+        assert Folder.objects.filter(name="popped").exists()
+        assert popup.is_closed()
+
 
 @pytest.mark.ui
 @pytest.mark.django_db(transaction=True)

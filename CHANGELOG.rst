@@ -6,6 +6,22 @@ All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
 
+0.5.1 (2026-08-26)
+==================
+
+Bug Fixes:
+----------
+
+* Give filer's "New Folder" popup the Unfold layout, matching the copy/move/rename
+  confirmation dialogs, and make its cancel button reliably close the popup.
+* Open filer's "New Folder" in a modal where one is available (e.g.
+  `django-unfold-modal <https://github.com/metaforx/django-unfold-modal>`_). filer
+  calls ``showAddAnotherPopup()`` from an inline ``onclick``, so the
+  ``django:show-related`` event a modal replacement listens for never fired; the
+  link is now restated the way the admin states its own popup links, and its
+  dismiss page no longer calls back to a ``window.opener`` an iframe does not have.
+  Without a modal installed, the same popup window opens as before.
+
 0.5.0 (2026-08-26)
 ==================
 

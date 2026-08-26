@@ -1,0 +1,11 @@
+{% extends "admin/filer/base_site.html" %}
+{% load static %}
+
+{% block extrahead %}
+    {{ block.super }}
+
+    <script src="{% static 'unfold_extra/filer/js/popup_host.js' %}"></script>
+    <script type="text/javascript">
+        UnfoldExtraFilerPopup.reloadHost();
+    </script>
+{% endblock %}
