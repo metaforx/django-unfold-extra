@@ -19,6 +19,7 @@ Django Unfold Extra enhances the Django Unfold admin interface with additional f
   - **Custom plugins**: `UnfoldCMSPluginBase` with `UnfoldStackedInline` / `UnfoldTabularInline` and `cms_widget_overrides`
   - **djangocms-link**: drop-in Unfold-styled `LinkPlugin` covering the link MultiWidget and the attributes field (`[link]` extra)
   - **djangocms-alias**: Unfold-styled alias, category and alias content admin, the Alias plugin form and "Create Alias" popup, plus the usage and delete listings
+- **django-filer**: Full Unfold integration, including the file and image picker widgets (`[filer]` extra)
 - **django-parler**: Multilingual support for your Django models
 - **versatile-image**: Improved integration with django-versatileimagefield, including preview and ppoi
 - **Unfold auto-update**: Styles can be updated from the official Unfold package via npm
@@ -54,6 +55,7 @@ INSTALLED_APPS = [
     "unfold_extra.contrib.parler",
     "unfold_extra.contrib.auth",  # you will likely want a custom auth admin
     "unfold_extra.contrib.sites",
+    "unfold_extra.contrib.filer",  # must come before "filer"
 ]
 ```
 
@@ -104,6 +106,25 @@ class MyInlineAdmin(TranslatableStackedInline):
 
 - Improved unfold integration via CSS only.
 
+#### django-filer Support
+
+- Full Unfold integration, including the `FilerFileField` / `FilerImageField` picker widgets.
+
+Install with the extra and list the app **before** `filer` so it can shadow
+filer's templates and static files:
+
+```bash
+pip install django-unfold-extra[filer]
+```
+
+```python
+INSTALLED_APPS = [
+    # ...
+    "unfold_extra.contrib.filer",
+    "filer",
+]
+```
+
 #### Django Auth, Sites
 
 - Adds Unfold-based admin registrations for `django.contrib.auth` and `django.contrib.sites`.
@@ -118,9 +139,6 @@ Unfold support for all common Django CMS admin pages and plugins including:
 - CMS Versioning admin and page inline
 - CMS User Settings
 - Modal support
-
-Untested and likely not supported:
-- Django Filer
 
 Customization is possible by compiling your own unfold_extra styles.
 

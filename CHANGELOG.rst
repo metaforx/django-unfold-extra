@@ -6,8 +6,8 @@ All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
 
-Unreleased
-==========
+0.5.0 (2026-08-26)
+==================
 
 Features:
 ---------
@@ -82,6 +82,21 @@ Features:
   ``ThumbnailOption`` — a thumbnail option rendered as "Filer -> Folder -> big".
   The trail now lives in the file/image change-form templates, and those models
   keep Unfold's default app/model/object trail.
+* Lay filer's file/image picker widget out in flow. Its stylesheet positions the
+  widget's contents absolutely inside a fixed-height box under a scope Unfold also
+  renders (``form .form-row``), so the file name, buttons and drop preview spilled
+  over the next field and swallowed its clicks. Unfold's related-widget menu is
+  hidden alongside: its links only work on ``<select>`` widgets, and filer ships
+  its own choose/edit/clear controls.
+* Render filer's copy, move, rename, resize and delete-selected confirmation pages
+  as Unfold cards, with Unfold widgets on the forms behind them.
+
+Changed:
+--------
+
+* Require ``django-cms>=5.0.9``: it pads ``.cms-sideframe-frame`` by the toolbar
+  height itself, so unfold_extra's own offset was dropped (it doubled the gap,
+  and the sidebar rule was never scoped to the sideframe).
 
 
 0.4.0 (2026-07-27)

@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.12"
 
 [[package]]
@@ -143,7 +143,7 @@ wheels = [
 
 [[package]]
 name = "django-cms"
-version = "5.0.8"
+version = "5.0.10"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
@@ -155,9 +155,9 @@ dependencies = [
     { name = "packaging" },
     { name = "setuptools" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d0/03/78e5ef5dcec25ac1825bb8bdb6c09dfdb1ea1e28aec3061373715fb3d2eb/django_cms-5.0.8.tar.gz", hash = "sha256:ad3c640cfd784d93f0fb33fd3ba8ecfbd024c2e65b01a86a14379a0a5a895283", size = 5159477, upload-time = "2026-06-10T13:48:06.983Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/85/57/2922f6efb4e76e743474a90c658d4896355c4867cee588f21557103aa237/django_cms-5.0.10.tar.gz", hash = "sha256:e5e9d2c49c6111009d0a21bfdafcb4f24c99ace7cebc82bf5d4d6a4939b29bcb", size = 5332278, upload-time = "2026-08-06T08:32:20.461Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/30/5f/a3ad0695c0b943f9b5f955308ad65b31cde2256a29faf71aa927a48203af/django_cms-5.0.8-py2.py3-none-any.whl", hash = "sha256:9a3af14cde4d2d94331b93177d611bac682a9d39f47c906c14e5ede3f2892ded", size = 3103027, upload-time = "2026-06-10T13:48:04.085Z" },
+    { url = "https://files.pythonhosted.org/packages/ff/08/cdd1ddf91bb5ba766d05a128d145f176a7f21eea9e29fa6939437b11ea5d/django_cms-5.0.10-py2.py3-none-any.whl", hash = "sha256:cab81d24fa05ab587e4e7a4e8154ea3f9c09ba077df858e3cb65b96517c77ba2", size = 3273517, upload-time = "2026-08-06T08:32:18.549Z" },
 ]
 
 [[package]]
@@ -341,7 +341,7 @@ test = [
 
 [package.metadata]
 requires-dist = [
-    { name = "django-cms", specifier = ">=5.0,<5.1" },
+    { name = "django-cms", specifier = ">=5.0.9,<5.1" },
     { name = "django-filer", marker = "extra == 'filer'", specifier = ">=3.0" },
     { name = "django-filer", marker = "extra == 'link'", specifier = ">=3.0" },
     { name = "django-filer", marker = "extra == 'test'", specifier = ">=3.0" },
