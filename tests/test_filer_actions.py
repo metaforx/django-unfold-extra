@@ -133,3 +133,44 @@ class TestActionsStillRun:
         _post(admin_client, source, "delete_files_or_folders", image, post="yes")
 
         assert not File.objects.filter(pk=image.pk).exists()
+
+
+@pytest.mark.django_db
+class TestNewFolderPage:
+    """filer's "New Folder" popup is styled and still creates the folder.
+
+    The page runs its own view (``filer.admin.views.make_folder``) rather than a
+    changelist action, so it carries the confirmation-card shell itself — and its
+    form is built outside a ``ModelAdmin``, which is why the widget is patched.
+    """
+
+    URL = "/admin/filer/folder/make_folder/"
+
+    def test_page_is_unfold_styled(self, admin_client):
+        html = admin_client.get(self.URL).content.decode()
+
+        assert "border border-base-200 rounded-default shadow-xs" in html
+        assert "cancel-link" in html
+        # The name input carries Unfold's widget classes, not the stock admin's.
+        assert 'class="vTextField"' not in html
+        assert 'maxlength="255"' in html
+        assert "rounded-default shadow-xs text-font-default-light" in html
+
+    def test_creates_folder(self, admin_client):
+        from filer.models import Folder
+
+        response = admin_client.post(self.URL, {"name": "new-folder"})
+
+        assert response.status_code == 200
+        assert Folder.objects.filter(name="new-folder").exists()
+
+    def test_duplicate_name_shows_unfold_error(self, admin_client, django_user_model):
+        from filer.models import Folder
+
+        user = django_user_model.objects.get(username="admin")
+        Folder.objects.create(name="assets", owner=user)
+
+        html = admin_client.post(self.URL, {"name": "assets"}).content.decode()
+
+        assert "Folder with this name already exists." in html
+        assert "errornote" in html

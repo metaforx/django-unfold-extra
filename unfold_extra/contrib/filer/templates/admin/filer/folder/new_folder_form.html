@@ -1,47 +1,59 @@
-{% extends "admin/change_form.html" %}
+{% extends "admin/base_site.html" %}
 {% load i18n filer_admin_tags unfold %}
 
-{# Unfold's footer submit_row crashes on this popup; render our own Save button. #}
+{% comment %}
+    filer's "New Folder" page, in the card markup Unfold uses for its own
+    confirmation pages (see unfold_extra/filer/action_page.html — this page runs
+    its own view rather than a changelist action, so it carries the shell itself).
+
+    filer's listing opens it with window.open(), but without `_popup` in the URL,
+    so Django's cancel.js — which keys off that param — would send the window back
+    through its own empty history instead of closing it. Hence the cancel handler
+    below.
+{% endcomment %}
 
 {% block title %}{% translate "Add new" %} {% translate "folder" %} | {{ site_title|default:_('Django site admin') }}{% endblock %}
 
+{% block breadcrumbs %}{% endblock %}
+
 {% block content %}
-    <h1>{% translate "Add new" %} {% translate "folder" %}</h1>
-    <div id="content-main">
+    <div class="border border-base-200 rounded-default shadow-xs dark:border-base-800">
+        <p class="font-semibold p-4 text-font-important-light dark:text-font-important-dark">
+            {% translate "Add new" %} {% translate "folder" %}
+        </p>
+
         <form id="folder_form" method="post" action="" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="flex flex-col gap-6">
-                {% filer_admin_context_hidden_formfields %}
+            {% filer_admin_context_hidden_formfields %}
 
-                {% if new_folder_form.errors %}
-                    {% include "unfold/helpers/messages/errornote.html" with errors=new_folder_form.errors %}
-                    {% include "unfold/helpers/messages/error.html" with errors=new_folder_form.non_field_errors %}
-                {% endif %}
+            <div class="border-t border-base-200 p-4 pb-0 dark:border-base-800">
+                {% include "unfold/helpers/messages/errornote.html" with errors=new_folder_form.errors %}
+                {% include "unfold/helpers/messages/error.html" with errors=new_folder_form.non_field_errors %}
 
-                <fieldset class="module aligned">
-                    <div class="form-row {% if new_folder_form.errors.name %}errors {% endif %}name">
-                        {{ new_folder_form.errors.name.as_ul }}
-                        <div class="flex flex-col gap-2">
-                        {% for field in new_folder_form %}
-                            <label class="font-semibold mb-2 required text-font-important-light text-sm dark:text-font-important-dark" for="id_{{ field.name }}">{{ field.label }}:</label>{{ field }}
-                        {% endfor %}
-                        </div>
-                    </div>
-                </fieldset>
-
-                {# NB: no `submit-row` class here — Unfold hides it. #}
-                <div class="flex">
-                    {% component "unfold/components/button.html" with submit=1 form="folder_form" name="_save" %}
-                        {% trans "Save" %}
-                    {% endcomponent %}
-                </div>
-
-                <script type="text/javascript">
-                    document.getElementById('id_name').focus();
-                </script>
+                {% for field in new_folder_form %}
+                    {% include "unfold/helpers/field.html" with field=field %}
+                {% endfor %}
             </div>
+
+            {% translate "Save" as label %}
+            {% translate "Cancel" as cancel_label %}
+            {% include "unfold_extra/filer/helpers/action_submit_row.html" with label=label cancel_label=cancel_label icon="create_new_folder" submit_name="_save" submit_class="w-full lg:w-auto" %}
         </form>
     </div>
-{% endblock %}
 
-{% block submit_buttons_bottom %}{% endblock %}
+    <script type="text/javascript">
+        document.getElementById('id_name').focus();
+
+        document.querySelectorAll('.cancel-link').forEach(function (link) {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                if (window.opener && !window.opener.closed) {
+                    window.close();
+                } else {
+                    window.history.back();
+                }
+            });
+        });
+    </script>
+{% endblock %}

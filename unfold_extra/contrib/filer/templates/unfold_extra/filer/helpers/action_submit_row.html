@@ -1,19 +1,14 @@
 {% load i18n unfold %}
 
-{% comment %}
-    Unfold's delete_submit_line with the label/variant of the action at hand.
-    `tooltip` renders filer's twin button for the "destination is the source
-    folder" case: copy-move-files.js hides the real submit and reveals this one.
-{% endcomment %}
-
 <div class="border-t border-base-200 px-4 py-3 dark:border-base-800">
     <div class="flex flex-col gap-3 items-center w-full lg:flex-row">
+        {% translate "No, take me back" as default_cancel_label %}
         {% component "unfold/components/button.html" with href="#" variant="default" class="cancel-link w-full lg:mb-0 lg:w-auto" %}
-            {% translate "No, take me back" %}
+            {{ cancel_label|default:default_cancel_label }}
         {% endcomponent %}
 
         <div class="w-full lg:ml-auto lg:w-auto">
-            {% component "unfold/components/button.html" with submit=1 variant=variant|default:"primary" icon=icon class=submit_class %}
+            {% component "unfold/components/button.html" with submit=1 variant=variant|default:"primary" icon=icon name=submit_name class=submit_class %}
                 {{ label }}
             {% endcomponent %}
 

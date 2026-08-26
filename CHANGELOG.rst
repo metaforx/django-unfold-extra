@@ -6,6 +6,15 @@ All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
 
+Unreleased
+==========
+
+Bug Fixes:
+----------
+
+* Give filer's "New Folder" popup the Unfold layout, matching the copy/move/rename
+  confirmation dialogs, and make its cancel button reliably close the popup.
+
 0.5.0 (2026-08-26)
 ==================
 
