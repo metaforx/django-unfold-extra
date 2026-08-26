@@ -92,20 +92,7 @@ div.parler-language-tabs span.current {
  django-cms
  *******************************************************/
 
-/* Prevent content from being hidden under django cms Topbar  */
-body.cms-admin-sideframe #page {
-    @apply pt-[46px];
-}
-
-/* Prevent content from being hidden under django cms Topbar  */
-body.cms-admin-sideframe #nav-sidebar-inner {
-    @apply pt-[46px];
-}
-
-/* Prevent content from being hidden under django cms Topbar  */
-#nav-sidebar .simplebar-content-wrapper {
-    @apply mt-[46px];
-}
+/* No toolbar offset here: cms 5.0.9+ pads .cms-sideframe-frame itself. */
 
 /* Reposition Django CMS admin navigation controls  */
 div.cms-sideframe {
