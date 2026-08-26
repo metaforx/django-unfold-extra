@@ -2,7 +2,6 @@ from django import template
 from django.template import RequestContext
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-
 from filer.admin.tools import admin_url_params_encoded
 
 register = template.Library()

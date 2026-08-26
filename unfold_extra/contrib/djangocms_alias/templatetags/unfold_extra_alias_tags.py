@@ -2,7 +2,6 @@ from django.template import Library
 from django.template.defaultfilters import capfirst
 from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
-
 from djangocms_alias.templatetags.djangocms_alias_tags import verbose_name
 
 register = Library()

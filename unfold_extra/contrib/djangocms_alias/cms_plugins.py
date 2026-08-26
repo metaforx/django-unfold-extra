@@ -1,5 +1,4 @@
 import djangocms_alias.cms_plugins  # noqa: F401  -- stock plugin must register before we swap it
-
 from cms.plugin_pool import plugin_pool
 from djangocms_alias.cms_plugins import Alias as BaseAliasPlugin
 from djangocms_alias.forms import AliasPluginForm

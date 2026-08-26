@@ -1,10 +1,8 @@
-from django.contrib import admin
-from django.utils.translation import gettext_lazy as _
 from cms.plugin_pool import plugin_pool
+from django.utils.translation import gettext_lazy as _
 
 from unfold_extra.contrib.cms.plugins import UnfoldCMSPluginBase, UnfoldStackedInline
-
-from .models import HeroPluginModel, HeroButton, PageLinkPluginModel
+from .models import HeroButton, HeroPluginModel, PageLinkPluginModel
 
 
 class HeroButtonInline(UnfoldStackedInline):

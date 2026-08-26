@@ -1,12 +1,12 @@
 from django.contrib import admin
+from parler.admin import TranslatableAdmin
 from unfold.admin import ModelAdmin
 
 from unfold_extra.contrib.parler.admin import (
     UnfoldTranslatableAdminMixin,
 )
-from parler.admin import TranslatableAdmin
 
-from .models import Article, Category, SimpleModel
+from .models import Article, Category, Document, SimpleModel
 
 
 @admin.register(Category)
@@ -26,3 +26,8 @@ class ArticleAdmin(UnfoldTranslatableAdminMixin, TranslatableAdmin, ModelAdmin):
 class SimpleModelAdmin(ModelAdmin):
     list_display = ["name", "is_active"]
     search_fields = ["name"]
+
+
+@admin.register(Document)
+class DocumentAdmin(ModelAdmin):
+    list_display = ["title"]

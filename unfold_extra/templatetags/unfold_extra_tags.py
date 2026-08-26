@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import re
-from typing import Mapping, Any
+from typing import Any, Mapping
 
-from django.conf import settings
 from django import template
+from django.conf import settings
 from django.templatetags.static import static
 from django.utils.safestring import mark_safe
 

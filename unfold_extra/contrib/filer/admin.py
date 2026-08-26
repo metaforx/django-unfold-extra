@@ -1,23 +1,20 @@
 import filer.admin  # noqa: F401  -- ensure stock filer admin registers before our unregister/re-register
-
 from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
-
 from filer.admin.clipboardadmin import ClipboardAdmin as FilerClipboardAdmin
 from filer.admin.fileadmin import FileAdmin as FilerFileAdmin
 from filer.admin.fileadmin import FileAdminChangeFrom as FilerFileAdminForm
 from filer.admin.folderadmin import FolderAdmin as FilerFolderAdmin
 from filer.admin.imageadmin import ImageAdmin as FilerImageAdmin
+from filer.admin.imageadmin import ImageAdminForm as FilerImageAdminForm
 from filer.admin.permissionadmin import PermissionAdmin as FilerPermissionAdmin
 from filer.admin.thumbnailoptionadmin import (
     ThumbnailOptionAdmin as FilerThumbnailOptionAdmin,
 )
-from filer.admin.imageadmin import ImageAdminForm as FilerImageAdminForm
 from filer.models import Clipboard, File, Folder, FolderPermission, ThumbnailOption
 from filer.settings import FILER_IMAGE_MODEL
 from filer.utils.loader import load_model
-
 from unfold.admin import ModelAdmin
 from unfold.widgets import UnfoldAdminImageFieldWidget
 
