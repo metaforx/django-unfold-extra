@@ -172,9 +172,8 @@ class TestNewFolderPage:
         """
         html = admin_client.post(self.URL, {"name": "dismissed"}).content.decode()
 
-        assert "opener.dismissPopupAndReload(window)" in html
-        assert "unfoldExtraFilerModal()" in html
-        assert "window.parent.location.reload()" in html
+        assert "unfold_extra/filer/js/popup_host.js" in html
+        assert "UnfoldExtraFilerPopup.reloadHost()" in html
 
     def test_duplicate_name_shows_unfold_error(self, admin_client, django_user_model):
         from filer.models import Folder

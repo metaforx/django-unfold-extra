@@ -6,15 +6,6 @@
 
     <script src="{% static 'unfold_extra/filer/js/popup_host.js' %}"></script>
     <script type="text/javascript">
-        (function () {
-            if (window.opener && !window.opener.closed) {
-                window.opener.dismissPopupAndReload(window);
-                return;
-            }
-
-            if (window.unfoldExtraFilerModal()) {
-                window.parent.location.reload();
-            }
-        })();
+        UnfoldExtraFilerPopup.reloadHost();
     </script>
 {% endblock %}
