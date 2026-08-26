@@ -1,7 +1,9 @@
-from cms.admin.forms import AddPageForm as BaseAddPageForm
-from cms.admin.forms import AdvancedSettingsForm as BaseAdvancedSettingsForm
-from cms.admin.forms import ChangePageForm as BaseChangePageForm
-from cms.admin.forms import PageUserGroupForm as BasePageUserGroupForm
+from cms.admin.forms import (
+    AddPageForm as BaseAddPageForm,
+    AdvancedSettingsForm as BaseAdvancedSettingsForm,
+    ChangePageForm as BaseChangePageForm,
+    PageUserGroupForm as BasePageUserGroupForm,
+)
 from unfold.widgets import (
     INPUT_CLASSES,
     SELECT_CLASSES,

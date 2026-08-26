@@ -1,19 +1,17 @@
 from cms.admin.forms import ChangeListForm, MovePageForm
-from cms.admin.pageadmin import MODAL_HTML_REDIRECT  # existing constant in django CMS
-from cms.admin.pageadmin import PageAdmin as BasePageAdmin
-from cms.admin.pageadmin import PageContentAdmin as BasePageContentAdmin
-from cms.admin.permissionadmin import (
-    GlobalPagePermissionAdmin as BaseGlobalPagePermissionAdmin,
+from cms.admin.pageadmin import (
+    MODAL_HTML_REDIRECT,  # existing constant in django CMS
+    PageAdmin as BasePageAdmin,
+    PageContentAdmin as BasePageContentAdmin,
 )
 from cms.admin.permissionadmin import (
+    GlobalPagePermissionAdmin as BaseGlobalPagePermissionAdmin,
     PagePermissionInlineAdmin,
     ViewRestrictionInlineAdmin,
 )
 from cms.admin.settingsadmin import SettingsAdmin as BaseSettingsAdmin
 from cms.admin.useradmin import (
     PageUserAdmin,
-)
-from cms.admin.useradmin import (
     PageUserGroupAdmin as BasePageUserGroupAdmin,
 )
 from cms.models import GlobalPagePermission, Page, PageContent, PageUser, PageUserGroup, UserSettings

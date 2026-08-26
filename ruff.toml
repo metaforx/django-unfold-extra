@@ -12,6 +12,7 @@ force-exclude = true
 select = ["I", ]
 
 [lint.isort]
+combine-as-imports = true
 
 [format]
 quote-style = "double"

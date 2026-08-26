@@ -9,8 +9,7 @@ from django.contrib.admin.widgets import (
     RelatedFieldWidgetWrapper,
 )
 from unfold import widgets as unfold_widgets
-from unfold.admin import StackedInline as UnfoldStackedInline
-from unfold.admin import TabularInline as UnfoldTabularInline
+from unfold.admin import StackedInline as UnfoldStackedInline, TabularInline as UnfoldTabularInline
 from unfold.mixins import (
     ActionModelAdminMixin,
     DatasetModelAdminMixin,
