@@ -1,0 +1,63 @@
+{% extends "unfold_extra/filer/action_page.html" %}
+{% load i18n %}
+
+{% block content %}
+    {% if perms_lacking %}
+        {% blocktranslate asvar message %}Your account doesn't have permissions to rename all of the selected files.{% endblocktranslate %}
+        {% include "unfold_extra/filer/helpers/action_notice.html" with message=message %}
+    {% elif not to_rename %}
+        {% blocktranslate asvar message %}There are no files available to rename.{% endblocktranslate %}
+        {% include "unfold_extra/filer/helpers/action_notice.html" with message=message %}
+    {% else %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block heading %}{% blocktranslate %}The following files will be renamed (they will stay in their folders and keep original filename, only displayed filename will be changed):{% endblocktranslate %}{% endblock %}
+
+{% block objects %}<ul class="leading-relaxed">{{ to_rename|unordered_list }}</ul>{% endblock %}
+
+{% block action %}rename_files{% endblock %}
+
+{% block fields %}
+    <div class="border-t border-base-200 p-4 pb-0 dark:border-base-800">
+        {% include "unfold_extra/filer/helpers/action_form_fields.html" with form=rename_form %}
+    </div>
+{% endblock %}
+
+{% block footnote %}
+    <div class="border-t border-base-200 p-4 dark:border-base-800 text-sm">
+        <p class="mb-2">
+            {% blocktranslate %}Rename format is in <a class="text-primary-600 hover:underline dark:text-primary-500" href="https://docs.python.org/3/library/stdtypes.html#printf-style-string-formatting">Python % operator format</a>, using a dictionary of possible values:{% endblocktranslate %}
+        </p>
+
+        <dl class="grid gap-x-4 leading-relaxed sm:grid-cols-[minmax(0,14rem)_1fr]">
+            <dt class="font-semibold text-important">original_filename</dt><dd></dd>
+            <dt class="font-semibold text-important">original_basename</dt>
+            <dd>{% translate "Original filename without possible file extension." %}</dd>
+            <dt class="font-semibold text-important">original_extension</dt><dd></dd>
+            <dt class="font-semibold text-important">current_filename</dt><dd></dd>
+            <dt class="font-semibold text-important">current_basename</dt>
+            <dd>{% translate "Current filename without possible file extension." %}</dd>
+            <dt class="font-semibold text-important">current_extension</dt><dd></dd>
+            <dt class="font-semibold text-important">current_folder</dt>
+            <dd>{% translate "Name of the folder the file is currently in." %}</dd>
+            <dt class="font-semibold text-important">counter</dt>
+            <dd>{% translate "Renaming sequence counter in the current folder (1-based)." %}</dd>
+            <dt class="font-semibold text-important">global_counter</dt>
+            <dd>{% translate "Renaming sequence counter for all files currently renaming (1-based)." %}</dd>
+        </dl>
+
+        <p class="mb-2 mt-4">{% translate "Examples:" %}</p>
+
+        <ul class="leading-relaxed">
+            <li><code>Prefix %(current_filename)s</code></li>
+            <li><code>Image %(counter)03d</code></li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block submit_row %}
+    {% translate "Rename" as label %}
+    {% include "unfold_extra/filer/helpers/action_submit_row.html" with label=label icon="edit" submit_class="w-full lg:w-auto" %}
+{% endblock %}

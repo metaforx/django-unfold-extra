@@ -1,0 +1,8 @@
+{% comment %}
+    filer's action forms are plain `forms.Form`s — render them the way Unfold
+    renders a fieldset row, so labels, help texts and errors match the admin.
+{% endcomment %}
+
+{% for field in form %}
+    {% include "unfold/helpers/field.html" with field=field %}
+{% endfor %}

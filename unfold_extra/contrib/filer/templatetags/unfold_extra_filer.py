@@ -3,8 +3,19 @@ from django.template import RequestContext
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from filer.admin.tools import admin_url_params_encoded
+from unfold.widgets import SELECT_CLASSES
 
 register = template.Library()
+
+
+@register.simple_tag
+def unfold_select_classes() -> str:
+    """Unfold's ``<select>`` classes, for markup no widget renders.
+
+    filer's copy/move confirmation writes its destination picker straight into
+    the template, so it never passes through an Unfold widget.
+    """
+    return " ".join(SELECT_CLASSES)
 
 
 def _label(obj) -> str:

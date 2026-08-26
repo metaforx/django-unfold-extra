@@ -1,0 +1,42 @@
+{% extends "unfold_extra/filer/action_page.html" %}
+{% load i18n static %}
+
+{% block action_extrahead %}
+    {# admin_filer.css carries the tooltip styling, and hides its button until needed. #}
+    <link rel="stylesheet" href="{% static 'filer/css/admin_filer.css' %}">
+    <script src="{% static 'filer/js/addons/tooltip.js' %}"></script>
+    <script src="{% static 'filer/js/addons/copy-move-files.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    {% if perms_lacking %}
+        {% blocktranslate asvar message %}Your account doesn't have permissions to move all of the selected files and/or folders.{% endblocktranslate %}
+        {% include "unfold_extra/filer/helpers/action_notice.html" with message=message %}
+    {% elif not destination_folders %}
+        {% blocktranslate asvar message %}There are no destination folders available.{% endblocktranslate %}
+        {% include "unfold_extra/filer/helpers/action_notice.html" with message=message %}
+    {% elif not to_move %}
+        {% blocktranslate asvar message %}There are no files and/or folders available to move.{% endblocktranslate %}
+        {% include "unfold_extra/filer/helpers/action_notice.html" with message=message %}
+    {% else %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block heading %}{% blocktranslate %}The following files and/or folders will be moved to a destination folder (retaining their tree structure):{% endblocktranslate %}{% endblock %}
+
+{% block objects %}<ul class="leading-relaxed">{{ to_move|unordered_list }}</ul>{% endblock %}
+
+{% block action %}move_files_and_folders{% endblock %}
+
+{% block fields %}
+    <div class="border-t border-base-200 p-4 pb-0 dark:border-base-800">
+        {% include "unfold_extra/filer/helpers/action_destination.html" %}
+    </div>
+{% endblock %}
+
+{% block submit_row %}
+    {% translate "Move" as label %}
+    {% translate "It is not allowed to move files into same folder" as tooltip %}
+    {% include "unfold_extra/filer/helpers/action_submit_row.html" with label=label tooltip=tooltip icon="drive_file_move" submit_class="js-submit-copy-move w-full lg:w-auto" %}
+{% endblock %}

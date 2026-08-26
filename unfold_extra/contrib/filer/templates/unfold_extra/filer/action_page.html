@@ -1,0 +1,53 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% comment %}
+    Shared shell for filer's action confirmation pages, in the markup Unfold uses
+    for its own (admin/delete_selected_confirmation.html). filer's templates carry
+    no blocks and folderadmin.py hardcodes their paths, so each page is replaced
+    rather than extended — this base is what keeps that to a few lines per page.
+
+    Blocks: `heading`, `objects`, `action` (the action name filer dispatches on),
+    `extra_hidden`, `fields`, `footnote`, `submit_row`, `action_extrahead`.
+    A page whose branch has nothing to confirm ("no permission", "nothing to
+    copy") overrides `content` and renders action_notice.html instead, falling
+    back to `{{ block.super }}` for the real thing.
+{% endcomment %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script src="{% static 'admin/js/cancel.js' %}" async></script>
+    {% block action_extrahead %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+    <div class="border border-base-200 rounded-default shadow-xs dark:border-base-800">
+        <p class="font-semibold p-4 text-font-important-light dark:text-font-important-dark">
+            {% block heading %}{% endblock %}
+        </p>
+
+        <div class="border-t border-base-200 p-4 dark:border-base-800">
+            {% block objects %}{% endblock %}
+        </div>
+
+        <form action="" method="post">
+            {% csrf_token %}
+
+            {% for f in files_queryset %}
+                <input type="hidden" name="{{ action_checkbox_name }}" value="file-{{ f.pk|safe }}">
+            {% endfor %}
+            {% for f in folders_queryset %}
+                <input type="hidden" name="{{ action_checkbox_name }}" value="folder-{{ f.pk|safe }}">
+            {% endfor %}
+            <input type="hidden" name="action" value="{% block action %}{% endblock %}">
+            <input type="hidden" name="post" value="yes">
+            {% block extra_hidden %}{% endblock %}
+
+            {% block fields %}{% endblock %}
+            {% block footnote %}{% endblock %}
+            {% block submit_row %}{% endblock %}
+        </form>
+    </div>
+{% endblock %}

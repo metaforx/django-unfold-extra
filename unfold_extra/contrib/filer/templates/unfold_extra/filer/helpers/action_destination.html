@@ -1,0 +1,24 @@
+{% load i18n unfold_extra_filer %}
+
+{% comment %}
+    copy/move write their destination picker straight into the template rather
+    than through a form field, so it needs Unfold's select markup by hand.
+{% endcomment %}
+
+<div class="form-field flex flex-col group mb-4">
+    <div class="flex flex-col gap-2">
+        <label for="destination" class="block font-semibold text-important whitespace-nowrap">
+            {% translate "Destination folder:" %}
+        </label>
+
+        <div class="grow relative max-w-2xl">
+            <select name="destination" id="destination" class="{% unfold_select_classes %}">
+                {% for folder, name_and_enabled in destination_folders %}
+                    <option value="{{ folder.pk|safe }}"{% if not name_and_enabled.1 %} disabled="disabled"{% endif %}{% if selected_destination_folder and folder.pk == selected_destination_folder %} selected="selected"{% endif %}>{{ name_and_enabled.0 }}</option>
+                {% endfor %}
+            </select>
+
+            <span class="material-symbols-outlined absolute mr-[12px] pointer-events-none right-0 text-base-400 top-1/2 -translate-y-1/2 dark:text-base-500">expand_more</span>
+        </div>
+    </div>
+</div>

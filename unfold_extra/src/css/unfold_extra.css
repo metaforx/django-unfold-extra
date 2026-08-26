@@ -1,5 +1,10 @@
 @import "./styles.css";
 
+/* Tailwind only auto-detects sources next to this file, which would miss every
+   class used in unfold_extra's own admin templates. */
+@source "../../templates";
+@source "../../contrib";
+
 /*******************************************************
  django-parler
  *******************************************************/

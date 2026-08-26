@@ -1,0 +1,39 @@
+{% extends "unfold_extra/filer/action_page.html" %}
+{% load i18n %}
+
+{% block content %}
+    {% if perms_lacking %}
+        {% blocktranslate asvar message %}Your account doesn't have permissions to resize all of the selected images.{% endblocktranslate %}
+        {% include "unfold_extra/filer/helpers/action_notice.html" with message=message %}
+    {% elif not to_resize %}
+        {% blocktranslate asvar message %}There are no images available to resize.{% endblocktranslate %}
+        {% include "unfold_extra/filer/helpers/action_notice.html" with message=message %}
+    {% else %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block heading %}{% blocktranslate %}The following images will be resized:{% endblocktranslate %}{% endblock %}
+
+{% block objects %}<ul class="leading-relaxed">{{ to_resize|unordered_list }}</ul>{% endblock %}
+
+{% block action %}resize_images{% endblock %}
+
+{% block fields %}
+    <div class="border-t border-base-200 p-4 pb-0 dark:border-base-800">
+        <p class="mb-4">{% blocktranslate %}Choose an existing thumbnail option or enter resize parameters:{% endblocktranslate %}</p>
+
+        {% include "unfold_extra/filer/helpers/action_form_fields.html" with form=resize_form %}
+    </div>
+{% endblock %}
+
+{% block footnote %}
+    <div class="border-t border-base-200 p-4 dark:border-base-800 text-sm">
+        {% blocktranslate %}Warning: Images will be resized in-place and originals will be lost. Maybe first make a copy of them to retain the originals.{% endblocktranslate %}
+    </div>
+{% endblock %}
+
+{% block submit_row %}
+    {% translate "Resize" as label %}
+    {% include "unfold_extra/filer/helpers/action_submit_row.html" with label=label icon="resize" submit_class="w-full lg:w-auto" %}
+{% endblock %}
