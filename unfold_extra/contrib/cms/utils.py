@@ -1,12 +1,12 @@
+from json import dumps
+from urllib.parse import urlencode
+
 from cms.admin.pageadmin import get_site
 from cms.constants import MODAL_HTML_REDIRECT
 from cms.utils.conf import get_cms_setting
 from cms.utils.i18n import get_site_language_from_request
 from django.http import HttpResponse
 from django.urls import reverse
-from urllib.parse import urlencode
-from json import dumps
-
 from django.utils.text import capfirst
 from django.utils.translation import gettext
 

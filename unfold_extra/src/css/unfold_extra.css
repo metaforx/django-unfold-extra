@@ -544,3 +544,204 @@ html:root {
     --dca-btn-radius: var(--radius-default);
     --dca-border-radius: var(--radius-default);
 }
+
+/*******************************************************
+ django-filer file/image/folder widgets (any Unfold change form)
+ *******************************************************/
+
+/* filer lays this widget out under `form .form-row .filer-dropzone`, a scope it
+   assumes belongs to Django's change form — but Unfold puts `form-row` on every
+   fieldset row as well, so filer's rules apply and misfire: `.filerFile` (the
+   thumbnail, the file name and filer's own buttons) is taken out of flow with
+   `position: absolute` inside a box held open by nothing but a `min-height`, so
+   under Unfold's typography it overflows onto the next field and covers its
+   controls. scripts/sync_filer_css.py renames that scope out of the way; what
+   follows lays the same markup out in flow, with flex.
+
+   filer ships its own controls — choose/replace, edit, clear — and hides
+   Django's related-widget links next to them. Its selector can't see Unfold's
+   markup (which nests the links in an Alpine dropdown), so we hide Unfold's ⋮
+   menu below instead: its actions duplicate filer's (change), work against
+   filer's library (add/delete), and were never wired up here anyway — Unfold's
+   RelatedObjectLookups.js only fills in `href`s for `<select>` widgets, and
+   filer's widget is a hidden input.
+
+   The `div` in `div.filer-dropzone` is there to outbid filer's own unscoped
+   `.filer-dropzone …` rules, which load after this stylesheet. Only the two
+   widget templates use the bare class — the directory listing's drop targets are
+   `js-filer-dropzone`. */
+
+.related-widget-wrapper:has(.filer-dropzone) {
+    @apply w-full;
+}
+
+.related-widget-wrapper:has(.filer-dropzone) > [x-data] {
+    @apply hidden;
+}
+
+div.filer-dropzone {
+    @apply relative flex items-center gap-2 w-full px-3 py-2 min-h-[58px] border border-base-200 rounded-default bg-base-50 dark:border-base-700 dark:bg-base-800;
+}
+
+div.filer-dropzone.dz-drag-hover {
+    @apply border-primary-600 bg-primary-50 dark:bg-base-700;
+}
+
+/* filer's drag shield keeps dragleave from firing on the widget's own children.
+   It is only needed mid-drag, and as a flex item it would offset the row. */
+div.filer-dropzone .z-index-fix {
+    @apply hidden;
+}
+
+div.filer-dropzone.dz-drag-hover .z-index-fix {
+    @apply block absolute inset-0 z-10;
+}
+
+/* filer's drop hint carries dropzone.js' own `2em 0` margin, which would make the
+   empty widget noticeably taller than the one holding a file. */
+div.filer-dropzone .dz-message {
+    @apply flex items-center gap-1 m-0 text-base-400 text-sm dark:text-base-500;
+}
+
+div.filer-dropzone .filerFile {
+    /* filer's template puts a bare `&nbsp;` between the thumbnail and the file name.
+       It becomes an anonymous flex item, offsetting this row against the drop
+       state, which has no such text node — so zero the font (every child sets its
+       own size) and space the real children with margins, which skip text nodes,
+       rather than with `gap`. */
+    @apply flex grow items-center min-w-0 text-[0px];
+}
+
+div.filer-dropzone .filerFile > * + * {
+    @apply ml-2;
+}
+
+/* A flex item once `.filerFile` is a flex container. */
+div.filer-dropzone .filerFile br {
+    @apply hidden;
+}
+
+/* The folder widget wraps its description in one more (class-less) span. */
+div.filer-dropzone .filerFile > span[id],
+div.filer-dropzone .filerFile .description_text,
+div.filer-dropzone .filerFile .dz-name {
+    /* max-w-none drops filer's `calc(100% - 145px)`, which was sized for its own
+       absolute layout and leaves a gap before the buttons here. */
+    @apply grow min-w-0 max-w-none truncate text-sm text-base-600 dark:text-base-300;
+}
+
+div.filer-dropzone .filerFile img {
+    @apply w-10 h-10 shrink-0 object-contain rounded-default;
+}
+
+/* filer's own controls, as Unfold icon buttons. `.related-lookup-change` is
+   filer's "a file is attached" state: replace instead of choose, edit enabled. */
+div.filer-dropzone .filerFile .related-lookup,
+div.filer-dropzone .filerFile .filerClearer {
+    @apply flex items-center justify-center gap-1 shrink-0 h-[38px] px-2.5 border border-base-200 rounded-default bg-white shadow-xs text-base-400 text-sm cursor-pointer hover:text-base-700 dark:bg-base-900 dark:border-base-700 dark:text-base-500 dark:hover:text-base-200;
+}
+
+div.filer-dropzone .filerFile .related-lookup.related-lookup-change,
+div.filer-dropzone .filerFile .filerClearer {
+    @apply w-[38px] px-0;
+}
+
+/* Clearing the selection is not destructive (the file stays in filer's library),
+   and filer's own red `×` reads as one — keep all three buttons neutral. Its
+   glyph sits on a child span in the saved state and on the button itself in the
+   drop state, so both need the colour. */
+div.filer-dropzone .filerFile .filerClearer,
+div.filer-dropzone .filerFile .filerClearer span {
+    @apply text-base-400 dark:text-base-500;
+}
+
+div.filer-dropzone .filerFile .filerClearer:hover,
+div.filer-dropzone .filerFile .filerClearer:hover span {
+    @apply text-base-700 dark:text-base-200;
+}
+
+div.filer-dropzone .filerFile .related-lookup .choose-file,
+div.filer-dropzone .filerFile .related-lookup .replace-file,
+div.filer-dropzone .filerFile .related-lookup .edit-file {
+    @apply flex items-center gap-1;
+}
+
+div.filer-dropzone .filerFile .related-lookup .replace-file,
+div.filer-dropzone .filerFile .related-lookup.edit,
+div.filer-dropzone .filerFile .related-lookup.related-lookup-change .choose-file {
+    @apply hidden;
+}
+
+div.filer-dropzone .filerFile .related-lookup.related-lookup-change .replace-file,
+div.filer-dropzone .filerFile .related-lookup.related-lookup-change.edit {
+    @apply flex;
+}
+
+/* Drop state: dropzone.js clones filer's `<template>` into the widget — the clone
+   is another `.filerFile` (thumbnail, name, its own remove button), and filer
+   keeps the original `.js-file-selector` around for its buttons, forcing
+   `display: block` on it inline. Compose the two into the single row the saved
+   state has: the dropped file first, filer's buttons last. */
+div.filer-dropzone .filerFile.js-file-selector {
+    @apply flex!;
+}
+
+div.filer-dropzone > .filerFile:not(.js-file-selector) {
+    @apply order-first m-0 p-0 min-h-0;
+}
+
+div.filer-dropzone .dz-thumbnail {
+    @apply w-10 h-10 shrink-0 m-0 rounded-default border border-base-200 dark:border-base-700;
+}
+
+/* The clone carries the file, so the selector shrinks to its buttons — and its
+   own clear button would duplicate the clone's, which is the one wired to cancel
+   the upload. */
+div.filer-dropzone:has(> .filerFile:not(.js-file-selector)) .js-file-selector {
+    @apply grow-0 order-last;
+}
+
+div.filer-dropzone:has(> .filerFile:not(.js-file-selector)) .js-file-selector .filerClearer {
+    @apply hidden!;
+}
+
+div.filer-dropzone .filerFile .description_text:empty {
+    @apply hidden;
+}
+
+div.filer-dropzone .filerFile .dz-progress {
+    @apply static shrink-0 w-24 h-1 m-0 rounded-full overflow-hidden bg-base-200 dark:bg-base-700;
+}
+
+div.filer-dropzone .filerFile .dz-upload {
+    @apply block h-full bg-primary-600;
+}
+
+/* Swap filer's Font Awesome glyphs for Unfold's Material Symbols. */
+div.filer-dropzone .fa {
+    font-family: "Material Symbols Outlined", system-ui;
+    font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 20;
+    @apply text-icon leading-none;
+}
+
+div.filer-dropzone .fa-search:before {
+    content: "search";
+}
+
+div.filer-dropzone .fa-pencil:before {
+    content: "edit";
+}
+
+div.filer-dropzone .fa-close:before {
+    content: "close";
+}
+
+div.filer-dropzone .fa-arrow-down:before {
+    content: "arrow_downward";
+}
+
+/* filer toggles Tailwind's `.hidden` on the controls to mark widget state, and
+   the layout rules above out-specify the single-class utility — so make it stick. */
+div.filer-dropzone .hidden {
+    @apply hidden!;
+}

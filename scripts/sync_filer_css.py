@@ -69,6 +69,27 @@ PATCHES = [
         "html,body{min-width:320px}",
     ),
     (
+        # filer lays its file/image widget out under `form .form-row .filer-dropzone`,
+        # a scope it assumes only Django's own change form provides — but Unfold puts
+        # `form-row` on every fieldset row too (`fieldset_row_classes`), so the whole
+        # block applies and misfires: `.filerFile` is `position: absolute` inside a box
+        # that is only as tall as the `min-height` below, so the file name, filer's
+        # buttons and the drop hint spill out over the next field, where they cover its
+        # controls. Rename the scope to something no page renders; unfold_extra lays the
+        # widget out with flex instead (see the "django-filer file/image widget" block
+        # in unfold_extra/src/css/unfold_extra.css).
+        "Neutralize filer's absolute/float widget layout (Unfold rows are .form-row too)",
+        "form .form-row .filer-dropzone",
+        "form .filer-legacy-form-row .filer-dropzone",
+    ),
+    (
+        # ... and drop the `!important` from the one widget rule filer leaves unscoped,
+        # so the flex layout can size the box by its content.
+        "Drop !important from .filer-dropzone min-height",
+        ".filer-dropzone{min-height:100px !important}",
+        ".filer-dropzone{min-height:100px}",
+    ),
+    (
         # The `filebrowser` body class on the directory-listing view scopes this rule
         # over the *whole* page, including Unfold's sidebar — whose navigation group
         # titles are <h2> elements that also act as the collapse toggle. Hiding them

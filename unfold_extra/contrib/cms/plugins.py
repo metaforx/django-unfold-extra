@@ -35,6 +35,14 @@ class UnfoldCMSPluginBase(
 
     formfield_overrides = {}
 
+    # DatasetModelAdminMixin.changeform_view() calls get_changeform_datasets(),
+    # which Unfold's own ModelAdmin provides directly (not via the mixin itself).
+    # Since CMSPluginBase stands in for Unfold's BaseModelAdmin here, replicate it.
+    change_form_datasets = ()
+
+    def get_changeform_datasets(self, request):
+        return self.change_form_datasets
+
     #: Maps model-field classes → widget classes.  Applied post-construction
     #: in ``formfield_for_dbfield`` to work around fields that ignore the
     #: ``widget`` kwarg.  Subclasses can extend this dict.
