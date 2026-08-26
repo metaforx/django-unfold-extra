@@ -1,38 +1,41 @@
+![Unfold extra preview](docs/img/unfold-extra.png)
 # Django Unfold Extra
 [![PyPI - Version](https://img.shields.io/pypi/v/django-unfold-extra.svg?style=for-the-badge)](https://pypi.org/project/django-unfold-extra/) [![Build](https://img.shields.io/github/actions/workflow/status/metaforx/django-unfold-extra/ci.yml?style=for-the-badge&event=pull_request)](https://github.com/metaforx/django-unfold-extra/actions/workflows/ci.yml)
 
-Unofficial extension for Django `Unfold Admin`. Adds support for `Django CMS` and other common django packages to support the modern and
-clean [Django Unfold](https://github.com/unfoldadmin/django-unfold) admin interface.
+Unofficial extension for [Django Unfold](https://github.com/unfoldadmin/django-unfold) admin. Adds support for `Django CMS` and other common django packages.
 
-This package can be combined with the additional non-mandatory `Unfold Modal` package to provide a unified admin experience.
-See the [django-unfold-modal](https://github.com/metaforx/django-unfold-modal) package for more details.
+Re-registers their admin with Unfold-styled admin classes, forms and widgets, so they keep the clean, modern aesthetic of Django Unfold. It uses unobtrusive template and CSS-styling overrides where possible.
 
-## Overview
+## Features
+- django CMS 5.0 support: page tree, page admin, permissions, plugins and versioning
+- django-filer: full Unfold integration, including the file and image picker widgets (`[filer]` extra)
+- django-parler: multilingual support for your Django models
+- django-versatileimagefield: improved integration, including preview and ppoi
+- Theme sync: drive the theme from the Unfold or the django CMS switcher, or both at the same time
+- Unfold auto-update: styles can be updated from the official Unfold package via npm
+- Combines with the non-mandatory [django-unfold-modal](https://github.com/metaforx/django-unfold-modal) package for a unified admin experience
 
-Django Unfold Extra enhances the Django Unfold admin interface with additional functionality for:
+## Requirements
 
-- **django-cms**: Integration with Django CMS 5.0, including theme, page tree, plugins, and versioning support
-  - **Page tree**: Unfold-styled pagetree, with an optional "New Page" button in the Unfold header and a language switcher
-  - **Page & PageContent admin**: change forms with tabbed fieldsets, plus modal, sideframe, and popup contexts
-  - **Permissions**: `PageUser`, `PageUserGroup` and `GlobalPagePermission` admin, with page-permission and view-restriction inlines
-  - **djangocms-versioning**: versioning admin, grouper form, version action buttons, and the versioned page change form
-  - **Custom plugins**: `UnfoldCMSPluginBase` with `UnfoldStackedInline` / `UnfoldTabularInline` and `cms_widget_overrides`
-  - **djangocms-link**: drop-in Unfold-styled `LinkPlugin` covering the link MultiWidget and the attributes field (`[link]` extra)
-  - **djangocms-alias**: Unfold-styled alias, category and alias content admin, the Alias plugin form and "Create Alias" popup, plus the usage and delete listings
-- **django-filer**: Full Unfold integration, including the file and image picker widgets (`[filer]` extra)
-- **django-parler**: Multilingual support for your Django models
-- **versatile-image**: Improved integration with django-versatileimagefield, including preview and ppoi
-- **Unfold auto-update**: Styles can be updated from the official Unfold package via npm
-- **Theme-Sync**: Use either Unfold or Django CMS switcher to control themes. You can run both at the same time, with or without both controls enabled.
+- Python 3.12+
+- django-unfold 0.92+
+- django-cms 5.0.9+ (<5.1)
+- django-parler 2.3+
+- django-filer 3.0+ and djangocms-link 5.0+ for the optional `[filer]` / `[link]` extras
 
-![img.png](docs/img/cms-pagetree.png)
-![img.png](docs/img/parler-tabs.png)
+## Screenshots
 
-This package maintains the clean, modern aesthetic of Django Unfold while adding specialized interfaces for these
-popular Django packages.
+| django CMS edit mode                                | django CMS page permissions in the sideframe                                    |
+|-------------------------------------------------------|-----------------------------------------------------------------------------------|
+| ![django CMS edit mode](docs/img/cms-edit-mode.png) | ![django CMS page permissions](docs/img/cms-global-permissions-list.png)        |
 
-It uses unobtrusive template and CSS-styling overrides where possible. As Django CMS uses many '!important' flags,
-a small override stylesheet is loaded after the CMS pagetree CSS to win back the conflicting declarations.
+| django CMS page permissions form                                             | django-filer directory listing                                          |
+|--------------------------------------------------------------------------------|---------------------------------------------------------------------------|
+| ![django CMS page permissions form](docs/img/cms-global-permissions-form.png) | ![django-filer directory listing](docs/img/filer-directory-listing.png) |
+
+| django-filer image change form                                          | django-filer delete confirmation                                          |
+|--------------------------------------------------------------------------|----------------------------------------------------------------------------|
+| ![django-filer image change form](docs/img/filer-image-change-form.png) | ![django-filer delete confirmation](docs/img/filer-delete-confirmation.png) |
 
 > **Note:** This package is already used in production but expect additional implementation work. I suggest using it if most of your cms plugins are custom-built.
 
@@ -87,6 +90,8 @@ UNFOLD = {
 - UnfoldTranslatableTabularAdminMixin
 - TranslatableStackedInline, TranslatableTabularInline
 
+![Parler translation tabs](docs/img/parler-tabs.png)
+
 ##### Example use:
 
 ```python
@@ -134,13 +139,18 @@ INSTALLED_APPS = [
 ### Features
 
 Unfold support for all common Django CMS admin pages and plugins including:
-- Pagetree (with add button and language switcher)
-- PageUser, PageUserGroup, GlobalPagePermission
-- CMS Versioning admin and page inline
-- CMS User Settings
-- Modal support
 
-Customization is possible by compiling your own unfold_extra styles.
+- **Page tree**: Unfold-styled pagetree, with an optional "New Page" button in the Unfold header and a language switcher
+- **Page & PageContent admin**: change forms with tabbed fieldsets, plus modal, sideframe, and popup contexts
+- **Permissions**: `PageUser`, `PageUserGroup` and `GlobalPagePermission` admin, with page-permission and view-restriction inlines
+- **CMS User Settings**
+- **djangocms-versioning**: versioning admin, grouper form, version action buttons, and the versioned page change form
+- **Custom plugins**: `UnfoldCMSPluginBase` with `UnfoldStackedInline` / `UnfoldTabularInline` and `cms_widget_overrides`
+- **djangocms-link**: drop-in Unfold-styled `LinkPlugin` covering the link MultiWidget and the attributes field (`[link]` extra)
+- **djangocms-alias**: Unfold-styled alias, category and alias content admin, the Alias plugin form and "Create Alias" popup, plus the usage and delete listings
+
+As Django CMS uses many `!important` flags, a small override stylesheet is loaded after the CMS pagetree CSS to win
+back the conflicting declarations. Further customization is possible by compiling your own unfold_extra styles.
 
 ### Configuration
 
