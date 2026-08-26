@@ -1,20 +1,25 @@
 {% extends "admin/base_site.html" %}
-{% load i18n filer_admin_tags unfold %}
+{% load i18n static filer_admin_tags unfold %}
 
 {% comment %}
     filer's "New Folder" page, in the card markup Unfold uses for its own
     confirmation pages (see unfold_extra/filer/action_page.html — this page runs
     its own view rather than a changelist action, so it carries the shell itself).
 
-    filer's listing opens it with window.open(), but without `_popup` in the URL,
-    so Django's cancel.js — which keys off that param — would send the window back
-    through its own empty history instead of closing it. Hence the cancel handler
-    below.
+    It is reached either through window.open() (filer's own behaviour) or in an
+    Unfold modal, where there is no window to close at all — popup_host.js tells
+    the two apart for the cancel handler below. A successful POST answers with
+    filer's dismiss_popup.html, which this app overrides for the same reason.
 {% endcomment %}
 
 {% block title %}{% translate "Add new" %} {% translate "folder" %} | {{ site_title|default:_('Django site admin') }}{% endblock %}
 
 {% block breadcrumbs %}{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script src="{% static 'unfold_extra/filer/js/popup_host.js' %}"></script>
+{% endblock %}
 
 {% block content %}
     <div class="border border-base-200 rounded-default shadow-xs dark:border-base-800">
@@ -50,6 +55,15 @@
 
                 if (window.opener && !window.opener.closed) {
                     window.close();
+                    return;
+                }
+
+                // Inside an Unfold modal there is no window to close — ask
+                // django-unfold-modal to drop the modal instead.
+                var modal = window.unfoldExtraFilerModal && window.unfoldExtraFilerModal();
+
+                if (modal) {
+                    modal.close();
                 } else {
                     window.history.back();
                 }

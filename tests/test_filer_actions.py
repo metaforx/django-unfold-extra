@@ -164,6 +164,18 @@ class TestNewFolderPage:
         assert response.status_code == 200
         assert Folder.objects.filter(name="new-folder").exists()
 
+    def test_dismiss_page_talks_to_whatever_opened_it(self, admin_client):
+        """filer answers a saved folder with a page that calls back to `opener`.
+
+        Inside a modal there is none, so the override falls back to reloading the
+        page hosting the iframe — filer's own "reload, then close" by other means.
+        """
+        html = admin_client.post(self.URL, {"name": "dismissed"}).content.decode()
+
+        assert "opener.dismissPopupAndReload(window)" in html
+        assert "unfoldExtraFilerModal()" in html
+        assert "window.parent.location.reload()" in html
+
     def test_duplicate_name_shows_unfold_error(self, admin_client, django_user_model):
         from filer.models import Folder
 
