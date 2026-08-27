@@ -106,6 +106,26 @@ exclude = [
 ,
 ]
 
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = [
+    "migrations",
+    "*migrations",
+]
+# pre-commit passes file paths explicitly; without this, ruff checks them even
+# when they match extend-exclude (e.g. vendored gwr/overrides/*migrations).
+force-exclude = true
+
+[tool.ruff.lint]
+select = ["I", ]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+
+[tool.ruff.format]
+quote-style = "double"
+
 [tool.pytest.ini_options]
 addopts = """\
     --strict-config
