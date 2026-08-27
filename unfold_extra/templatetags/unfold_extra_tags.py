@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import re
-from typing import Any, Mapping
 
 from django import template
 from django.conf import settings
