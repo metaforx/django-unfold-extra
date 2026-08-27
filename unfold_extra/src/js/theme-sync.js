@@ -1,7 +1,10 @@
-import {KEY_CMS, KEY_UNFOLD, applyTheme} from './utils/theme-utils.js';
+import {KEY_CMS, KEY_UNFOLD, applyCmsTheme, applyTheme} from './utils/theme-utils.js';
+
+const CMS_THEME = '4';
 
 let mirroring = false;
 
+applyCmsTheme(CMS_THEME);
 applyTheme(localStorage.getItem(KEY_UNFOLD))
 
 const normalize = (val) => {

@@ -1,14 +1,19 @@
 from json import dumps
 from urllib.parse import urlencode
 
-from cms.admin.pageadmin import get_site
 from cms.constants import MODAL_HTML_REDIRECT
 from cms.utils.conf import get_cms_setting
 from cms.utils.i18n import get_site_language_from_request
 from django.http import HttpResponse
-from django.urls import reverse
 from django.utils.text import capfirst
 from django.utils.translation import gettext
+
+try:
+    # django-cms 5.0: session-based admin site switcher.
+    from cms.admin.pageadmin import get_site as _get_admin_site
+except ImportError:
+    # django-cms 5.1: get_current_site() admin site switcher.
+    from cms.utils import get_current_site as _get_admin_site
 
 SIDEPANEL_HTML_REDIRECT = """<!doctype html>
 <meta http-equiv="refresh" content="0;url={url}">
@@ -41,7 +46,7 @@ def _language_from_request(request) -> str:
     """
     Determines the language to be used based on the request object.
     """
-    site = get_site(request)
+    site = _get_admin_site(request)
     lang = request.GET.get("language") or get_site_language_from_request(request, site_id=site.pk)
     return lang or get_cms_setting("LANGUAGE_CODE")
 

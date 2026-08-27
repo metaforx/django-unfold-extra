@@ -24,7 +24,7 @@ classifiers = [
 ]
 dependencies = [
     # 5.0.9 pads .cms-sideframe-frame itself; unfold_extra no longer does.
-    "django-cms>=5.0.9,<5.1",
+    "django-cms>=5.0.9,<5.2",
     "django-parler~=2.3",
     "django-unfold>=0.92",
 ]

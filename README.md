@@ -19,7 +19,7 @@ Re-registers their admin with Unfold-styled admin classes, forms and widgets, so
 
 - Python 3.12+
 - django-unfold 0.92+
-- django-cms 5.0.9+ (<5.1)
+- django-cms 5.0.9+ (5.0.x and 5.1.x)
 - django-parler 2.3+
 - django-filer 3.0+ and djangocms-link 5.0+ for the optional `[filer]` / `[link]` extras
 

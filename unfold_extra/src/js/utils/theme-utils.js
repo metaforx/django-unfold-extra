@@ -1,6 +1,12 @@
 export const KEY_UNFOLD = 'adminTheme'; // JSON-encoded: "light" | "dark" | "auto"
 export const KEY_CMS = 'theme';
 
+// Uses CMS 5.0 legacy stying. 5.1 rebranding must be implemented via CSS when version becomes stable/default.
+export function applyCmsTheme(variant) {
+    if (!variant) return;
+    document.documentElement.setAttribute('data-cms-theme', variant);
+}
+
 export function applyTheme(theme) {
     if (!theme) return;
     console.log('applyTheme', theme);

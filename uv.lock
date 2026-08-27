@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 2
 requires-python = ">=3.12"
 
 [[package]]
@@ -341,7 +341,7 @@ test = [
 
 [package.metadata]
 requires-dist = [
-    { name = "django-cms", specifier = ">=5.0.9,<5.1" },
+    { name = "django-cms", specifier = ">=5.0.9,<5.2" },
     { name = "django-filer", marker = "extra == 'filer'", specifier = ">=3.0" },
     { name = "django-filer", marker = "extra == 'link'", specifier = ">=3.0" },
     { name = "django-filer", marker = "extra == 'test'", specifier = ">=3.0" },
