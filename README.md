@@ -80,64 +80,9 @@ UNFOLD = {
 }
 ```
 
-## Usage
+## Integrations
 
-### Integrations
-
-#### django-parler Support
-
-- UnfoldTranslatableAdminMixin
-- UnfoldTranslatableStackedAdminMixin
-- UnfoldTranslatableTabularAdminMixin
-- TranslatableStackedInline, TranslatableTabularInline
-
-![Parler translation tabs](docs/img/parler-tabs.png)
-
-##### Example use:
-
-```python
-class TranslatableAdmin(UnfoldTranslatableAdminMixin, BaseTranslatableAdmin):
-   """custom translatable admin implementation"""
-
-   # ... your code
-
-
-class MyInlineAdmin(TranslatableStackedInline):
-   model = MyModel
-   tab = True  # Unfold inline settings
-   extra = 0  # django inline settings
-```
-
-#### Versatile Image Support
-
-- Improved unfold integration via CSS only.
-
-#### django-filer Support
-
-- Full Unfold integration, including the `FilerFileField` / `FilerImageField` picker widgets.
-
-Install with the extra and list the app **before** `filer` so it can shadow
-filer's templates and static files:
-
-```bash
-pip install django-unfold-extra[filer]
-```
-
-```python
-INSTALLED_APPS = [
-    # ...
-    "unfold_extra.contrib.filer",
-    "filer",
-]
-```
-
-#### Django Auth, Sites
-
-- Adds Unfold-based admin registrations for `django.contrib.auth` and `django.contrib.sites`.
-
-## CMS Integration
-
-### Features
+### django CMS Support
 
 Unfold support for all common Django CMS admin pages and plugins including:
 
@@ -153,7 +98,7 @@ Unfold support for all common Django CMS admin pages and plugins including:
 As Django CMS uses many `!important` flags, a small override stylesheet is loaded after the CMS pagetree CSS to win
 back the conflicting declarations. Further customization is possible by compiling your own unfold_extra styles.
 
-### Configuration
+#### Configuration
 
 Add the django CMS-specific settings to your `settings.py`:
 
@@ -190,14 +135,15 @@ Optional: move the CMS "New Page" button into Unfold's header. Set this to
 UNFOLD_CMS_HEADER_ADD_BUTTON = True #default option
 ```
 
-### Base Template Integration
+#### Base Template Integration
 
 Add `{% unfold_extra_styles %}` and `{% unfold_extra_theme_sync %}` from `unfold_extra_tags`
-to your base HTML template.
+to your base HTML template, after loading all CSS styles.
 
 - Enables Unfold admin colors in django CMS
 - Syncs the Unfold theme with django CMS (light/dark/auto)
 - Adds Unfold-styled django CMS plugin admin support
+- Exposes `"COLORS"` from Unfold settings on the public website for authenticated django-cms admin users
 
 ```html
 {% load static cms_tags sekizai_tags unfold_extra_tags %}
@@ -215,7 +161,7 @@ to your base HTML template.
 </html>
 ```
 
-### Language Sync (Unfold ↔ CMS)
+#### Language Sync (Unfold ↔ CMS)
 
 To keep the Unfold language switcher and the CMS toolbar/admin in sync, register
 `cms_set_language` from `unfold_extra.views` as the `set_language` URL
@@ -235,7 +181,7 @@ When a user switches language via Unfold's sidebar, `cms_set_language` updates
 the CMS `UserSettings.language` before the redirect so the CMS toolbar renders
 in the same language on the next request.
 
-### CMS Plugins With Unfold Styling
+#### CMS Plugins With Unfold Styling
 
 For the general django CMS plugin model, see the official guide:
 https://docs.django-cms.org/en/stable/how_to/09-custom_plugins.html
@@ -279,7 +225,7 @@ See Unfold docs:
 - https://unfoldadmin.com/docs/configuration/modeladmin/
 - https://unfoldadmin.com/docs/tabs/fieldsets/
 
-### Page Select Widget
+#### Page Select Widget
 
 Unfold-styled replacements for django CMS's `PageSelectWidget`:
 
@@ -301,7 +247,7 @@ class MyInlineForm(forms.ModelForm):
     page = PageSelectFormField(widget=UnfoldPageSelectInlineWidget())
 ```
 
-### djangocms-link Plugin Support
+#### djangocms-link Plugin Support
 
 [`djangocms-link`](https://github.com/django-cms/djangocms-link)
 To use DjangoCMS Link Plugin with the Unfold theme for Django CMS, it must be registered with customized widgets that support Unfold styling. 
@@ -328,23 +274,7 @@ pip install "django-unfold-extra[link]"
 > Advanced: drop filer by shadowing those migrations via `MIGRATION_MODULES` —
 > won't work on databases already migrated with filer.
 
-### Frontend django CMS Support
-
-Add `unfold_extra_tags` to your base HTML template after loading all CSS styles.
-This adds additional styles to integrate django CMS with Unfold Admin and exposes `"COLORS"` from Unfold settings on
-the public website for authenticated django-cms admin users.
-
-```html
-{% load cms_tags sekizai_tags unfold_extra_tags %}
-<head>
-   ...
-   {% render_block "css" %}
-   {% unfold_extra_styles %}
-   ...
-</head>
-```
-
-### Custom Compilation via npm
+#### Custom Compilation via npm
 
 The current frontend scripts live in `unfold_extra/src/package.json`. Run them from
 `unfold_extra/src`, for example:
@@ -356,7 +286,7 @@ npm run tailwind:watch
 npm run build:js
 ```
 
-### Change Colors for Django CMS
+#### Change Colors for Django CMS
 
 Configure colors through Unfold in `settings.py` using `UNFOLD["COLORS"]`.
 This is the minimal and recommended way to align the admin theme, including the
@@ -409,5 +339,56 @@ frontend assets in `unfold_extra/src`.
 See the official Unfold docs:
 - Settings options: https://unfoldadmin.com/docs/configuration/settings/
 - Customizing Tailwind stylesheet: https://unfoldadmin.com/docs/styles-scripts/customizing-tailwind/
+
+### django-filer Support
+
+- Full Unfold integration, including the `FilerFileField` / `FilerImageField` picker widgets.
+
+Install with the extra and list the app **before** `filer` so it can shadow
+filer's templates and static files:
+
+```bash
+pip install django-unfold-extra[filer]
+```
+
+```python
+INSTALLED_APPS = [
+    # ...
+    "unfold_extra.contrib.filer",
+    "filer",
+]
+```
+
+### django-parler Support
+
+- UnfoldTranslatableAdminMixin
+- UnfoldTranslatableStackedAdminMixin
+- UnfoldTranslatableTabularAdminMixin
+- TranslatableStackedInline, TranslatableTabularInline
+
+![Parler translation tabs](docs/img/parler-tabs.png)
+
+#### Example use:
+
+```python
+class TranslatableAdmin(UnfoldTranslatableAdminMixin, BaseTranslatableAdmin):
+   """custom translatable admin implementation"""
+
+   # ... your code
+
+
+class MyInlineAdmin(TranslatableStackedInline):
+   model = MyModel
+   tab = True  # Unfold inline settings
+   extra = 0  # django inline settings
+```
+
+### django-versatileimagefield Support
+
+- Improved unfold integration via CSS only.
+
+### Django Auth, Sites
+
+- Adds Unfold-based admin registrations for `django.contrib.auth` and `django.contrib.sites`.
 
 This is for personal use. You likely want to customize this. 
