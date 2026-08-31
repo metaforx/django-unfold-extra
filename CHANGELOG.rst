@@ -6,6 +6,20 @@ All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
 
+Unreleased
+==========
+
+0.5.3 (2026-08-31)
+==================
+
+Bug Fixes:
+----------
+
+* Inline the primary-tinted filer folder icons in the global ``styles.css`` as
+  data URIs instead of referencing ``filer/icons/*.svg`` (which ship only with
+  ``unfold_extra.contrib.filer``). Fixes ``collectstatic`` with
+  ``ManifestStaticFilesStorage`` failing when filer isn't installed.
+
 0.5.2 (2026-08-31)
 ==================
 
