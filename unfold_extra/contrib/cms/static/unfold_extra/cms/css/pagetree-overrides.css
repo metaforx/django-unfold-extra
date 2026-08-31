@@ -15,3 +15,10 @@
         display: block !important;
     }
 }
+
+/* Unfold marks each sidebar group `hidden` and reveals the ones that still hold
+   models with a utility cms outranks. Re-assert it for exactly those, without
+   naming the utility — that name moves between Unfold releases. */
+#nav-sidebar-apps .hidden:has(ol li) {
+    display: block !important;
+}

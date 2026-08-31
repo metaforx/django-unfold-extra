@@ -6,6 +6,16 @@ All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
 
+0.5.2 (2026-08-31)
+==================
+
+Bug Fixes:
+----------
+
+* Keep Unfold's nav sidebar visible on the page tree: django-cms'
+  ``.hidden {display: none !important}`` collapses the sidebar groups Unfold 0.9x
+  reveals with a non-important utility. ``pagetree-overrides.css`` re-asserts them.
+
 0.5.1 (2026-08-26)
 ==================
 
