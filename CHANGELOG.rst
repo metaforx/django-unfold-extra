@@ -5,10 +5,6 @@ Changelog
 All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
-
-Unreleased
-==========
-
 0.5.5 (2026-09-15)
 ==================
 
