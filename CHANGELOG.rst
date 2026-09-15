@@ -9,6 +9,17 @@ This project adheres to `Semantic Versioning <https://semver.org/>`_.
 Unreleased
 ==========
 
+0.5.4 (2026-09-15)
+==================
+
+Bug Fixes:
+----------
+
+* Support djangocms-versioning 2.7, which merged ``js/object-tools.js`` into
+  ``js/admin/versioning.js``. The versioned page change form now loads the script
+  through a new ``{% djangocms_versioning_admin_js %}`` tag that picks whichever
+  file the installed version ships, so older djangocms-versioning releases keep working.
+
 0.5.3 (2026-08-31)
 ==================
 
