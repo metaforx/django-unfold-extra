@@ -33,8 +33,10 @@ Tests:
 Bug Fixes:
 ----------
 
-* Resolve the versioning admin JS by file presence: djangocms-versioning 2.7
-  consolidated ``js/object-tools.js`` into ``js/admin/versioning.js``.
+* Support djangocms-versioning 2.7, which merged ``js/object-tools.js`` into
+  ``js/admin/versioning.js``. The versioned page change form now loads the script
+  through a new ``{% djangocms_versioning_admin_js %}`` tag that picks whichever
+  file the installed version ships, so older djangocms-versioning releases keep working.
 
 0.5.3 (2026-08-31)
 ==================
