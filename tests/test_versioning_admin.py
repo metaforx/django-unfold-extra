@@ -1,6 +1,6 @@
 """Regression tests: every djangocms-versioning admin view renders with Unfold templates.
 
-djangocms-versioning moves templates between releases (2.7 moved ``grouper_form.html``),
+djangocms-versioning moves templates between releases (2.6 moved ``grouper_form.html``),
 which silently drops our overrides and breaks Unfold's ``submit_row`` (``KeyError: 'add'``).
 """
 

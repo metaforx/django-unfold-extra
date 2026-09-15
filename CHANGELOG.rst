@@ -16,9 +16,9 @@ Bug Fixes:
 ----------
 
 * Move the versioning grouper select override to
-  ``admin/djangocms_versioning/grouper_form.html``, where djangocms-versioning 2.7
+  ``admin/djangocms_versioning/grouper_form.html``, where djangocms-versioning 2.6+
   looks for it. Fixes ``KeyError: 'add'`` on the "Select page to view its versions"
-  view. The old path extends the new one for versioning < 2.7.
+  view. The old path extends the new one for versioning < 2.6.
 
 Tests:
 ------
