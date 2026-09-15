@@ -9,6 +9,24 @@ This project adheres to `Semantic Versioning <https://semver.org/>`_.
 Unreleased
 ==========
 
+0.5.5 (2026-09-15)
+==================
+
+Bug Fixes:
+----------
+
+* Move the versioning grouper select override to
+  ``admin/djangocms_versioning/grouper_form.html``, where djangocms-versioning 2.6+
+  looks for it. Fixes ``KeyError: 'add'`` on the "Select page to view its versions"
+  view. The old path extends the new one for versioning < 2.6.
+
+Tests:
+------
+
+* Add regression tests rendering every djangocms-versioning admin view (grouper select,
+  version list, compare, archive/discard/unpublish/revert confirmations, publish,
+  edit redirect, versioned page change form) and asserting our template overrides apply.
+
 0.5.4 (2026-09-15)
 ==================
 
