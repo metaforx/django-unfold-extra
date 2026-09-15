@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+from functools import lru_cache
 from typing import Any, Mapping
 
 from django import template
@@ -108,3 +109,24 @@ def unfold_extra_theme_sync(context) -> str:
 
     src = static("unfold_extra/js/theme-sync.js")
     return mark_safe(f'<script src="{src}"></script>')
+
+@lru_cache(maxsize=1)
+def _versioning_admin_js_path() -> str:
+    """
+    djangocms-versioning 2.7 consolidated ``js/object-tools.js`` (and related)
+    into ``js/admin/versioning.js``. Resolve by file presence.
+    """
+    from pathlib import Path
+
+    import djangocms_versioning
+
+    js_dir = Path(djangocms_versioning.__file__).parent / "static" / "djangocms_versioning" / "js"
+    if (js_dir / "admin" / "versioning.js").is_file():
+        return "djangocms_versioning/js/admin/versioning.js"
+    return "djangocms_versioning/js/object-tools.js"
+
+
+@register.simple_tag
+def djangocms_versioning_admin_js() -> str:
+    """Static URL of the versioning admin JS shipped by the installed djangocms-versioning."""
+    return static(_versioning_admin_js_path())
