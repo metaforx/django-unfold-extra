@@ -1,19 +1,69 @@
-"""Shared fixtures for the visual regression suite."""
+"""Shared fixtures for the visual regression suite.
+
+Screenshot tests only run inside the pinned Playwright container (``scripts/visual.sh``);
+``pytest_collection_modifyitems`` below refuses to run them anywhere else.
+"""
 
 from __future__ import annotations
 
 import io
 import json
+import os
 from dataclasses import dataclass
+from importlib.metadata import version
 from pathlib import Path
 
 import pytest
+from django.apps import apps
+from django.contrib.contenttypes.models import ContentType
 from PIL import Image
 
 from tests.conftest import UPDATED_SNAPSHOTS, admin_login
 
 from .data import VisualData, visual_data_create
 from .snapshot import snapshot_compare, snapshot_write_results
+
+# Set by the container image to the Playwright version it was built from.
+VISUAL_PLAYWRIGHT_VERSION = "VISUAL_PLAYWRIGHT_VERSION"
+
+
+@pytest.hookimpl(trylast=True)
+def pytest_collection_modifyitems(config, items):
+    """Abort before any visual test runs outside the pinned environment.
+
+    Fonts and rasterisation differ per platform, so references generated anywhere else
+    are unreproducible. Failing at collection makes that a clear message instead of 52
+    mystery diffs.
+    """
+    selected = [item for item in items if item.get_closest_marker("visual")]
+    if not selected:
+        return
+
+    installed = version("playwright")
+    declared = os.environ.get(VISUAL_PLAYWRIGHT_VERSION)
+    if declared == installed:
+        return
+
+    raise pytest.UsageError(
+        f"visual tests need the pinned container: {VISUAL_PLAYWRIGHT_VERSION}="
+        f"{declared or '<unset>'} but playwright {installed} is installed. "
+        "Run them with scripts/visual.sh."
+    )
+
+
+@pytest.fixture(autouse=True)
+def fresh_content_type_caches():
+    """Drop every cached ContentType pk before the scenario is built.
+
+    Transactional tests flush ``django_content_type`` and post_migrate recreates the rows
+    with different pks. Django caches those pks, and djangocms-versioning caches them
+    again in ``VersionableItem.content_types`` (a ``cached_property``), so the second
+    transactional test looks versions up by a pk that no longer exists and every CMS
+    admin view 500s with ``Version.DoesNotExist``.
+    """
+    ContentType.objects.clear_cache()
+    for versionable in apps.get_app_config("djangocms_versioning").cms_extension.versionables:
+        versionable.__dict__.pop("content_types", None)
 
 
 @pytest.fixture(autouse=True)

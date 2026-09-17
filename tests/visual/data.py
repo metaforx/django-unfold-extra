@@ -11,8 +11,9 @@ import io
 from dataclasses import dataclass
 from datetime import datetime, timezone
 
-from cms.api import create_page
-from cms.models import Page, PageContent
+from cms.api import add_plugin, create_page
+from cms.models import CMSPlugin, Page, PageContent
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -24,6 +25,10 @@ from testapp.models import Article, Category, Document, SimpleModel
 # Every ``auto_now*``, upload and version timestamp is pinned here, so repeated runs
 # render identical dates. The value is timezone-aware because ``USE_TZ`` is on.
 FIXED_TIMESTAMP = datetime(2026, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
+
+# The admin change form renders the password salt, which is random per hash.
+FIXED_PASSWORD = "password"
+FIXED_PASSWORD_SALT = "visualregression"
 
 
 def png_bytes(*, color: tuple[int, int, int], size: tuple[int, int] = (320, 200)) -> bytes:
@@ -116,6 +121,27 @@ def document_create(*, title: str, file: File | None = None, cover: Image | None
     return Document.objects.create(title=title, file=file, cover=cover)
 
 
+def cms_plugins_create(*, page_content: PageContent, language: str = "en") -> list[CMSPlugin]:
+    """Fill the page's ``content`` placeholder, so edit and structure views show markup.
+
+    Both plugins subclass ``UnfoldCMSPluginBase``, which is what those views are here to
+    cover; an empty placeholder would only ever render "Drop a plugin here".
+    """
+    placeholder = page_content.get_placeholders().get(slot="content")
+    hero = add_plugin(
+        placeholder,
+        "HeroPlugin",
+        language,
+        title="Welcome",
+        subtitle="A hero section rendered by UnfoldCMSPluginBase.",
+        cta_label="Read more",
+        cta_url="https://example.com/",
+        layout="centered",
+    )
+    link = add_plugin(placeholder, "PageLinkPlugin", language, label="Back to start")
+    return [hero, link]
+
+
 def cms_page_create(*, title: str, user: User, language: str = "en") -> PageContent:
     """A CMS page and its draft ``PageContent`` for ``language``.
 
@@ -141,6 +167,8 @@ class VisualData:
     file: File
     document: Document
     page_content: PageContent
+    hero_plugin: CMSPlugin
+    link_plugin: CMSPlugin
 
     @property
     def page(self) -> Page:
@@ -167,6 +195,10 @@ def _timestamps_pin(*, data: VisualData) -> None:
         modified_at=FIXED_TIMESTAMP,
     )
     Article.objects.filter(pk=data.article.pk).update(created=FIXED_TIMESTAMP)
+    CMSPlugin.objects.filter(pk__in=[data.hero_plugin.pk, data.link_plugin.pk]).update(
+        creation_date=FIXED_TIMESTAMP,
+        changed_date=FIXED_TIMESTAMP,
+    )
     Page.objects.filter(pk=data.page_content.page_id).update(
         creation_date=FIXED_TIMESTAMP,
         changed_date=FIXED_TIMESTAMP,
@@ -191,6 +223,18 @@ def _timestamps_pin(*, data: VisualData) -> None:
         data.page_content,
     ):
         instance.refresh_from_db()
+
+
+def _passwords_pin(*, data: VisualData) -> None:
+    """Give the editor a fixed-salt hash — its change form renders the salt.
+
+    Only the editor: rewriting the admin's hash would change the session auth hash and
+    log ``admin_client`` out mid-test.
+    """
+    User.objects.filter(pk=data.editor.pk).update(
+        password=make_password(FIXED_PASSWORD, salt=FIXED_PASSWORD_SALT)
+    )
+    data.editor.refresh_from_db()
 
 
 def visual_data_create(*, admin: User) -> VisualData:
@@ -219,6 +263,7 @@ def visual_data_create(*, admin: User) -> VisualData:
 
     document = document_create(title="Handbook 2026", file=file, cover=image)
     page_content = cms_page_create(title="Home", user=admin)
+    hero_plugin, link_plugin = cms_plugins_create(page_content=page_content)
 
     data = VisualData(
         admin=admin,
@@ -232,6 +277,9 @@ def visual_data_create(*, admin: User) -> VisualData:
         file=file,
         document=document,
         page_content=page_content,
+        hero_plugin=hero_plugin,
+        link_plugin=link_plugin,
     )
     _timestamps_pin(data=data)
+    _passwords_pin(data=data)
     return data
