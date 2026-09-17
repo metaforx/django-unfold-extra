@@ -65,6 +65,8 @@ test = [
     "pytest-django>=4.5",
     "pytest-env>=1.0",
     "pytest-playwright>=0.7.2,<0.8",
+    # Pure-python pixel diffing for the visual regression snapshots.
+    "pixelmatch>=0.3",
     "djangocms-versioning>=2.5.1",
     # Required by the test settings' INSTALLED_APPS; not transitive deps of cms.
     "djangocms-link>=5.0",
