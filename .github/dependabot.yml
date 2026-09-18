@@ -1,0 +1,22 @@
+version: 2
+updates:
+  # Only the packages whose rendering unfold_extra overrides: each update opens its own PR,
+  # so the visual workflow's PR job says which dependency changed which views.
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 5
+    allow:
+      - dependency-name: "django-cms"
+      - dependency-name: "django-parler"
+      - dependency-name: "django-unfold"
+      - dependency-name: "djangocms-link"
+      - dependency-name: "djangocms-versioning"
+      - dependency-name: "django-filer"
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - "dependencies"

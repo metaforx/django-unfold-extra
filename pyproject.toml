@@ -87,6 +87,8 @@ path = "build_hook.py"
 [tool.hatch.build.targets.sdist]
 type = "sdist"
 packages = ["unfold_extra"]
+# The custom build hook runs when the wheel is built from this sdist, so it has to ship.
+force-include = { "build_hook.py" = "build_hook.py" }
 
 [tool.hatch.build.targets.wheel]
 type = "wheel"
