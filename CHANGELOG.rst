@@ -5,6 +5,37 @@ Changelog
 All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
+Unreleased
+==========
+
+Tests:
+------
+
+* Add a visual regression suite (``tests/visual/``). A single registry of supported admin
+  views drives three checks: a browserless status check and an admin coverage guard, both
+  in the default test run, and a screenshot comparison against committed reference images.
+  The screenshots are marked ``visual`` and run only inside a pinned Playwright container
+  via ``scripts/visual.sh``; references are updated explicitly with ``--update-snapshots``.
+* Cover 30 views in light and dark, including the CMS frontend edit and structure
+  endpoints, the toolbar's page-settings modal and a plugin edit modal.
+* Give tests an isolated ``MEDIA_ROOT``, so filer uploads no longer land in the repository
+  root, and serve ``MEDIA_URL`` under ``live_server``.
+
+CI:
+---
+
+* Add ``.github/workflows/visual.yml``: the screenshot check runs on pull requests against
+  the locked dependencies, plus a manually dispatched job that renders the tracked
+  dependencies upgraded. Neither job can commit or push.
+* Add ``.github/dependabot.yml`` (``uv`` ecosystem) for the six packages whose rendering
+  this suite covers, so each upgrade arrives as its own pull request with a visual check.
+
+Packaging:
+----------
+
+* Ship ``build_hook.py`` in the sdist. Without it, building a wheel from the sdist failed
+  with ``OSError: Build script does not exist``.
+
 0.5.5 (2026-09-15)
 ==================
 
