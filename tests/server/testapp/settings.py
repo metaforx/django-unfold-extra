@@ -100,6 +100,9 @@ DATABASES = {
 
 STATIC_URL = "static/"
 
+# Uploads land in a tmp MEDIA_ROOT per test; the URL has to be stable for filer.
+MEDIA_URL = "/media/"
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Django sites framework

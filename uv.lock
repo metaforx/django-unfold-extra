@@ -318,10 +318,14 @@ link = [
 ]
 test = [
     { name = "django-filer" },
+    { name = "django-mptt" },
     { name = "djangocms-link" },
+    { name = "djangocms-versioning" },
+    { name = "pixelmatch" },
     { name = "pytest" },
     { name = "pytest-django" },
     { name = "pytest-env" },
+    { name = "pytest-playwright" },
 ]
 
 [package.dev-dependencies]
@@ -333,6 +337,7 @@ test = [
     { name = "django-mptt" },
     { name = "djangocms-link" },
     { name = "djangocms-versioning" },
+    { name = "pixelmatch" },
     { name = "pytest" },
     { name = "pytest-django" },
     { name = "pytest-env" },
@@ -345,13 +350,17 @@ requires-dist = [
     { name = "django-filer", marker = "extra == 'filer'", specifier = ">=3.0" },
     { name = "django-filer", marker = "extra == 'link'", specifier = ">=3.0" },
     { name = "django-filer", marker = "extra == 'test'", specifier = ">=3.0" },
+    { name = "django-mptt", marker = "extra == 'test'", specifier = ">=0.18" },
     { name = "django-parler", specifier = "~=2.3" },
     { name = "django-unfold", specifier = ">=0.92" },
     { name = "djangocms-link", marker = "extra == 'link'", specifier = ">=5.0" },
     { name = "djangocms-link", marker = "extra == 'test'", specifier = ">=5.0" },
+    { name = "djangocms-versioning", marker = "extra == 'test'", specifier = ">=2.5.1" },
+    { name = "pixelmatch", marker = "extra == 'test'", specifier = ">=0.3" },
     { name = "pytest", marker = "extra == 'test'", specifier = ">=8.0" },
     { name = "pytest-django", marker = "extra == 'test'", specifier = ">=4.5" },
     { name = "pytest-env", marker = "extra == 'test'", specifier = ">=1.0" },
+    { name = "pytest-playwright", marker = "extra == 'test'", specifier = ">=0.7.2,<0.8" },
 ]
 provides-extras = ["filer", "link", "test"]
 
@@ -362,6 +371,7 @@ test = [
     { name = "django-mptt", specifier = ">=0.18" },
     { name = "djangocms-link", specifier = ">=5.0" },
     { name = "djangocms-versioning", specifier = ">=2.5.1" },
+    { name = "pixelmatch", specifier = ">=0.3" },
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-django", specifier = ">=4.5" },
     { name = "pytest-env", specifier = ">=1.0" },
@@ -681,6 +691,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/18/f0/a5595c1e8c3ae44b9828cb2f0fa8155e5095ef04d6327b8f61cf44a3df85/pillow-12.3.0-cp315-cp315t-win32.whl", hash = "sha256:1657923d2d45afb66526e5b933e5b3052e6bdea196c90d3abb2424e18c77dae8", size = 6474384, upload-time = "2026-07-01T11:56:18.855Z" },
     { url = "https://files.pythonhosted.org/packages/e4/04/62bcd9f844984c5938d3b05264a61d797a29d3e0812341a8204af70bbdee/pillow-12.3.0-cp315-cp315t-win_amd64.whl", hash = "sha256:8cd2f7bdda092d99c9fc2fb7391354f306d01443d22785d0cbfafa2e2c8bb418", size = 7243537, upload-time = "2026-07-01T11:56:21.214Z" },
     { url = "https://files.pythonhosted.org/packages/3d/68/1f3066acedf37673694a7141381d8f811ae97f30d34413d236abe7d489f1/pillow-12.3.0-cp315-cp315t-win_arm64.whl", hash = "sha256:06ff022112bc9cbf83b60f8e028d94ad87b60621706487e65f673de61610ab59", size = 2567491, upload-time = "2026-07-01T11:56:23.506Z" },
+]
+
+[[package]]
+name = "pixelmatch"
+version = "0.4.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/b5/ef/d69a0c50f812326d3b54f8aea0536733d650cc2fb47c6510a2abe54df81d/pixelmatch-0.4.0.tar.gz", hash = "sha256:80a9ae1084941569f0e8cc7fe70b50c02312b4dbaf4b37b710e0f75f9667fa32", size = 7224, upload-time = "2026-03-07T08:55:54.81Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f2/7e/8958796e5077a2473780c9368a0d7f360d1de62c96608b84170c916e4b23/pixelmatch-0.4.0-py3-none-any.whl", hash = "sha256:d40e49e05eab0531bc7665f40309d90f5708c3edd121b3fd63385864005b81a8", size = 9728, upload-time = "2026-03-07T08:55:53.212Z" },
 ]
 
 [[package]]

@@ -41,9 +41,13 @@ test = [
     "pytest>=8.0",
     "pytest-django>=4.5",
     "pytest-env>=1.0",
+    "pytest-playwright>=0.7.2,<0.8",
+    "pixelmatch>=0.3",
+    "djangocms-versioning>=2.5.1",
     "djangocms-link>=5.0",
     # djangocms-link migrations depend on filer (file_link field).
     "django-filer>=3.0",
+    "django-mptt>=0.18",
 ]
 # Optional contrib integration: install with `pip install django-unfold-extra[filer]`
 filer = [
@@ -65,6 +69,8 @@ test = [
     "pytest-django>=4.5",
     "pytest-env>=1.0",
     "pytest-playwright>=0.7.2,<0.8",
+    # Pure-python pixel diffing for the visual regression snapshots.
+    "pixelmatch>=0.3",
     "djangocms-versioning>=2.5.1",
     # Required by the test settings' INSTALLED_APPS; not transitive deps of cms.
     "djangocms-link>=5.0",
@@ -85,6 +91,8 @@ path = "build_hook.py"
 [tool.hatch.build.targets.sdist]
 type = "sdist"
 packages = ["unfold_extra"]
+# The custom build hook runs when the wheel is built from this sdist, so it has to ship.
+force-include = { "build_hook.py" = "build_hook.py" }
 
 [tool.hatch.build.targets.wheel]
 type = "wheel"
@@ -131,7 +139,7 @@ addopts = """\
     --strict-config
     --strict-markers
     --ds=testapp.settings
-    -m 'not ui'
+    -m 'not ui and not visual'
     """
 testpaths = ["tests"]
 # "." puts the repo root on sys.path so ``unfold_extra`` imports under bare
@@ -143,5 +151,6 @@ env = [
 ]
 markers = [
     "ui: Playwright browser tests (deselected by default, run with: pytest -m ui)",
+    "visual: Screenshot regression tests (deselected by default, run with: scripts/visual.sh)",
 ]
 
