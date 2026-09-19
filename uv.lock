@@ -318,10 +318,14 @@ link = [
 ]
 test = [
     { name = "django-filer" },
+    { name = "django-mptt" },
     { name = "djangocms-link" },
+    { name = "djangocms-versioning" },
+    { name = "pixelmatch" },
     { name = "pytest" },
     { name = "pytest-django" },
     { name = "pytest-env" },
+    { name = "pytest-playwright" },
 ]
 
 [package.dev-dependencies]
@@ -346,13 +350,17 @@ requires-dist = [
     { name = "django-filer", marker = "extra == 'filer'", specifier = ">=3.0" },
     { name = "django-filer", marker = "extra == 'link'", specifier = ">=3.0" },
     { name = "django-filer", marker = "extra == 'test'", specifier = ">=3.0" },
+    { name = "django-mptt", marker = "extra == 'test'", specifier = ">=0.18" },
     { name = "django-parler", specifier = "~=2.3" },
     { name = "django-unfold", specifier = ">=0.92" },
     { name = "djangocms-link", marker = "extra == 'link'", specifier = ">=5.0" },
     { name = "djangocms-link", marker = "extra == 'test'", specifier = ">=5.0" },
+    { name = "djangocms-versioning", marker = "extra == 'test'", specifier = ">=2.5.1" },
+    { name = "pixelmatch", marker = "extra == 'test'", specifier = ">=0.3" },
     { name = "pytest", marker = "extra == 'test'", specifier = ">=8.0" },
     { name = "pytest-django", marker = "extra == 'test'", specifier = ">=4.5" },
     { name = "pytest-env", marker = "extra == 'test'", specifier = ">=1.0" },
+    { name = "pytest-playwright", marker = "extra == 'test'", specifier = ">=0.7.2,<0.8" },
 ]
 provides-extras = ["filer", "link", "test"]
 

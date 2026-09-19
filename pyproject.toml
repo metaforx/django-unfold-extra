@@ -41,9 +41,13 @@ test = [
     "pytest>=8.0",
     "pytest-django>=4.5",
     "pytest-env>=1.0",
+    "pytest-playwright>=0.7.2,<0.8",
+    "pixelmatch>=0.3",
+    "djangocms-versioning>=2.5.1",
     "djangocms-link>=5.0",
     # djangocms-link migrations depend on filer (file_link field).
     "django-filer>=3.0",
+    "django-mptt>=0.18",
 ]
 # Optional contrib integration: install with `pip install django-unfold-extra[filer]`
 filer = [
