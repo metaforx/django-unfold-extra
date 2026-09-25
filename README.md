@@ -18,10 +18,13 @@ Re-registers their admin with Unfold-styled admin classes, forms and widgets, so
 ## Requirements
 
 - Python 3.12+
-- django-unfold 0.92+
+- django-unfold 0.92+ (<0.105)
 - django-cms 5.0.9+ (<5.1)
 - django-parler 2.3+
 - django-filer 3.0+ and djangocms-link 5.0+ for the optional `[filer]` / `[link]` extras
+
+> **Unfold version:** django-unfold 0.105 redesigned the admin index and several controls, so 0.5.x stays below it
+> to keep the admin look stable for existing projects. Support for 0.105+ follows in 0.6.
 
 > **Note:** This package is already used in production but expect additional implementation work for your own apps and plugins. 
 > Best used when your project does not rely on external cms plugins and 3rd party packages with their own admin.
