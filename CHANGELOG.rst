@@ -5,8 +5,16 @@ Changelog
 All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
-Unreleased
-==========
+0.5.6 (2026-09-25)
+==================
+
+Compatibility:
+--------------
+
+* Cap ``django-unfold`` below 0.105 (``django-unfold>=0.92,<0.105``). Unfold 0.105
+  redesigned the admin index (grouped app headers, change and add icons on every model)
+  and squared the header add button. 0.5.x keeps projects on the previous look until the
+  overrides are checked against the new design; support for 0.105+ follows in 0.6.
 
 Tests:
 ------
@@ -20,6 +28,17 @@ Tests:
   endpoints, the toolbar's page-settings modal and a plugin edit modal.
 * Give tests an isolated ``MEDIA_ROOT``, so filer uploads no longer land in the repository
   root, and serve ``MEDIA_URL`` under ``live_server``.
+* Take screenshots of views that don't require authentication without a session. The test
+  logged in for every view, so ``/admin/login/`` redirected to the index and the ``login``
+  reference was a second copy of ``admin-index``; it now shows the login form.
+* Fail a screenshot when the page was reached through a redirect, naming both URLs, so a
+  reference can no longer be captured under the wrong view's name.
+* Regenerate the references against the newest versions the declared ranges allow —
+  django-unfold 0.104.1, django-cms 5.0.13, django-filer 3.6.0, django-parler 2.4 and
+  djangocms-versioning 2.7.1 — which is what a fresh install resolves to. The differences
+  are vertical spacing shifts from Unfold 0.94–0.104.
+* Fix ``scripts/visual.sh --no-locked`` on macOS: bash 3.2 treats an empty array as unbound
+  under ``set -u``, so it stopped with ``SYNC_ARGS[*]: unbound variable``.
 
 CI:
 ---
@@ -29,12 +48,18 @@ CI:
   dependencies upgraded. Neither job can commit or push.
 * Add ``.github/dependabot.yml`` (``uv`` ecosystem) for the six packages whose rendering
   this suite covers, so each upgrade arrives as its own pull request with a visual check.
+* Skip the screenshot check on pull requests that only change documentation
+  (``**/*.md``, ``docs/**``, ``CHANGELOG.rst``).
 
 Packaging:
 ----------
 
 * Ship ``build_hook.py`` in the sdist. Without it, building a wheel from the sdist failed
   with ``OSError: Build script does not exist``.
+* Bring the ``[test]`` extra in line with the ``uv`` test group. ``pip install ".[test]"``
+  lacked ``pytest-playwright``, ``pixelmatch``, ``djangocms-versioning`` and
+  ``django-mptt``, so test collection failed with
+  ``No module named 'djangocms_versioning'``.
 
 0.5.5 (2026-09-15)
 ==================
