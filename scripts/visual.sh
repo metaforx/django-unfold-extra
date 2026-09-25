@@ -20,11 +20,12 @@ if [[ -z "${PLAYWRIGHT_VERSION}" ]]; then
   exit 1
 fi
 
-SYNC_ARGS=(--locked)
+# A string, not an array: bash 3.2 (macOS) treats an empty array as unbound under set -u.
+SYNC_FLAG="--locked"
 ARGS=()
 for arg in "$@"; do
   if [[ "${arg}" == "--no-locked" ]]; then
-    SYNC_ARGS=()
+    SYNC_FLAG=""
   else
     ARGS+=("${arg}")
   fi
@@ -41,4 +42,4 @@ docker run --rm \
   --volume "${VENV_VOLUME}:/opt/venv" \
   --workdir /app \
   "${IMAGE}:${PLAYWRIGHT_VERSION}" \
-  bash -c "uv sync ${SYNC_ARGS[*]} && uv run pytest -m visual $(printf '%q ' "${ARGS[@]+"${ARGS[@]}"}")"
+  bash -c "uv sync ${SYNC_FLAG} && uv run pytest -m visual $(printf '%q ' "${ARGS[@]+"${ARGS[@]}"}")"

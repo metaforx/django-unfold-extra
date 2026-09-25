@@ -26,7 +26,9 @@ dependencies = [
     # 5.0.9 pads .cms-sideframe-frame itself; unfold_extra no longer does.
     "django-cms>=5.0.9,<5.1",
     "django-parler~=2.3",
-    "django-unfold>=0.92",
+    # 0.105 redesigned the index/app list and squared the header add button; clients
+    # see that as a UI change, so it waits until our overrides are checked against it.
+    "django-unfold>=0.92,<0.105",
 ]
 dynamic = ["version"]
 
