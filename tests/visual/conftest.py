@@ -138,7 +138,7 @@ def assert_snapshot(pytestconfig, snapshots_dir, results_dir):
 
 @dataclass(frozen=True)
 class ThemedPage:
-    """A logged-in page plus everything that went wrong while it loaded."""
+    """A page plus everything that went wrong while it loaded."""
 
     page: object
     errors: list[str]
@@ -146,14 +146,14 @@ class ThemedPage:
 
 @pytest.fixture
 def themed_page(browser, live_server):
-    """Factory for a logged-in page pinned to one theme and a fixed rendering environment.
+    """Factory for a page pinned to one theme and a fixed rendering environment.
 
     The theme is written before any page script runs, so Unfold's skeleton reads it on
     first paint and the screenshot never catches a flash of the other theme.
     """
     contexts = []
 
-    def _themed_page(theme: str) -> ThemedPage:
+    def _themed_page(theme: str, *, authenticated: bool = True) -> ThemedPage:
         context = browser.new_context(
             viewport={"width": 1440, "height": 900},
             device_scale_factor=1,
@@ -170,12 +170,17 @@ def themed_page(browser, live_server):
         )
 
         errors: list[str] = []
-        page = admin_login(
-            context=context,
-            live_server=live_server,
-            username="admin",
-            password="password",
-        )
+        # An anonymous view must stay anonymous: a logged-in session turns /admin/login/
+        # into a redirect to the index, and the screenshot silently shows the wrong page.
+        if authenticated:
+            page = admin_login(
+                context=context,
+                live_server=live_server,
+                username="admin",
+                password="password",
+            )
+        else:
+            page = context.new_page()
         page.on(
             "console",
             lambda message: errors.append(f"console error: {message.text}")

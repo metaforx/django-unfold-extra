@@ -47,12 +47,17 @@ def _unexpected(*, errors: list[str], allowed: tuple[str, ...]) -> list[str]:
 @pytest.mark.parametrize("view,theme", CASES, ids=CASE_IDS)
 def test_view_matches_reference(themed_page, live_server, visual_data, assert_snapshot, view, theme):
     name = f"{view.name}--{theme}"
-    themed = themed_page(theme)
+    themed = themed_page(theme, authenticated=view.auth)
     page = themed.page
 
     response = page.goto(f"{live_server.url}{view.url(visual_data)}")
     assert response is not None and response.status == view.status, (
         f"{name}: expected {view.status}, got {response.status if response else 'no response'}"
+    )
+    # goto follows redirects, so a 200 alone can belong to a different page than the one
+    # requested — the reference would then be named after a view it never shows.
+    assert response.request.redirected_from is None, (
+        f"{name}: {response.request.redirected_from.url} redirected to {page.url}"
     )
 
     page.wait_for_load_state("networkidle")
