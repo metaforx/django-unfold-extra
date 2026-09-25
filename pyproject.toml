@@ -112,8 +112,7 @@ exclude = [
     "**/*.map",
     "**/.DS_Store",
     "**/__pycache__",
-    "docs/**/*"
-,
+    "docs/**/*",
 ]
 
 [tool.ruff]
