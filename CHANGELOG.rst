@@ -23,6 +23,11 @@ Bug Fixes:
   change never reached the page tree's ``data-theme`` in the same window. (#58)
 * The CMS toolbar's theme switcher now reaches Unfold: admin pages opened afterwards use
   the new theme, and Unfold's switcher in an open sideframe shows it too.
+* djangocms-text: the editor of an ``HTMLField`` scrolls and resizes again. A
+  ``!overflow-y-visible`` override let long text spill out of the box, where it was
+  clipped. (#52)
+* djangocms-text: the text plugin's editor now spans the whole modal. From Unfold's ``lg``
+  breakpoint on, the hidden label's empty column pushed it to the right.
 * CMS plugin forms built on ``UnfoldCMSPluginBase`` now always get Unfold's labels. A
   plugin modal opened before any other admin change form in a server process showed
   Django's labels instead: a trailing colon, and checkbox labels shifted out of line. (#3)
