@@ -17,6 +17,13 @@ const normalize = (val) => {
 
 const valid = (t) => t === 'light' || t === 'dark' || t === 'auto';
 
+/** Unfold's Alpine theme state on this page, or null outside Unfold. */
+function unfoldState() {
+    if (!window.Alpine) return null;
+    const state = window.Alpine.$data(document.documentElement);
+    return state.adminTheme === undefined ? null : state;
+}
+
 /** Mirror a theme change from `sourceKey` to the other store, then apply it to this document. */
 function syncTheme(sourceKey, theme) {
     try {
@@ -36,6 +43,10 @@ function syncTheme(sourceKey, theme) {
         mirroring = false;
     }
 
+    // keep Unfold's switcher in step, it never re-reads localStorage
+    const state = unfoldState();
+    if (state && state.adminTheme !== theme) state.adminTheme = theme;
+
     applyTheme(theme);
 }
 
@@ -52,10 +63,18 @@ window.addEventListener('storage', (e) => {
 
 // Unfold's switcher changes adminTheme in this window, which fires no 'storage' event here.
 document.addEventListener('alpine:initialized', function () {
-    const root = document.documentElement;
+    const state = unfoldState();
+    if (!state) return;
     window.Alpine.effect(function () {
-        const theme = window.Alpine.$data(root).adminTheme;
-        if (!valid(theme) || theme === root.getAttribute('data-theme')) return;
+        const theme = state.adminTheme;
+        if (!valid(theme) || theme === document.documentElement.getAttribute('data-theme')) return;
         syncTheme(KEY_UNFOLD, theme);
     });
 });
+
+// The CMS toolbar sets data-theme in this window and on its sideframe, which fires no 'storage' event here.
+new MutationObserver(function () {
+    const theme = document.documentElement.getAttribute('data-theme');
+    if (!valid(theme) || theme === normalize(localStorage.getItem(KEY_UNFOLD))) return;
+    syncTheme(KEY_CMS, theme);
+}).observe(document.documentElement, {attributes: true, attributeFilter: ['data-theme']});
