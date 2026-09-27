@@ -48,8 +48,6 @@ INSTALLED_APPS = [
     "easy_thumbnails",
     "mptt",
     "djangocms_link",
-    # djangocms-text: HTMLField editor on a plain change form (testapp.Note)
-    "djangocms_text",
     # Parler
     "parler",
     # Test app

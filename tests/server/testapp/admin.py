@@ -1,6 +1,4 @@
 from django.contrib import admin
-from djangocms_text.fields import HTMLField
-from djangocms_text.widgets import TextEditorWidget
 from parler.admin import TranslatableAdmin
 from unfold.admin import ModelAdmin
 
@@ -8,7 +6,7 @@ from unfold_extra.contrib.parler.admin import (
     UnfoldTranslatableAdminMixin,
 )
 
-from .models import Article, Category, Document, Note, SimpleModel
+from .models import Article, Category, Document, SimpleModel
 
 
 @admin.register(Category)
@@ -33,14 +31,3 @@ class SimpleModelAdmin(ModelAdmin):
 @admin.register(Document)
 class DocumentAdmin(ModelAdmin):
     list_display = ["title"]
-
-
-@admin.register(Note)
-class NoteAdmin(ModelAdmin):
-    list_display = ["title"]
-    # Unfold's TextField override would otherwise replace the editor with a textarea
-    formfield_overrides = {HTMLField: {"widget": TextEditorWidget}}
-
-    def has_module_permission(self, request):
-        # reached by URL only, so the sidebar in every visual reference stays unchanged
-        return False
