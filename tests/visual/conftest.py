@@ -14,8 +14,6 @@ from importlib.metadata import version
 from pathlib import Path
 
 import pytest
-from django.apps import apps
-from django.contrib.contenttypes.models import ContentType
 from PIL import Image
 
 from tests.conftest import UPDATED_SNAPSHOTS, admin_login
@@ -52,18 +50,8 @@ def pytest_collection_modifyitems(config, items):
 
 
 @pytest.fixture(autouse=True)
-def fresh_content_type_caches():
-    """Drop every cached ContentType pk before the scenario is built.
-
-    Transactional tests flush ``django_content_type`` and post_migrate recreates the rows
-    with different pks. Django caches those pks, and djangocms-versioning caches them
-    again in ``VersionableItem.content_types`` (a ``cached_property``), so the second
-    transactional test looks versions up by a pk that no longer exists and every CMS
-    admin view 500s with ``Version.DoesNotExist``.
-    """
-    ContentType.objects.clear_cache()
-    for versionable in apps.get_app_config("djangocms_versioning").cms_extension.versionables:
-        versionable.__dict__.pop("content_types", None)
+def fresh_content_type_caches(fresh_content_type_caches):
+    """Every screenshot runs transactionally, so every one needs fresh caches."""
 
 
 @pytest.fixture(autouse=True)
