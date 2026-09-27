@@ -59,10 +59,19 @@ INSTALLED_APPS = [
     "unfold_extra",
     # Optional integrations
     "unfold_extra.contrib.cms",
-    "unfold_extra.contrib.parler",  # requires the [parler] extra
     "unfold_extra.contrib.auth",  # you will likely want a custom auth admin
     "unfold_extra.contrib.sites",
-    "unfold_extra.contrib.filer",  # must come before "filer"
+]
+```
+
+Integrations backed by an optional package need their extra installed first, see
+[django-parler Support](#django-parler-support) and [django-filer Support](#django-filer-support):
+
+```python
+INSTALLED_APPS = [
+    # ...
+    "unfold_extra.contrib.parler",  # pip install django-unfold-extra[parler]
+    "unfold_extra.contrib.filer",  # pip install django-unfold-extra[filer]; must come before "filer"
 ]
 ```
 
