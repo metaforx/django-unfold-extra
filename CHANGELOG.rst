@@ -16,6 +16,14 @@ Changed:
   ``unfold_extra.contrib.parler``. ``unfold_extra.contrib.djangocms_alias`` needs no extra:
   ``djangocms-alias`` requires parler itself. (#33)
 
+Bug Fixes:
+----------
+
+* Unfold's theme switcher now restyles the CMS page tree outside the CMS sideframe. Its
+  change never reached the page tree's ``data-theme`` in the same window. (#58)
+* The CMS toolbar's theme switcher now reaches Unfold: admin pages opened afterwards use
+  the new theme, and Unfold's switcher in an open sideframe shows it too.
+
 0.5.6 (2026-09-25)
 ==================
 
