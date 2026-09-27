@@ -28,6 +28,9 @@ Bug Fixes:
   clipped. (#52)
 * djangocms-text: the text plugin's editor now spans the whole modal. From Unfold's ``lg``
   breakpoint on, the hidden label's empty column pushed it to the right.
+* CMS plugin forms built on ``UnfoldCMSPluginBase`` now always get Unfold's labels. A
+  plugin modal opened before any other admin change form in a server process showed
+  Django's labels instead: a trailing colon, and checkbox labels shifted out of line. (#3)
 
 0.5.6 (2026-09-25)
 ==================
