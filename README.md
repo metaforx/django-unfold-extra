@@ -9,7 +9,7 @@ Re-registers their admin with Unfold-styled admin classes, forms and widgets, so
 ## Features
 - django CMS 5.0 support: page tree, page admin, permissions, plugins and versioning
 - django-filer: full Unfold integration, including the file and image picker widgets (`[filer]` extra)
-- django-parler: multilingual support for your Django models
+- django-parler: multilingual support for your Django models (`[parler]` extra)
 - django-versatileimagefield: improved integration, including preview and ppoi
 - Theme sync: drive the theme from the Unfold or the django CMS switcher, or both at the same time
 - Unfold auto-update: styles can be updated from the official Unfold package via npm
@@ -20,7 +20,7 @@ Re-registers their admin with Unfold-styled admin classes, forms and widgets, so
 - Python 3.12+
 - django-unfold 0.92+ (<0.105)
 - django-cms 5.0.9+ (<5.1)
-- django-parler 2.3+
+- django-parler 2.3+ for the optional `[parler]` extra
 - django-filer 3.0+ and djangocms-link 5.0+ for the optional `[filer]` / `[link]` extras
 
 > **Unfold version:** django-unfold 0.105 redesigned the admin index and several controls, so 0.5.x stays below it
@@ -59,10 +59,19 @@ INSTALLED_APPS = [
     "unfold_extra",
     # Optional integrations
     "unfold_extra.contrib.cms",
-    "unfold_extra.contrib.parler",
     "unfold_extra.contrib.auth",  # you will likely want a custom auth admin
     "unfold_extra.contrib.sites",
-    "unfold_extra.contrib.filer",  # must come before "filer"
+]
+```
+
+Integrations backed by an optional package need their extra installed first, see
+[django-parler Support](#django-parler-support) and [django-filer Support](#django-filer-support):
+
+```python
+INSTALLED_APPS = [
+    # ...
+    "unfold_extra.contrib.parler",  # pip install django-unfold-extra[parler]
+    "unfold_extra.contrib.filer",  # pip install django-unfold-extra[filer]; must come before "filer"
 ]
 ```
 
@@ -368,6 +377,22 @@ INSTALLED_APPS = [
 - UnfoldTranslatableStackedAdminMixin
 - UnfoldTranslatableTabularAdminMixin
 - TranslatableStackedInline, TranslatableTabularInline
+
+Install with the extra and add the app:
+
+```bash
+pip install django-unfold-extra[parler]
+```
+
+```python
+INSTALLED_APPS = [
+    # ...
+    "unfold_extra.contrib.parler",
+    "parler",
+]
+```
+
+> `djangocms-alias` depends on django-parler itself, so `unfold_extra.contrib.djangocms_alias` works without the extra.
 
 ![Parler translation tabs](docs/img/parler-tabs.png)
 

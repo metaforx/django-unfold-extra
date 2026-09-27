@@ -25,7 +25,6 @@ classifiers = [
 dependencies = [
     # 5.0.9 pads .cms-sideframe-frame itself; unfold_extra no longer does.
     "django-cms>=5.0.9,<5.1",
-    "django-parler~=2.3",
     # 0.105 redesigned the index/app list and squared the header add button; clients
     # see that as a UI change, so it waits until our overrides are checked against it.
     "django-unfold>=0.92,<0.105",
@@ -45,6 +44,7 @@ test = [
     "pytest-env>=1.0",
     "pytest-playwright>=0.7.2,<0.8",
     "pixelmatch>=0.3",
+    "django-parler~=2.3",
     "djangocms-versioning>=2.5.1",
     "djangocms-link>=5.0",
     # djangocms-link migrations depend on filer (file_link field).
@@ -54,6 +54,10 @@ test = [
 # Optional contrib integration: install with `pip install django-unfold-extra[filer]`
 filer = [
     "django-filer>=3.0",
+]
+# Optional contrib integration: install with `pip install django-unfold-extra[parler]`
+parler = [
+    "django-parler~=2.3",
 ]
 
 [project.urls]
@@ -75,6 +79,7 @@ test = [
     "pixelmatch>=0.3",
     "djangocms-versioning>=2.5.1",
     # Required by the test settings' INSTALLED_APPS; not transitive deps of cms.
+    "django-parler~=2.3",
     "djangocms-link>=5.0",
     "django-filer>=3.0",
     "django-mptt>=0.18",

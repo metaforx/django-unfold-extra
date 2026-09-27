@@ -5,6 +5,17 @@ Changelog
 All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
+Unreleased
+==========
+
+Changed:
+--------
+
+* ``django-parler`` is no longer a required dependency; install it with the new
+  ``[parler]`` extra (``pip install django-unfold-extra[parler]``) when using
+  ``unfold_extra.contrib.parler``. ``unfold_extra.contrib.djangocms_alias`` needs no extra:
+  ``djangocms-alias`` requires parler itself. (#33)
+
 0.5.6 (2026-09-25)
 ==================
 
