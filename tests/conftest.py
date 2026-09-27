@@ -1,5 +1,7 @@
 import pytest
+from django.apps import apps
 from django.contrib.auth import get_user_model
+from django.contrib.contenttypes.models import ContentType
 
 # Names of reference images rewritten this session, reported in the terminal summary.
 UPDATED_SNAPSHOTS = pytest.StashKey[list]()
@@ -74,3 +76,11 @@ def authenticated_page(browser, live_server, admin_user):
     )
     yield page
     context.close()
+
+
+@pytest.fixture
+def fresh_content_type_caches():
+    """Drop ContentType pks cached by Django and djangocms-versioning; transactional tests recreate them."""
+    ContentType.objects.clear_cache()
+    for versionable in apps.get_app_config("djangocms_versioning").cms_extension.versionables:
+        versionable.__dict__.pop("content_types", None)
