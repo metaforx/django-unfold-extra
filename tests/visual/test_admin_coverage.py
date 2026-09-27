@@ -26,6 +26,7 @@ EXCLUDED: dict[str, str] = {
     "sites.site": "the change form is registered instead; the changelist holds one row",
     "testapp.category": "test-app model; both change form languages are registered",
     "testapp.document": "test-app model; the change form carries the filer widgets",
+    "testapp.note": "test-app model for the djangocms-text editor, hidden from the index",
 }
 
 

@@ -1,6 +1,7 @@
 from cms.models.fields import PageField
 from cms.models.pluginmodel import CMSPlugin
 from django.db import models
+from djangocms_text.fields import HTMLField
 from filer.fields.file import FilerFileField
 from filer.fields.image import FilerImageField
 from parler.models import TranslatableModel, TranslatedFields
@@ -113,6 +114,16 @@ class Document(models.Model):
     cover = FilerImageField(
         on_delete=models.SET_NULL, related_name="covers", blank=True, null=True
     )
+
+    def __str__(self):
+        return self.title
+
+
+class Note(models.Model):
+    """Model with a djangocms-text ``HTMLField``, for its editor on an Unfold change form."""
+
+    title = models.CharField(max_length=200)
+    body = HTMLField(blank=True)
 
     def __str__(self):
         return self.title

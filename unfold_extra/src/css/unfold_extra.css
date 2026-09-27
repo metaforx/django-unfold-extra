@@ -298,6 +298,11 @@ input#nav-filter {
     @apply max-w-full;
 }
 
+/* Text plugin: drop the hidden body label's column so the editor spans the modal */
+.app-djangocms_text.model-text.change-form .field-body > div:has(> label[for="id_body"]) {
+    @apply hidden;
+}
+
 .cms-editor-inline-wrapper > div {
     @apply  border border-base-200 rounded-2xl shadow-xs min-h-auto
 }
@@ -311,7 +316,7 @@ input#nav-filter {
 }
 
 .cms-editor-inline-wrapper > .tiptap {
-    @apply !p-4 !overflow-y-visible;
+    @apply !p-4;
 }
 
 textarea.CMS_Editor + div#id_body_editor.fixed .cms-toolbar[role=menubar] {

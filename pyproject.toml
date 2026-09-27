@@ -50,6 +50,7 @@ test = [
     # djangocms-link migrations depend on filer (file_link field).
     "django-filer>=3.0",
     "django-mptt>=0.18",
+    "djangocms-text>=1.0.1",
 ]
 # Optional contrib integration: install with `pip install django-unfold-extra[filer]`
 filer = [
@@ -83,6 +84,7 @@ test = [
     "djangocms-link>=5.0",
     "django-filer>=3.0",
     "django-mptt>=0.18",
+    "djangocms-text>=1.0.1",
 ]
 dev = ["ruff>=0.4"]
 
