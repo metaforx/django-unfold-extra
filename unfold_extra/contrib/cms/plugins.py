@@ -3,6 +3,7 @@ import copy
 from cms.models.fields import PageField
 from cms.plugin_base import CMSPluginBase
 from django import forms
+from django.contrib.admin import helpers
 from django.contrib.admin.widgets import (
     AdminTextareaWidget,
     AdminTextInputWidget,
@@ -41,6 +42,14 @@ class UnfoldCMSPluginBase(
 
     def get_changeform_datasets(self, request):
         return self.change_form_datasets
+
+    def changeform_view(self, request, object_id=None, form_url="", extra_context=None):
+        # Mirror Unfold's ModelAdmin: its AdminForm/Fieldline style the labels.
+        from unfold.forms import AdminForm, Fieldline
+
+        helpers.AdminForm = AdminForm
+        helpers.Fieldline = Fieldline
+        return super().changeform_view(request, object_id, form_url, extra_context)
 
     #: Maps model-field classes → widget classes.  Applied post-construction
     #: in ``formfield_for_dbfield`` to work around fields that ignore the
