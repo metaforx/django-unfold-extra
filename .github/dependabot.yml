@@ -9,6 +9,8 @@ updates:
       day: "monday"
       time: "06:00"
     open-pull-requests-limit: 5
+    # The upper bounds in pyproject.toml are deliberate gates; only move the lock within them.
+    versioning-strategy: lockfile-only
     allow:
       - dependency-name: "django-cms"
       - dependency-name: "django-parler"
