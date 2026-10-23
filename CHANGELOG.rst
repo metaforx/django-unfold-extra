@@ -5,6 +5,20 @@ Changelog
 All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
+Unreleased
+==========
+
+Tests:
+------
+
+* Wait for the CMS structure board's delayed preload before each screenshot, so it no
+  longer locks the database at teardown.
+
+CI:
+---
+
+* Dependabot only updates ``uv.lock`` and keeps the ``pyproject.toml`` bounds. (#66)
+
 0.5.7 (2026-09-27)
 ==================
 
