@@ -29,6 +29,20 @@ SETTLE_SCRIPT = """
 )
 """
 
+# django CMS's structure board fetches the opposite mode 2s after load — past networkidle.
+# Left in flight, the live server is still rendering it at teardown and the flush hits
+# "database table is locked". Only the opposite mode is ever requested, hence ``some``.
+CMS_PRELOAD_SCRIPT = """
+() => {
+    const cms = window.CMS;
+    const board = cms && cms.API && cms.API.StructureBoard;
+    if (!board || cms.config.settings.legacy_mode) return true;
+    return ['content', 'structure'].some(
+        mode => board[`_request${mode}`] && board[`_request${mode}`].state() === 'resolved'
+    );
+}
+"""
+
 
 def _document_height(*, page) -> int:
     """Full document height, never below the standard viewport."""
@@ -62,6 +76,7 @@ def test_view_matches_reference(themed_page, live_server, visual_data, assert_sn
 
     page.wait_for_load_state("networkidle")
     page.wait_for_function(SETTLE_SCRIPT)
+    page.wait_for_function(CMS_PRELOAD_SCRIPT)
     # Django autofocuses the first form field; whether its ring has painted by capture
     # time is a race, so focus is dropped before every screenshot.
     page.evaluate(BLUR_SCRIPT)
