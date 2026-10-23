@@ -76,7 +76,6 @@ def test_view_matches_reference(themed_page, live_server, visual_data, assert_sn
 
     page.wait_for_load_state("networkidle")
     page.wait_for_function(SETTLE_SCRIPT)
-    page.wait_for_function(CMS_PRELOAD_SCRIPT)
     # Django autofocuses the first form field; whether its ring has painted by capture
     # time is a race, so focus is dropped before every screenshot.
     page.evaluate(BLUR_SCRIPT)
@@ -96,6 +95,8 @@ def test_view_matches_reference(themed_page, live_server, visual_data, assert_sn
         page.set_viewport_size({"width": VIEWPORT_WIDTH, "height": _document_height(page=page)})
         page.wait_for_function(SETTLE_SCRIPT)
 
+    # Last, not before ``setup``: waited out first, the modal setups' networkidle never fires.
+    page.wait_for_function(CMS_PRELOAD_SCRIPT)
     page.evaluate(BLUR_SCRIPT)
 
     png = page.screenshot(
