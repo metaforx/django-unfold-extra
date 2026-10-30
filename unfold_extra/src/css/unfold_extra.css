@@ -122,6 +122,12 @@ body.cms-admin-modal #page #main #submit-row {
     @apply hidden;
 }
 
+/* django CMS 5.0.10+ opens modals with _popup=1, so Unfold drops the #submit-row id.
+   Hide the whole row regardless of its buttons; the CMS modal footer replaces it. */
+body.cms-admin-modal #page #main div.relative.lg\:sticky.lg\:bottom-0.z-40 {
+    @apply hidden;
+}
+
 /* Hide main app side navigation in modal  */
 body.cms-admin-modal #page > div.relative:first-child {
     @apply hidden;

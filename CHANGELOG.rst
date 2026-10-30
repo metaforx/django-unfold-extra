@@ -8,9 +8,19 @@ This project adheres to `Semantic Versioning <https://semver.org/>`_.
 Unreleased
 ==========
 
+Bug Fixes:
+----------
+
+* Hide Unfold's submit row in CMS modals opened with ``_popup=1`` (django CMS 5.0.10+
+  adds it to toolbar modals). Unfold omits the ``#submit-row`` id for popups, so the
+  modal showed a second submit row next to the CMS modal footer. The whole row is now
+  hidden, whatever buttons it holds. (#69)
+
 Tests:
 ------
 
+* Add UI regression tests for the CMS modal submit row, including a row without a Save
+  button. (#69)
 * Wait for the CMS structure board's delayed preload before each screenshot, so it no
   longer locks the database at teardown.
 
