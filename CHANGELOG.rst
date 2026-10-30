@@ -5,6 +5,21 @@ Changelog
 All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
+Unreleased
+==========
+
+Bug Fixes:
+----------
+
+* Hide Unfold's submit row in CMS modals opened with ``_popup=1`` (django CMS 5.0.10+
+  adds it to toolbar modals). Unfold omits the ``#submit-row`` id for popups, so the
+  modal showed a second Save button next to the CMS modal footer.
+
+Tests:
+------
+
+* Add a UI regression test for the CMS modal submit row.
+
 0.5.5 (2026-09-15)
 ==================
 
