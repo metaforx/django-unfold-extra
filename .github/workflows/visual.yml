@@ -1,0 +1,116 @@
+name: Visual
+
+on:
+  pull_request:
+    branches: [main, development]
+    # Prose can't move a pixel; everything else in the repo plausibly can.
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
+      - "CHANGELOG.rst"
+  # No schedule: Dependabot opens a PR per tracked package when one actually moves, and
+  # the job above renders it. This one is the "show me before I upgrade" button.
+  workflow_dispatch:
+
+# Read-only: neither job may commit or push.
+permissions:
+  contents: read
+
+jobs:
+  visual:
+    name: Screenshots (locked)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Run the screenshot check
+        run: scripts/visual.sh
+
+      - name: Upload expected/actual/diff images
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-results
+          path: tests/visual/results/
+          if-no-files-found: ignore
+
+  visual-upgrade:
+    name: Screenshots (upgraded dependencies)
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Upgrade the tracked rendering dependencies
+        id: upgrade
+        # Only the packages whose rendering this suite tracks. A bare `uv lock --upgrade`
+        # would also move playwright, and scripts/visual.sh derives the container image
+        # from the locked playwright version — a browser bump would shift rasterisation
+        # across every reference and bury the signal.
+        run: |
+          uv lock \
+            --upgrade-package django-unfold \
+            --upgrade-package django-cms \
+            --upgrade-package django-filer \
+            --upgrade-package djangocms-versioning \
+            --upgrade-package djangocms-link \
+            --upgrade-package django-parler
+          if git diff --quiet -- uv.lock; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Nothing moved; no screenshots rendered." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Report what moved
+        if: steps.upgrade.outputs.changed == 'true'
+        run: |
+          {
+            echo "### Upgraded dependencies"
+            echo
+            echo '| package | before | after |'
+            echo '| --- | --- | --- |'
+            git diff -U0 -- uv.lock \
+              | awk '/^[-+]name = /{name=$3; gsub(/"/,"",name); side=substr($0,1,1)}
+                     /^[-+]version = /{v=$3; gsub(/"/,"",v); print side, name, v}' \
+              | sort -k2,2 \
+              | awk '{if ($1=="-") before[$2]=$3; else after[$2]=$3}
+                     END {for (p in after) printf "| %s | %s | %s |\n", p, (p in before ? before[p] : "—"), after[p]}'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fail if the pinned environment would change
+        if: steps.upgrade.outputs.changed == 'true'
+        # The reference images are only comparable against the Playwright build they were
+        # made with; if an upgrade moved it, stop before producing meaningless diffs.
+        run: |
+          if git diff -U0 -- uv.lock | grep -qE '^[-+]name = "playwright"'; then
+            echo "::error::Upgrade moved the locked playwright version; the pinned image would change." >&2
+            exit 1
+          fi
+
+      - name: Run the screenshot check against the upgraded lock
+        if: steps.upgrade.outputs.changed == 'true'
+        run: scripts/visual.sh --no-locked
+
+      - name: Upload expected/actual/diff images and the upgraded lock
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-upgrade-results
+          path: |
+            tests/visual/results/
+            uv.lock
+          if-no-files-found: ignore

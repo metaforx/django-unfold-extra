@@ -13,12 +13,104 @@ Bug Fixes:
 
 * Hide Unfold's submit row in CMS modals opened with ``_popup=1`` (django CMS 5.0.10+
   adds it to toolbar modals). Unfold omits the ``#submit-row`` id for popups, so the
-  modal showed a second Save button next to the CMS modal footer.
+  modal showed a second submit row next to the CMS modal footer. The whole row is now
+  hidden, whatever buttons it holds. (#69)
 
 Tests:
 ------
 
-* Add a UI regression test for the CMS modal submit row.
+* Add UI regression tests for the CMS modal submit row, including a row without a Save
+  button. (#69)
+* Wait for the CMS structure board's delayed preload before each screenshot, so it no
+  longer locks the database at teardown.
+
+CI:
+---
+
+* Dependabot only updates ``uv.lock`` and keeps the ``pyproject.toml`` bounds. (#66)
+
+0.5.7 (2026-09-27)
+==================
+
+Changed:
+--------
+
+* ``django-parler`` is no longer a required dependency; install it with the new
+  ``[parler]`` extra (``pip install django-unfold-extra[parler]``) when using
+  ``unfold_extra.contrib.parler``. ``unfold_extra.contrib.djangocms_alias`` needs no extra:
+  ``djangocms-alias`` requires parler itself. (#33)
+
+Bug Fixes:
+----------
+
+* Unfold's theme switcher now restyles the CMS page tree outside the CMS sideframe. Its
+  change never reached the page tree's ``data-theme`` in the same window. (#58)
+* The CMS toolbar's theme switcher now reaches Unfold: admin pages opened afterwards use
+  the new theme, and Unfold's switcher in an open sideframe shows it too.
+* djangocms-text: the editor of an ``HTMLField`` scrolls and resizes again. A
+  ``!overflow-y-visible`` override let long text spill out of the box, where it was
+  clipped. (#52)
+* djangocms-text: the text plugin's editor now spans the whole modal. From Unfold's ``lg``
+  breakpoint on, the hidden label's empty column pushed it to the right.
+* CMS plugin forms built on ``UnfoldCMSPluginBase`` now always get Unfold's labels. A
+  plugin modal opened before any other admin change form in a server process showed
+  Django's labels instead: a trailing colon, and checkbox labels shifted out of line. (#3)
+
+0.5.6 (2026-09-25)
+==================
+
+Compatibility:
+--------------
+
+* Cap ``django-unfold`` below 0.105 (``django-unfold>=0.92,<0.105``). Unfold 0.105
+  redesigned the admin index (grouped app headers, change and add icons on every model)
+  and squared the header add button. 0.5.x keeps projects on the previous look until the
+  overrides are checked against the new design; support for 0.105+ follows in 0.6.
+
+Tests:
+------
+
+* Add a visual regression suite (``tests/visual/``). A single registry of supported admin
+  views drives three checks: a browserless status check and an admin coverage guard, both
+  in the default test run, and a screenshot comparison against committed reference images.
+  The screenshots are marked ``visual`` and run only inside a pinned Playwright container
+  via ``scripts/visual.sh``; references are updated explicitly with ``--update-snapshots``.
+* Cover 30 views in light and dark, including the CMS frontend edit and structure
+  endpoints, the toolbar's page-settings modal and a plugin edit modal.
+* Give tests an isolated ``MEDIA_ROOT``, so filer uploads no longer land in the repository
+  root, and serve ``MEDIA_URL`` under ``live_server``.
+* Take screenshots of views that don't require authentication without a session. The test
+  logged in for every view, so ``/admin/login/`` redirected to the index and the ``login``
+  reference was a second copy of ``admin-index``; it now shows the login form.
+* Fail a screenshot when the page was reached through a redirect, naming both URLs, so a
+  reference can no longer be captured under the wrong view's name.
+* Regenerate the references against the newest versions the declared ranges allow —
+  django-unfold 0.104.1, django-cms 5.0.13, django-filer 3.6.0, django-parler 2.4 and
+  djangocms-versioning 2.7.1 — which is what a fresh install resolves to. The differences
+  are vertical spacing shifts from Unfold 0.94–0.104.
+* Fix ``scripts/visual.sh --no-locked`` on macOS: bash 3.2 treats an empty array as unbound
+  under ``set -u``, so it stopped with ``SYNC_ARGS[*]: unbound variable``.
+
+CI:
+---
+
+* Add ``.github/workflows/visual.yml``: the screenshot check runs on pull requests against
+  the locked dependencies, plus a manually dispatched job that renders the tracked
+  dependencies upgraded. Neither job can commit or push.
+* Add ``.github/dependabot.yml`` (``uv`` ecosystem) for the six packages whose rendering
+  this suite covers, so each upgrade arrives as its own pull request with a visual check.
+* Skip the screenshot check on pull requests that only change documentation
+  (``**/*.md``, ``docs/**``, ``CHANGELOG.rst``).
+
+Packaging:
+----------
+
+* Ship ``build_hook.py`` in the sdist. Without it, building a wheel from the sdist failed
+  with ``OSError: Build script does not exist``.
+* Bring the ``[test]`` extra in line with the ``uv`` test group. ``pip install ".[test]"``
+  lacked ``pytest-playwright``, ``pixelmatch``, ``djangocms-versioning`` and
+  ``django-mptt``, so test collection failed with
+  ``No module named 'djangocms_versioning'``.
 
 0.5.5 (2026-09-15)
 ==================
