@@ -5,6 +5,31 @@ Changelog
 All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
+0.5.8 (2026-10-30)
+==================
+
+Bug Fixes:
+----------
+
+* Hide Unfold's submit row in CMS modals opened with ``_popup=1`` (django CMS 5.0.10+
+  adds it to toolbar modals). Unfold omits the ``#submit-row`` id for popups, so the
+  modal showed a second submit row next to the CMS modal footer. The whole row is now
+  hidden, whatever buttons it holds. (#69)
+
+Tests:
+------
+
+* Add UI regression tests for the CMS modal submit row, including a row without a Save
+  button. (#69)
+* Wait for the CMS structure board's delayed preload before each screenshot, so it no
+  longer locks the database at teardown.
+
+CI:
+---
+
+* Dependabot only updates ``uv.lock`` and keeps the ``pyproject.toml`` bounds. (#66)
+* Bump ``djangocms-versioning`` from 2.7.1 to 2.8.0 in ``uv.lock``. (#67)
+
 0.5.7 (2026-09-27)
 ==================
 

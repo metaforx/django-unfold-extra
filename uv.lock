@@ -410,16 +410,16 @@ wheels = [
 
 [[package]]
 name = "djangocms-versioning"
-version = "2.7.1"
+version = "2.8.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django-cms" },
     { name = "django-fsm-2" },
     { name = "packaging" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/3b/c1/9228c586c458f591aec0b64618d359bd9df47eeedb39a57b178c7455eb3d/djangocms_versioning-2.7.1.tar.gz", hash = "sha256:7aea6eced4fbcc2e180fb16ea2bfc59c0144f848b4211a7898625274e2a3b187", size = 639341, upload-time = "2026-09-20T09:04:36.185Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ca/6e/da9891adfcd5d7d6cb236efcbc9cd5180dfdc4b2298bea5ebf1cb39ad6d4/djangocms_versioning-2.8.0.tar.gz", hash = "sha256:cc71d2baa139ff3a87b202eef7a25c41993e6807b55ca64f63a921b2a1b80ad0", size = 646668, upload-time = "2026-10-05T13:39:57.375Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/75/f5/3e98f555e11f6d46827c0cdcebee3f5a2d4c109f80efc95aa5af0ab9be47/djangocms_versioning-2.7.1-py3-none-any.whl", hash = "sha256:5c8dbf6566e0155deeba2cdea6b3cc0dd3154031c01f1d4a968d4b195cbb4ba2", size = 684464, upload-time = "2026-09-20T09:04:33.887Z" },
+    { url = "https://files.pythonhosted.org/packages/d3/b1/44942124f06c25b4038570a59079938825124e9c9825b46f81c4231070e4/djangocms_versioning-2.8.0-py3-none-any.whl", hash = "sha256:4ad9b43692549d11a7b56f294043aa72cd359b74950135149eec80a84d702745", size = 688707, upload-time = "2026-10-05T13:39:55.61Z" },
 ]
 
 [[package]]
