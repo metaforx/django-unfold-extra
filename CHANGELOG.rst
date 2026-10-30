@@ -5,8 +5,8 @@ Changelog
 All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
-Unreleased
-==========
+0.5.8 (2026-10-30)
+==================
 
 Bug Fixes:
 ----------
@@ -28,6 +28,7 @@ CI:
 ---
 
 * Dependabot only updates ``uv.lock`` and keeps the ``pyproject.toml`` bounds. (#66)
+* Bump ``djangocms-versioning`` from 2.7.1 to 2.8.0 in ``uv.lock``. (#67)
 
 0.5.7 (2026-09-27)
 ==================
