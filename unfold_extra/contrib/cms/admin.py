@@ -233,7 +233,7 @@ class PageAdmin(ModelAdmin, BasePageAdmin):
         Constructs the redirect URL for editing a given page's advanced settings or returns the
         default admin change URL for the page.
         """
-        language = _language_from_request(request)
+        language = _language_from_request(request, site_id=page.site_id)
         content = getattr(page, "get_admin_content", None)
         if callable(content):
             page_content = page.get_admin_content(language)

@@ -3,7 +3,7 @@
 import pytest
 from cms.api import create_page
 from cms.toolbar.utils import get_object_edit_url
-from django.test import RequestFactory
+from django.test import RequestFactory, override_settings
 from django.urls import reverse
 
 from unfold_extra.contrib.cms.utils import _language_from_request
@@ -16,6 +16,15 @@ class TestLanguageFromRequest:
 
     def test_language_param_wins(self):
         assert _language_from_request(RequestFactory().get("/", {"language": "de"})) == "de"
+
+    @override_settings(
+        CMS_LANGUAGES={1: [{"code": "en", "name": "English"}], 2: [{"code": "de", "name": "Deutsch"}]}
+    )
+    def test_validated_against_given_site(self):
+        request = RequestFactory().get("/")
+        request.LANGUAGE_CODE = "de"
+        assert _language_from_request(request) == "en"
+        assert _language_from_request(request, site_id=2) == "de"
 
 
 @pytest.mark.django_db
