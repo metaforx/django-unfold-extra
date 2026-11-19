@@ -5,6 +5,21 @@ Changelog
 All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
+0.5.9 (2026-11-19)
+==================
+
+Bug Fixes:
+----------
+
+* Fix ``TypeError: get_current_site() takes 0 positional arguments`` when saving a
+  Page's advanced settings from the CMS toolbar modal. The redirect language, including
+  a ``?language=`` parameter, is now validated against the page's site. (#71)
+
+Tests:
+------
+
+* Add a regression test for saving Page advanced settings in the CMS toolbar modal. (#71)
+
 0.5.8 (2026-10-30)
 ==================
 
