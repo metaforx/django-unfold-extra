@@ -12,15 +12,13 @@ Bug Fixes:
 ----------
 
 * Fix ``TypeError: get_current_site() takes 0 positional arguments`` when saving a
-  Page's advanced settings from the CMS toolbar modal. The redirect language is now
-  validated against the page's own site, so pages of other sites edited from the same
-  admin redirect to the right content. (#71)
+  Page's advanced settings from the CMS toolbar modal. The redirect language, including
+  a ``?language=`` parameter, is now validated against the page's site. (#71)
 
 Tests:
 ------
 
-* Add regression tests for saving Page advanced settings in the CMS toolbar modal and
-  for site-specific language resolution. (#71)
+* Add a regression test for saving Page advanced settings in the CMS toolbar modal. (#71)
 
 0.5.8 (2026-10-30)
 ==================

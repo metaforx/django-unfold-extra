@@ -2,8 +2,6 @@ from json import dumps
 from urllib.parse import urlencode
 
 from cms.constants import MODAL_HTML_REDIRECT
-from cms.utils.conf import get_cms_setting
-from cms.utils.i18n import get_site_language_from_request
 from django.http import HttpResponse
 from django.utils.text import capfirst
 from django.utils.translation import gettext
@@ -34,14 +32,6 @@ def _request_is_toolbar_modal(request) -> bool:
     ref = (request.META.get("HTTP_REFERER") or "").lower()
     return "cms_path=" in ref
 
-
-def _language_from_request(request, site_id=None) -> str:
-    """
-    Determines the language to be used based on the request object, validated against
-    ``site_id`` (defaults to the current site).
-    """
-    lang = request.GET.get("language") or get_site_language_from_request(request, site_id=site_id)
-    return lang or get_cms_setting("LANGUAGE_CODE")
 
 def _sidepanel_return_url(request, url) -> str:
     """

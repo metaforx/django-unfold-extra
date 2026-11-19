@@ -17,6 +17,7 @@ from cms.admin.useradmin import (
 from cms.models import GlobalPagePermission, Page, PageContent, PageUser, PageUserGroup, UserSettings
 from cms.toolbar.utils import get_object_edit_url
 from cms.utils.conf import get_cms_setting
+from cms.utils.i18n import get_site_language_from_request
 from django.contrib import admin, messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -38,7 +39,6 @@ from .utils import (
     _admin_delete_success_message,
     _html_modal_redirect,
     _html_sidepanel_redirect,
-    _language_from_request,
     _request_is_iframe,
     _request_is_toolbar_modal,
     _sidepanel_return_url,
@@ -233,7 +233,7 @@ class PageAdmin(ModelAdmin, BasePageAdmin):
         Constructs the redirect URL for editing a given page's advanced settings or returns the
         default admin change URL for the page.
         """
-        language = _language_from_request(request, site_id=page.site_id)
+        language = get_site_language_from_request(request, site_id=page.site_id)
         content = getattr(page, "get_admin_content", None)
         if callable(content):
             page_content = page.get_admin_content(language)
