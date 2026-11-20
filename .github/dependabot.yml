@@ -10,6 +10,7 @@ updates:
       time: "06:00"
     open-pull-requests-limit: 5
     # The upper bounds in pyproject.toml are deliberate gates; only move the lock within them.
+    # django-cms is locked twice (cms50/cms51 groups); a bump may move either resolution.
     versioning-strategy: lockfile-only
     allow:
       - dependency-name: "django-cms"

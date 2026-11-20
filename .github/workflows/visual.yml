@@ -18,9 +18,13 @@ permissions:
 
 jobs:
   visual:
-    name: Screenshots (locked)
+    name: Screenshots (locked, django CMS ${{ matrix.cms }})
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        cms: ["5.0", "5.1"]
     steps:
       - uses: actions/checkout@v6
 
@@ -31,20 +35,24 @@ jobs:
           cache-dependency-glob: "uv.lock"
 
       - name: Run the screenshot check
-        run: scripts/visual.sh
+        run: scripts/visual.sh --cms ${{ matrix.cms }}
 
       - name: Upload expected/actual/diff images
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: visual-results
+          name: visual-results-cms${{ matrix.cms }}
           path: tests/visual/results/
           if-no-files-found: ignore
 
   visual-upgrade:
-    name: Screenshots (upgraded dependencies)
+    name: Screenshots (upgraded dependencies, django CMS ${{ matrix.cms }})
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        cms: ["5.0", "5.1"]
     steps:
       - uses: actions/checkout@v6
 
@@ -83,9 +91,12 @@ jobs:
             echo
             echo '| package | before | after |'
             echo '| --- | --- | --- |'
+            # django-cms is locked once per supported minor version; keep the rows apart.
             git diff -U0 -- uv.lock \
               | awk '/^[-+]name = /{name=$3; gsub(/"/,"",name); side=substr($0,1,1)}
-                     /^[-+]version = /{v=$3; gsub(/"/,"",v); print side, name, v}' \
+                     /^[-+]version = /{v=$3; gsub(/"/,"",v); key=name
+                       if (name=="django-cms") {split(v,p,"."); key=name"@"p[1]"."p[2]}
+                       print side, key, v}' \
               | sort -k2,2 \
               | awk '{if ($1=="-") before[$2]=$3; else after[$2]=$3}
                      END {for (p in after) printf "| %s | %s | %s |\n", p, (p in before ? before[p] : "—"), after[p]}'
@@ -103,13 +114,13 @@ jobs:
 
       - name: Run the screenshot check against the upgraded lock
         if: steps.upgrade.outputs.changed == 'true'
-        run: scripts/visual.sh --no-locked
+        run: scripts/visual.sh --no-locked --cms ${{ matrix.cms }}
 
       - name: Upload expected/actual/diff images and the upgraded lock
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: visual-upgrade-results
+          name: visual-upgrade-results-cms${{ matrix.cms }}
           path: |
             tests/visual/results/
             uv.lock

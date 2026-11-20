@@ -22,3 +22,41 @@
 #nav-sidebar-apps .hidden:has(ol li) {
     display: block !important;
 }
+
+/* CMS 5.0's page tree frame, restated for 5.1, which drops the borders and fills the inside. */
+/* Same selectors and values as 5.0's own rules, so this is a no-op there; keep the order. */
+.cms-pagetree {
+    border: 1px solid var(--dca-gray-lighter);
+}
+
+.cms-pagetree-header {
+    padding-inline: 20px;
+    border-block-end: none;
+    background: var(--dca-gray-super-lightest);
+}
+
+.cms-pagetree-section {
+    border-block-end: none;
+    background: var(--dca-white);
+}
+
+.cms-pagetree-section-header,
+.cms-pagetree-legend {
+    background-color: var(--dca-white);
+    border-radius: 0;
+}
+
+.cms-pagetree-container {
+    border: 1px solid var(--dca-gray-lighter);
+    border-block-end: none;
+    background-color: transparent;
+    padding: 0;
+}
+
+.cms-pagetree-container + .cms-pagetree-section {
+    margin-block-start: -1px;
+}
+
+.cms-pagetree-legend {
+    padding-block: 10px;
+}

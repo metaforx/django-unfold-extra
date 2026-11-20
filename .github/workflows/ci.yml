@@ -6,10 +6,19 @@ on:
 
 jobs:
   test:
+    name: test (python ${{ matrix.python-version }}, django CMS ${{ matrix.cms }})
     runs-on: ubuntu-latest
     strategy:
+      # One django CMS version failing must not cancel, and hide, the other's result.
+      fail-fast: false
       matrix:
         python-version: ["3.12", "3.13"]
+        cms: ["5.0", "5.1"]
+        include:
+          - cms: "5.0"
+            groups: "--no-group cms51 --group cms50"
+          - cms: "5.1"
+            groups: ""
     env:
       PYTHONPATH: .
 
@@ -24,7 +33,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
-        run: uv sync --locked
+        run: uv sync --locked ${{ matrix.groups }}
 
+      # uv run needs the same group flags, or it re-syncs the default (5.1) group.
       - name: Run tests
-        run: uv run pytest -rs
+        run: |
+          uv run ${{ matrix.groups }} python -c "import cms; print('django CMS', cms.__version__)"
+          uv run ${{ matrix.groups }} pytest -rs

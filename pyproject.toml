@@ -23,8 +23,9 @@ classifiers = [
     "Framework :: Django",
 ]
 dependencies = [
-    # 5.0.9 pads .cms-sideframe-frame itself; unfold_extra no longer does.
-    "django-cms>=5.0.9,<5.1",
+    # 5.0.9 pads .cms-sideframe-frame itself; unfold_extra no longer does. 5.2 waits until
+    # it is added to the cms50/cms51 test groups below.
+    "django-cms>=5.0.9,<5.2",
     # 0.105 redesigned the index/app list and squared the header add button; clients
     # see that as a UI change, so it waits until our overrides are checked against it.
     "django-unfold>=0.92,<0.105",
@@ -85,10 +86,15 @@ test = [
     "django-mptt>=0.18",
 ]
 dev = ["ruff>=0.4"]
+# One locked environment per supported django CMS minor version; 5.1 is the default.
+# 5.0: uv run --no-group cms51 --group cms50 pytest
+cms50 = ["django-cms>=5.0.9,<5.1"]
+cms51 = ["django-cms>=5.1,<5.2"]
 
 [tool.uv]
 package = false
-default-groups = "all"
+default-groups = ["test", "dev", "cms51"]
+conflicts = [[{ group = "cms50" }, { group = "cms51" }]]
 # Uncomment and adjust the script below as needed:
 # unfold-cms = "unfold_extra.cli:main"
 
@@ -155,8 +161,14 @@ django_find_project = false
 env = [
     "DJANGO_ALLOW_ASYNC_UNSAFE=true",
 ]
+# Our own code must not use deprecated django CMS API on any supported version.
+filterwarnings = [
+    "error::cms.utils.compat.warnings.RemovedInDjangoCMS51Warning:unfold_extra",
+    "error::cms.utils.compat.warnings.RemovedInDjangoCMS60Warning:unfold_extra",
+]
 markers = [
     "ui: Playwright browser tests (deselected by default, run with: pytest -m ui)",
     "visual: Screenshot regression tests (deselected by default, run with: scripts/visual.sh)",
+    "requires_cms(*versions): run only on these django CMS major.minor versions, skip with a reason elsewhere",
 ]
 

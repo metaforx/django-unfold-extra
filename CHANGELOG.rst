@@ -5,6 +5,40 @@ Changelog
 All notable changes to django-unfold-extra are documented here.
 This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
+0.6.0a0 (unreleased)
+====================
+
+Features:
+---------
+
+* Support django CMS 5.1 alongside 5.0: the dependency is now ``django-cms>=5.0.9,<5.2``.
+* django CMS 5.1 keeps the pre-5.1 look. ``theme-sync.js`` selects django CMS's legacy
+  palette (``data-cms-theme="4"``) before first paint; no configuration needed. The new
+  logo, Help menu, uppercase button labels and similar 5.1 details are left as they are
+  (see the README).
+
+Bug Fixes:
+----------
+
+* The page tree is one framed card again on django CMS 5.1, which drops 5.0's borders.
+* A page's standalone structure view now loads the package's styles and theme sync, like
+  edit mode. Its Publish button uses the Unfold primary colour on both versions instead
+  of django CMS's own blue (2.2:1 contrast) or, on 5.1, its green.
+* Saving a page's advanced settings in the sideframe keeps the page tree's ``?site=``
+  (and other query parameters), so on django CMS 5.1 you return to the site you were
+  editing.
+
+Tests:
+------
+
+* CI runs the test suite and the screenshot check against django CMS 5.0 and 5.1; the
+  lock holds both, selected with the ``cms50``/``cms51`` dependency groups.
+* One reference screenshot set per django CMS version; ``scripts/visual.sh`` takes
+  ``--cms 5.0|5.1``.
+* ``requires_cms`` marker for version-specific tests, and 5.1-only tests for saving a
+  page on a second site.
+* django CMS deprecation warnings raised by the package's own code fail the test suite.
+
 0.5.9 (2026-11-19)
 ==================
 

@@ -1,6 +1,10 @@
 version = 1
 revision = 3
 requires-python = ">=3.12"
+conflicts = [[
+    { package = "django-unfold-extra", group = "cms50" },
+    { package = "django-unfold-extra", group = "cms51" },
+]]
 
 [[package]]
 name = "asgiref"
@@ -109,7 +113,7 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "asgiref" },
     { name = "sqlparse" },
-    { name = "tzdata", marker = "sys_platform == 'win32'" },
+    { name = "tzdata", marker = "sys_platform == 'win32' or (extra == 'group-19-django-unfold-extra-cms50' and extra == 'group-19-django-unfold-extra-cms51')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/78/29/ac41e16097af67066d97a7d5775c5d8e7efc5d0284f6b0a159e07b9adb92/django-6.0.6.tar.gz", hash = "sha256:ad03916ba59523d781ae5c3f631960c23d69a9d9c43cecda52fc23b47e953713", size = 10905525, upload-time = "2026-06-03T13:02:46.503Z" }
 wheels = [
@@ -133,18 +137,34 @@ name = "django-cms"
 version = "5.0.13"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
+    { name = "django", marker = "extra == 'group-19-django-unfold-extra-cms50'" },
+    { name = "django-classy-tags", marker = "extra == 'group-19-django-unfold-extra-cms50'" },
+    { name = "django-formtools", marker = "extra == 'group-19-django-unfold-extra-cms50'" },
+    { name = "django-sekizai", marker = "extra == 'group-19-django-unfold-extra-cms50'" },
+    { name = "django-treebeard", marker = "extra == 'group-19-django-unfold-extra-cms50'" },
+    { name = "djangocms-admin-style", marker = "extra == 'group-19-django-unfold-extra-cms50'" },
+    { name = "packaging", marker = "extra == 'group-19-django-unfold-extra-cms50'" },
+    { name = "setuptools", marker = "extra == 'group-19-django-unfold-extra-cms50'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/56/c6/5983809bf2aa97ca69728a3bd92b4c1331205ffe054b3c4ee79a4625f2ea/django_cms-5.0.13.tar.gz", hash = "sha256:554fa546f97a80a263f4f2056d5a0a95ea60545c84b0401ad30db3062ca64a15", size = 5393138, upload-time = "2026-09-24T14:37:22.892Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bf/64/9032beb6df7582154af39b4965505d1897f0128034e6b654ca8cac769342/django_cms-5.0.13-py2.py3-none-any.whl", hash = "sha256:3725fb9a858531f2e3379c34736f7d7953f84bd3cab488b71f7daecf9fb20f2b", size = 3318298, upload-time = "2026-09-24T14:37:20.94Z" },
+]
+
+[[package]]
+name = "django-cms"
+version = "5.1.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
     { name = "django" },
     { name = "django-classy-tags" },
     { name = "django-formtools" },
     { name = "django-sekizai" },
     { name = "django-treebeard" },
-    { name = "djangocms-admin-style" },
-    { name = "packaging" },
-    { name = "setuptools" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/56/c6/5983809bf2aa97ca69728a3bd92b4c1331205ffe054b3c4ee79a4625f2ea/django_cms-5.0.13.tar.gz", hash = "sha256:554fa546f97a80a263f4f2056d5a0a95ea60545c84b0401ad30db3062ca64a15", size = 5393138, upload-time = "2026-09-24T14:37:22.892Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/57/73/d9bb149fa6a758d7089f57d41e603f762f7567d953eaa719b43d0e28cb84/django_cms-5.1.3.tar.gz", hash = "sha256:80c50fc44cffa2cae28f4b8d841b7f48bd5ded9c88e493096b6e2235ba94d3ca", size = 6773067, upload-time = "2026-09-23T19:55:30.863Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/bf/64/9032beb6df7582154af39b4965505d1897f0128034e6b654ca8cac769342/django_cms-5.0.13-py2.py3-none-any.whl", hash = "sha256:3725fb9a858531f2e3379c34736f7d7953f84bd3cab488b71f7daecf9fb20f2b", size = 3318298, upload-time = "2026-09-24T14:37:20.94Z" },
+    { url = "https://files.pythonhosted.org/packages/38/86/9c152b55cd64083bc5450be00a86be70947c88a906aba533f84a184f8288/django_cms-5.1.3-py3-none-any.whl", hash = "sha256:acf31919aab389d2bea253efa97a901bf55e96046a252f23a7a742e495848a5e", size = 3562685, upload-time = "2026-09-23T19:55:28.796Z" },
 ]
 
 [[package]]
@@ -290,7 +310,8 @@ wheels = [
 name = "django-unfold-extra"
 source = { virtual = "." }
 dependencies = [
-    { name = "django-cms" },
+    { name = "django-cms", version = "5.0.13", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-19-django-unfold-extra-cms50'" },
+    { name = "django-cms", version = "5.1.3", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-19-django-unfold-extra-cms51' or extra != 'group-19-django-unfold-extra-cms50'" },
     { name = "django-unfold" },
 ]
 
@@ -319,6 +340,12 @@ test = [
 ]
 
 [package.dev-dependencies]
+cms50 = [
+    { name = "django-cms", version = "5.0.13", source = { registry = "https://pypi.org/simple" } },
+]
+cms51 = [
+    { name = "django-cms", version = "5.1.3", source = { registry = "https://pypi.org/simple" } },
+]
 dev = [
     { name = "ruff" },
 ]
@@ -337,7 +364,7 @@ test = [
 
 [package.metadata]
 requires-dist = [
-    { name = "django-cms", specifier = ">=5.0.9,<5.1" },
+    { name = "django-cms", specifier = ">=5.0.9,<5.2" },
     { name = "django-filer", marker = "extra == 'filer'", specifier = ">=3.0" },
     { name = "django-filer", marker = "extra == 'link'", specifier = ">=3.0" },
     { name = "django-filer", marker = "extra == 'test'", specifier = ">=3.0" },
@@ -357,6 +384,8 @@ requires-dist = [
 provides-extras = ["filer", "link", "parler", "test"]
 
 [package.metadata.requires-dev]
+cms50 = [{ name = "django-cms", specifier = ">=5.0.9,<5.1" }]
+cms51 = [{ name = "django-cms", specifier = ">=5.1,<5.2" }]
 dev = [{ name = "ruff", specifier = ">=0.4" }]
 test = [
     { name = "django-filer", specifier = ">=3.0" },
@@ -376,7 +405,7 @@ name = "djangocms-admin-style"
 version = "3.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django" },
+    { name = "django", marker = "extra == 'group-19-django-unfold-extra-cms50'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/6c/1e/47b2d031c6d8f4ac5394b4b3dc863a8f21fd6d92aadf260ba1fc633b286f/djangocms-admin-style-3.3.1.tar.gz", hash = "sha256:da20de3831f1a1a74de33fe12bbd3865a0027a982878c02aa1d102b1c799d767", size = 319126, upload-time = "2024-02-29T22:12:45.167Z" }
 wheels = [
@@ -388,7 +417,8 @@ name = "djangocms-attributes-field"
 version = "4.1.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django-cms" },
+    { name = "django-cms", version = "5.0.13", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-19-django-unfold-extra-cms50'" },
+    { name = "django-cms", version = "5.1.3", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-19-django-unfold-extra-cms51' or extra != 'group-19-django-unfold-extra-cms50'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/8e/53/422c7da4759653c847ef59c9736d618e7e3b3abf47da75652ca23703ffa4/djangocms_attributes_field-4.1.2.tar.gz", hash = "sha256:ed7e9d78a47b30801fe6b411e1cb8aff3434ac594c2b6bb86c859d98aff59838", size = 18675, upload-time = "2025-11-02T20:16:19.09Z" }
 wheels = [
@@ -400,7 +430,8 @@ name = "djangocms-link"
 version = "5.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django-cms" },
+    { name = "django-cms", version = "5.0.13", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-19-django-unfold-extra-cms50'" },
+    { name = "django-cms", version = "5.1.3", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-19-django-unfold-extra-cms51' or extra != 'group-19-django-unfold-extra-cms50'" },
     { name = "djangocms-attributes-field" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/62/7b/47411937d9d9e0043281b49ad45f0b9c5d4617fb365ed0f7649e5d1ab241/djangocms_link-5.2.0.tar.gz", hash = "sha256:a1b91ab2dfd30512601e3297e5882728860ec44be35c807edc72d8944e279148", size = 546010, upload-time = "2026-07-07T17:10:11.777Z" }
@@ -413,7 +444,8 @@ name = "djangocms-versioning"
 version = "2.8.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django-cms" },
+    { name = "django-cms", version = "5.0.13", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-19-django-unfold-extra-cms50'" },
+    { name = "django-cms", version = "5.1.3", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-19-django-unfold-extra-cms51' or extra != 'group-19-django-unfold-extra-cms50'" },
     { name = "django-fsm-2" },
     { name = "packaging" },
 ]
@@ -730,7 +762,7 @@ name = "pytest"
 version = "9.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-19-django-unfold-extra-cms50' and extra == 'group-19-django-unfold-extra-cms51')" },
     { name = "iniconfig" },
     { name = "packaging" },
     { name = "pluggy" },
