@@ -1,4 +1,7 @@
-import {KEY_CMS, KEY_UNFOLD, applyTheme} from './utils/theme-utils.js';
+import {KEY_CMS, KEY_UNFOLD, applyCmsTheme, applyTheme} from './utils/theme-utils.js';
+
+// First, before paint: this script must stay a plain <script src> in <head>, never defer/async.
+applyCmsTheme('4');
 
 let mirroring = false;
 

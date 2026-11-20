@@ -1,3 +1,5 @@
+from importlib.metadata import version
+
 import pytest
 from django.apps import apps
 from django.contrib.auth import get_user_model
@@ -5,6 +7,29 @@ from django.contrib.contenttypes.models import ContentType
 
 # Names of reference images rewritten this session, reported in the terminal summary.
 UPDATED_SNAPSHOTS = pytest.StashKey[list]()
+
+
+def installed_cms_minor() -> str:
+    """The installed django CMS version as ``major.minor``, e.g. ``"5.1"``."""
+    return ".".join(version("django-cms").split(".")[:2])
+
+
+def cms_skip_reason(*, required: tuple[str, ...], installed: str) -> str | None:
+    """Why a test marked ``requires_cms(*required)`` must be skipped, or ``None`` to run it."""
+    if installed in required:
+        return None
+    return f"requires django CMS {' or '.join(required)} (installed: {installed})"
+
+
+def pytest_collection_modifyitems(config, items):
+    installed = installed_cms_minor()
+    for item in items:
+        marker = item.get_closest_marker("requires_cms")
+        if marker is None:
+            continue
+        reason = cms_skip_reason(required=marker.args, installed=installed)
+        if reason:
+            item.add_marker(pytest.mark.skip(reason=reason))
 
 
 def pytest_addoption(parser):

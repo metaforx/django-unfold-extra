@@ -258,7 +258,7 @@ class PageAdmin(ModelAdmin, BasePageAdmin):
             if _request_is_toolbar_modal(request):
                 url = self._edit_redirect_url(request, obj)
                 return HttpResponse(MODAL_HTML_REDIRECT.format(url=url))
-            return _html_sidepanel_redirect(self._changelist_url())
+            return _html_sidepanel_redirect(_sidepanel_return_url(request, self._changelist_url()))
 
         self.message_user(request,_admin_change_success_message(obj),messages.INFO)
         return HttpResponseRedirect(_sidepanel_return_url(request, self._changelist_url()))

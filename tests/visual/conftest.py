@@ -16,13 +16,34 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
-from tests.conftest import UPDATED_SNAPSHOTS, admin_login
+from tests.conftest import UPDATED_SNAPSHOTS, admin_login, installed_cms_minor
 
 from .data import VisualData, visual_data_create
 from .snapshot import snapshot_compare, snapshot_write_results
 
 # Set by the container image to the Playwright version it was built from.
 VISUAL_PLAYWRIGHT_VERSION = "VISUAL_PLAYWRIGHT_VERSION"
+
+# One reference set per supported django CMS minor version, e.g. ``snapshots/cms-5.1/``.
+SNAPSHOTS_ROOT = Path(__file__).parent / "snapshots"
+
+
+def snapshot_set_dir(*, root: Path, cms_version: str) -> Path:
+    """The reference set for ``cms_version`` (``major.minor``)."""
+    return root / f"cms-{cms_version}"
+
+
+def snapshot_set_error(*, root: Path, cms_version: str) -> str | None:
+    """Why the screenshot check cannot run against ``cms_version``, or ``None`` if it can."""
+    if snapshot_set_dir(root=root, cms_version=cms_version).is_dir():
+        return None
+    available = sorted(path.name for path in root.glob("cms-*") if path.is_dir())
+    return (
+        f"no reference set for django CMS {cms_version} (installed); "
+        f"available sets: {', '.join(available) or 'none'}. "
+        "Run scripts/visual.sh --cms <version> with a supported version, or create "
+        f"{snapshot_set_dir(root=root, cms_version=cms_version).name}/ to start a new set."
+    )
 
 
 @pytest.hookimpl(trylast=True)
@@ -39,14 +60,16 @@ def pytest_collection_modifyitems(config, items):
 
     installed = version("playwright")
     declared = os.environ.get(VISUAL_PLAYWRIGHT_VERSION)
-    if declared == installed:
-        return
+    if declared != installed:
+        raise pytest.UsageError(
+            f"visual tests need the pinned container: {VISUAL_PLAYWRIGHT_VERSION}="
+            f"{declared or '<unset>'} but playwright {installed} is installed. "
+            "Run them with scripts/visual.sh."
+        )
 
-    raise pytest.UsageError(
-        f"visual tests need the pinned container: {VISUAL_PLAYWRIGHT_VERSION}="
-        f"{declared or '<unset>'} but playwright {installed} is installed. "
-        "Run them with scripts/visual.sh."
-    )
+    error = snapshot_set_error(root=SNAPSHOTS_ROOT, cms_version=installed_cms_minor())
+    if error:
+        raise pytest.UsageError(error)
 
 
 @pytest.fixture(autouse=True)
@@ -77,8 +100,8 @@ def visual_data(admin_client, django_user_model) -> VisualData:
 
 @pytest.fixture
 def snapshots_dir() -> Path:
-    """Committed reference images. Tests override this with ``tmp_path``."""
-    return Path(__file__).parent / "snapshots"
+    """Committed reference images for the installed django CMS. Tests override this with ``tmp_path``."""
+    return snapshot_set_dir(root=SNAPSHOTS_ROOT, cms_version=installed_cms_minor())
 
 
 @pytest.fixture

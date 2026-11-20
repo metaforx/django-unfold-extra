@@ -1,6 +1,11 @@
 export const KEY_UNFOLD = 'adminTheme'; // JSON-encoded: "light" | "dark" | "auto"
 export const KEY_CMS = 'theme';
 
+/** Select django CMS's pre-5.1 palette, which our overrides are styled against; inert on CMS 5.0. */
+export function applyCmsTheme(variant) {
+    document.documentElement.setAttribute('data-cms-theme', variant);
+}
+
 export function applyTheme(theme) {
     if (!theme) return;
     console.log('applyTheme', theme);
