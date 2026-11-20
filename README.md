@@ -7,7 +7,7 @@ Unofficial extension for [Django Unfold](https://github.com/unfoldadmin/django-u
 Re-registers their admin with Unfold-styled admin classes, forms and widgets, so they keep the clean, modern aesthetic of Django Unfold. It uses unobtrusive template and CSS-styling overrides where possible.
 
 ## Features
-- django CMS 5.0 support: page tree, page admin, permissions, plugins and versioning
+- django CMS 5.0 and 5.1 support: page tree, page admin, permissions, plugins and versioning
 - django-filer: full Unfold integration, including the file and image picker widgets (`[filer]` extra)
 - django-parler: multilingual support for your Django models (`[parler]` extra)
 - django-versatileimagefield: improved integration, including preview and ppoi
@@ -19,12 +19,12 @@ Re-registers their admin with Unfold-styled admin classes, forms and widgets, so
 
 - Python 3.12+
 - django-unfold 0.92+ (<0.105)
-- django-cms 5.0.9+ (<5.1)
+- django-cms 5.0.9+ or 5.1 (<5.2)
 - django-parler 2.3+ for the optional `[parler]` extra
 - django-filer 3.0+ and djangocms-link 5.0+ for the optional `[filer]` / `[link]` extras
 
-> **Unfold version:** django-unfold 0.105 redesigned the admin index and several controls, so 0.5.x stays below it
-> to keep the admin look stable for existing projects. Support for 0.105+ follows in 0.6.
+> **Unfold version:** django-unfold 0.105 redesigned the admin index and several controls, so this package stays below it
+> to keep the admin look stable for existing projects. Support for 0.105+ follows in a later release.
 
 > **Note:** This package is already used in production but expect additional implementation work for your own apps and plugins. 
 > Best used when your project does not rely on external cms plugins and 3rd party packages with their own admin.
@@ -109,6 +109,15 @@ Unfold support for all common Django CMS admin pages and plugins including:
 
 As Django CMS uses many `!important` flags, a small override stylesheet is loaded after the CMS pagetree CSS to win
 back the conflicting declarations. Further customization is possible by compiling your own unfold_extra styles.
+
+#### django CMS 5.1
+
+django CMS 5.1 restyled its toolbar and admin. This package keeps the pre-5.1 look on both versions:
+`theme-sync.js` selects django CMS's legacy palette (`data-cms-theme="4"`), so no configuration is needed. Keep that
+script a plain `<script>` in `<head>` (no `defer`/`async`), or the new dca palette flashes before it applies.
+
+Left as django CMS 5.1 draws them: the new logo, the Help menu, uppercase button labels, the tinted modal header, the
+page tree's outlined icons and column-header bar, and the structure board's dark-mode colours.
 
 #### Configuration
 
@@ -418,5 +427,15 @@ class MyInlineAdmin(TranslatableStackedInline):
 ### Django Auth, Sites
 
 - Adds Unfold-based admin registrations for `django.contrib.auth` and `django.contrib.sites`.
+
+## Development
+
+Tests run against each supported django CMS version; 5.1 is the default environment.
+
+```bash
+uv run pytest                                        # django CMS 5.1
+uv run --no-group cms51 --group cms50 pytest         # django CMS 5.0
+scripts/visual.sh [--cms 5.0|5.1]                    # screenshot check in Docker, one reference set per version
+```
 
 This is for personal use. You likely want to customize this. 

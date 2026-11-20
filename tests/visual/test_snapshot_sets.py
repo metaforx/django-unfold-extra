@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import re
+import tomllib
 from pathlib import Path
 
 from tests.conftest import installed_cms_minor
@@ -30,6 +32,16 @@ def test_missing_set_names_installed_and_available(tmp_path):
     assert error is not None
     assert "django CMS 5.2 (installed)" in error
     assert "available sets: cms-5.0, cms-5.1" in error
+
+
+def test_every_supported_version_has_a_set():
+    """Supported versions are the ``cmsXY`` dependency groups in pyproject.toml."""
+    pyproject = tomllib.loads((Path(__file__).parents[2] / "pyproject.toml").read_text())
+    groups = pyproject["dependency-groups"]
+    supported = sorted(f"{m[1]}.{m[2]}" for g in groups if (m := re.fullmatch(r"cms(\d)(\d+)", g)))
+    assert supported, "no cmsXY dependency groups in pyproject.toml"
+    for cms_version in supported:
+        assert snapshot_set_dir(root=SNAPSHOTS_ROOT, cms_version=cms_version).is_dir(), cms_version
 
 
 def test_every_set_covers_every_view_and_theme():
